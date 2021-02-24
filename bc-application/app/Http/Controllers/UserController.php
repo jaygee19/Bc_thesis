@@ -13,20 +13,33 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
 {
-        public function authenticate(Request $request)
+        
+    public function authenticate(Request $request)
         {
-            $credentials = $request->only('ldap_login', 'password');
+            $validator = Validator::make($request->all(), [
+                'password' => 'required|min:6',
+            ]);
 
-            try {
-                if (! $token = JWTAuth::attempt($credentials)) {
-                    return response()->json(['error' => 'invalid_credentials'], 400);
-                }
-            } catch (JWTException $e) {
-                return response()->json(['error' => 'could_not_create_token'], 500);
+            if($validator->fails()){
+                    return response()->json($validator->errors(), 400);
             }
 
-            return response()->json(compact('token'));
-        }
+            $token = JWTAuth::attempt($request->only('ldap_login', 'password'));
+
+            try {
+                if ($token == null) {
+                    return response()->json(['errors' => 'invalid_credentials'], 400);
+                }
+            } catch (JWTException $e) {
+                return response()->json(['errors' => 'could_not_create_token'], 500);
+            }
+
+            $user = User::where('ldap_login', $request->all()['ldap_login'])->first();
+            $user->api_token = $token;
+            $user->save();
+
+            return response()->json(['token' => $token], 200);
+    }
 
         public function register(Request $request)
         {
@@ -49,7 +62,7 @@ class UserController extends Controller
 
             $token = JWTAuth::fromUser($user);
 
-            return response()->json(compact('user','token'),201);
+            return response()->json(compact('user','token'), 201);
         }
 
         public function getAuthenticatedUser()

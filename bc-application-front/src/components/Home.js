@@ -1,10 +1,12 @@
 import React from 'react'
+import Navigation from './Navigation';
 
 const Home = (props) => {
 
+
     return (
         <div>
-            Home {props.name}
+            Home
         </div>
     );
 };
