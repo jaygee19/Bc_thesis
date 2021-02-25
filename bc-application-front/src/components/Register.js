@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import { Redirect } from 'react-router-dom';
+import Navigation from './Navigation';
 
 const Register = () => {
     const [name, setName] = useState('');
@@ -35,6 +36,8 @@ const Register = () => {
     }
 
     return (
+        <div>
+        <Navigation/>
         <form onSubmit={submit}>
             <h1 className="h3 mb-3 fw-normal">Please register</h1>
             <input className="form-control" placeholder="Name" required 
@@ -51,6 +54,7 @@ const Register = () => {
             />
             <button className="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
         </form>
+        </div>
     );
 };
 
