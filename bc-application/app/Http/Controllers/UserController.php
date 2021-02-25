@@ -10,6 +10,8 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Http\Response;
+
 
 class UserController extends Controller
 {
@@ -88,5 +90,30 @@ class UserController extends Controller
                 }
 
              return response()->json(compact('user'));
+        }
+
+        public function logout(Request $request)
+        {
+            // $this->validate($request, [
+            //      'api_token' => 'required'
+            // ]);
+            
+            // $user = User::where('api_token', $request->all()['api_token'])->get()->first();
+            // $user->api_token = null;
+            // $user->save();
+
+            try {
+                JWTAuth::invalidate($request->api_token);
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'User logged out successfully'
+                ]);
+            } catch (JWTException $exception) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Sorry, the user cannot be logged out'
+                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
         }
 }

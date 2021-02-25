@@ -1,12 +1,12 @@
 import React, {Component, useState} from 'react'
-import { Redirect } from 'react-router-dom';
 import { getApiResponse } from '../helpers/ApiHelper'
 import { getErrorsView } from '../helpers/ErrorHelper'
 import AuthHelper from '../helpers/AuthHelper'
+import { Redirect } from 'react-router-dom'
+import Navigation from './Navigation'
 
 class Login extends Component {
-    //const [ldap_login, setLdap] = useState('');
-    //const [password, setPassword] = useState('');
+
     constructor(props) {
         super(props)
     
@@ -43,51 +43,28 @@ class Login extends Component {
           password: this.state.password,
         })
         .then((res) => {
-            console.log("okej" + res)
+            //console.log("okej" + res.data.token)
             AuthHelper.getInstance()
               .loginUser(res.data.token)
               .then(() => {
                 this.props.history.push('/')
+                //return <Redirect to="/register"/>
               })
         })
         .catch((e) => {
-            console.log("cathc" + e)
+            //console.log("cathc" + e)
             this.setState({
               passwordErrors: e.response.data['password'] || [],
             })
         })
-
-        // if(this.state.passwordErrors == [])
-        // {
-        //     this.setState({
-        //         redirect: true,
-        //     })
-        // }
       }
    
-    // const [redirect, setRedirect] = useState(false);
-
-
-    // const submit = async (e) => {
-    //     e.preventDefault();
-
-    //     getApiResponse('login', 'post', {
-    //         headers: {'Content-Type': 'application/json'},
-    //         //credentials: 'include',
-    //         body: JSON.stringify({
-    //             ldap_login,
-    //             password
-    //         })
-    //     });
-    //     setRedirect(true);
-    // }
-
     render()
     {
-        if (this.state.redirect) {
-            return <Redirect to="/"/>
-        }
         return (
+            <div>
+                <Navigation/>
+            <div className="container col-4">
             <form onSubmit={this.onSubmit}>
                 <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
                 <input className="form-control" placeholder="Ldap_login" 
@@ -107,6 +84,9 @@ class Login extends Component {
                 {getErrorsView(this.state.passwordErrors)}
                 <button className="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
             </form>
+            </div>
+            </div>
+
         )
     } 
 }

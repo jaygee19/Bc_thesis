@@ -1,14 +1,15 @@
 import React from 'react'
 import Navigation from './Navigation';
 
-const Home = (props) => {
-
-
+function Home() {
     return (
         <div>
+            <Navigation/>
+            <div>
             Home
+            </div>
         </div>
-    );
-};
+    )
+}
 
 export default Home;

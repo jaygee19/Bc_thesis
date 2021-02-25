@@ -5,6 +5,7 @@ import Home from './components/Home';
 import Register from './components/Register';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { React, useState, useEffect, Component } from 'react'
+import Logout from './components/Logout';
 
 class App extends Component {
 
@@ -12,13 +13,13 @@ class App extends Component {
     return (
       <div className="App">
         <Router>
-        <Navigation />
-          <Switch>
-            <main className="form-signin">
+            <Switch>
+            {/* //<main className="form-signin"> */}
               <Route path="/" exact component={Home} />
-              <Route path="/login" component={Login} />
+              <Route path="/login" exact component={Login} />
               <Route path="/register" component={Register} />
-            </main>
+              <Route path="/logout" exact component={Logout} />
+            {/* </main> */}
           </Switch>
         </Router>
       </div>

@@ -18,9 +18,11 @@ use App\Http\Controllers\UserController;
 Route::post('register', [UserController::class, 'register']);
 Route::post('login', [UserController::class, 'authenticate']);
 Route::get('/users', [TestController::class, 'index']);
-Route::get('/user', [UserController::class, 'getAuthenticatedUser']);
+
 
 Route::group(['middleware' => ['jwt.verify']], function() {
+    Route::get('/user', [UserController::class, 'getAuthenticatedUser']);
+    Route::get('/logout', [UserController::class, 'logout']);
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

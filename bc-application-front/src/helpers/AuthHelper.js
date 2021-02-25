@@ -15,6 +15,7 @@ class AuthHelper {
   async loginUser(token) {
     localStorage.setItem('token', token)
     this.currentUser = await this.getUserFromToken(token)
+    console.log("po logine" + this.currentUser)
   }
 
   getCurrentUser() {
@@ -24,6 +25,7 @@ class AuthHelper {
   logoutUser() {
     localStorage.removeItem('token')
     this.currentUser = null
+    console.log("po logoute " + this.currentUser)
   }
 
   isUserLoggedIn() {
@@ -44,13 +46,15 @@ class AuthHelper {
 
     if (
       res.data.status === 'Authorization Token not found' ||
-      res.data.user === undefined
+      res.data.user === null
     )
-      return null
+    {
+        return null
+    }
 
     return {
       token: token,
-      ldap_login: res.data.user.ldap_login,
+      //name: res.data.user.name,
     }
   }
 
