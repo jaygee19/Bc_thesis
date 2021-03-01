@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { getApiResponse } from '../helpers/ApiHelper'
-import { getErrorsView } from '../helpers/ErrorHelper'
+import { getAllErrors } from '../helpers/ErrorHelper'
 import AuthHelper from '../helpers/AuthHelper'
 import Navigation from './Navigation'
 import Untitled from '../Untitled.png';
@@ -38,6 +38,7 @@ class Login extends Component {
 
     onSubmit(event) {
         event.preventDefault()
+
         console.log(this.state.ldap_login)
         console.log(this.state.password)
         getApiResponse('login', 'post', {
@@ -90,7 +91,7 @@ class Login extends Component {
                                             onChange={this.passwordFilled}
                                             required
                                         />
-                                        {getErrorsView(this.state.passwordErrors)}
+                                        {getAllErrors(this.state.passwordErrors)}
                                         <button className="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
                                         <p className="mt-5 mb-3 text-muted">&copy; since 2021</p>
                                     </form>

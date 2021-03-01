@@ -1,4 +1,5 @@
-export function getErrorsView(errors) {
+
+export function getAllErrors(errors) {
     return (
       errors !== undefined &&
       errors.length > 0 && (

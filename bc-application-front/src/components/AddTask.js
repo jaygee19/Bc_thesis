@@ -1,19 +1,18 @@
 import React, { Component } from 'react'
 import Navigation from './Navigation';
 
-class Home extends Component {
+class AddTask extends Component {
     render() {
         return (
             <div>
                 <Navigation />
                 <div className="container">
                   <p></p>
-                  <h3>Stručná osnova predmetu:</h3> 
-                  <p> OPERAČNÉ SYSTÉMY </p> 
+                  <h3>Add Task:</h3> 
             </div>
             </div>
         )
     }
 }
 
-export default Home;
+export default AddTask;

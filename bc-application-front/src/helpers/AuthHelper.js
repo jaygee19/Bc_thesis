@@ -18,6 +18,28 @@ class AuthHelper {
     console.log("po logine" + this.currentUser)
   }
 
+  async getUserFromToken(token) {
+
+    if (token == null) 
+    return null
+
+    const res = await axios.get(API_URL + '/user', {
+      headers: { Authorization: 'Bearer ' + token },
+    })
+
+    if ( res.data.status === 'Authorization Token not found' || res.data.user === null)
+    {
+        return null
+    }
+
+    return {
+      token: token,
+      user_id: res.data.user_id,
+      isTeacher : res.data.role === 't',
+      isStudent : res.data.role === 's',
+    }
+  }
+
   getCurrentUser() {
     return this.currentUser
   }
@@ -29,33 +51,38 @@ class AuthHelper {
   }
 
   isUserLoggedIn() {
-    return this.currentUser != null
+    if (this.currentUser != null) 
+    {
+        return true;
+    } else {
+        return false;
+    }
+    //return this.currentUser != null
   }
 
-  isUserAdmin() {
-    if (this.currentUser == null) return false
-    return this.currentUser.isAdmin
+  isUserStudent() {
+    if (this.currentUser == null) 
+    {
+        return false
+    }
+    return this.currentUser.isStudent
   }
 
-  async getUserFromToken(token) {
-    if (token == null) return null
+  isUserTeacher() {
+    if (this.currentUser == null) 
+    {
+        console.log("Halus")
+        return false
+    }
+    return this.currentUser.isTeacher
+  }
 
-    const res = await axios.get(API_URL + '/user', {
-      headers: { Authorization: 'Bearer ' + token },
-    })
-
-    if (
-      res.data.status === 'Authorization Token not found' ||
-      res.data.user === null
-    )
+  getUserID() {
+    if (this.currentUser == null) 
     {
         return null
     }
-
-    return {
-      token: token,
-      //name: res.data.user.name,
-    }
+    return this.currentUser.user_id
   }
 
   getAuthHeaders() {
