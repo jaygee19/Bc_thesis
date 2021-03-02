@@ -9,19 +9,23 @@ class AuthHelper {
 
   async loadCurrentUser() {
     const token = localStorage.getItem('token')
+    //console.log("MAM TOKEN" + token)
     this.currentUser = await this.getUserFromToken(token)
   }
 
   async loginUser(token) {
     localStorage.setItem('token', token)
     this.currentUser = await this.getUserFromToken(token)
-    console.log("po logine" + this.currentUser)
+    //console.log("po logine" + this.currentUser)
   }
 
   async getUserFromToken(token) {
-
+    //console.log("Ziskavam usera")
     if (token == null) 
-    return null
+    {
+        //console.log("Token je NULL")
+        return null
+    }
 
     const res = await axios.get(API_URL + '/user', {
       headers: { Authorization: 'Bearer ' + token },
@@ -29,9 +33,11 @@ class AuthHelper {
 
     if ( res.data.status === 'Authorization Token not found' || res.data.user === null)
     {
+        //console.log("Neviem preco som tu")
         return null
     }
 
+    ///console.log("Som spravne")
     return {
       token: token,
       user_id: res.data.user_id,

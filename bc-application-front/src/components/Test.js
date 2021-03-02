@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import Navigation from './Navigation';
-import Untitled from '../Untitled.png';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import AuthHelper from '../helpers/AuthHelper';
 

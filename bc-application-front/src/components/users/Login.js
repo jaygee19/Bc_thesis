@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { getApiResponse } from '../helpers/ApiHelper'
-import { getAllErrors } from '../helpers/ErrorHelper'
-import AuthHelper from '../helpers/AuthHelper'
-import Navigation from './Navigation'
-import Untitled from '../Untitled.png';
-import { Redirect } from 'react-router-dom'
+import { getApiResponse } from '../../helpers/ApiHelper'
+import { getAllErrors } from '../../helpers/ErrorHelper'
+import AuthHelper from '../../helpers/AuthHelper'
+import Navigation from '../Navigation'
+import OS from '../../images/OS.png'
+import { withRouter } from 'react-router-dom'
+
 
 
 class Login extends Component {
@@ -22,6 +23,7 @@ class Login extends Component {
         this.onSubmit = this.onSubmit.bind(this)
         this.ldapFilled = this.ldapFilled.bind(this)
         this.passwordFilled = this.passwordFilled.bind(this)
+
     }
 
     ldapFilled(e) {
@@ -38,7 +40,7 @@ class Login extends Component {
 
     onSubmit(event) {
         event.preventDefault()
-
+        
         console.log(this.state.ldap_login)
         console.log(this.state.password)
         getApiResponse('login', 'post', {
@@ -50,6 +52,7 @@ class Login extends Component {
                 AuthHelper.getInstance()
                     .loginUser(res.data.token)
                     .then(() => {
+                        this.props.onLogin()
                         this.props.history.push('/')
                     })
             })
@@ -69,7 +72,7 @@ class Login extends Component {
                     <div className="card login-card">
                         <div className="row no-gutters">
                             <div className="col-md-6 logo-card">
-                                <img className="front-image" src={Untitled} />
+                                <img className="front-image" src={OS} alt="OS" />
                             </div>
                             <div className="col-md-6">
                                 <div className="card-body sign-card">
@@ -77,7 +80,7 @@ class Login extends Component {
                                     <p></p>
                                     <form onSubmit={this.onSubmit}>
                                         <h5 className="mb-3 fw-normal">Prihlásenie</h5>
-                                        <input className="form-control" placeholder="Ldap_login"
+                                        <input type="text" className="form-control" placeholder="Ldap_login"
                                             id="ldap_login"
                                             name="ldap_login"
                                             value={this.state.ldap_login}
@@ -109,6 +112,6 @@ class Login extends Component {
     }
 }
 
-export default Login
+export default withRouter(Login)
 
 

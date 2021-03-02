@@ -21,6 +21,7 @@ Route::post('/login', [UserController::class, 'authenticate']);
 
 Route::get('/users', [TestController::class, 'index']);
 Route::get('/tasks', [TaskController::class, 'index']);
+Route::get('/tasks/loggedUsersTask', [TaskController::class, 'loggedUserTasks']);
 
 
 Route::group(['middleware' => ['jwt.verify']], function() {
