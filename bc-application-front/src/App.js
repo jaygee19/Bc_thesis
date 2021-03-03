@@ -13,6 +13,8 @@ import AddTask from './components/tasks/AddTask';
 import LoggedInRoute from './components/routes/LoggedInRoute';
 import TeacherRoute from './components/routes/TeacherRoute';
 import DeleteTask from './components/tasks/DeleteTask';
+import ReactLoading from 'react-loading';
+import Footer from './components/Footer';
 
 class App extends Component {
 
@@ -56,13 +58,16 @@ class App extends Component {
 
   async addNewTask(task) {
     await getApiResponse('tasks/store', 'post', task)
-    let currentTasks = this.state.allTasks
+    //let currentTasks = this.state.allTasks
     console.log("Aktualna dlzka " + this.state.allTasks.length)
-    currentTasks.push(task)
-    console.log("Po pushnuti " + currentTasks.length)
-    this.setState({
-      allTasks: currentTasks,
+    //currentTasks.push(task)
+    //console.log("Po pushnuti " + currentTasks.length)
+    this.setState(state => {
+      return {
+        allTasks: [...state.allTasks, task],
+      }
     })
+    //await this.loadAllTasks()
   }
 
   async editTask(task) {
@@ -90,9 +95,13 @@ class App extends Component {
 
   render() {
     if (this.state.isLoading)
-      return (<h1> LOADING </h1>)
+      return (
+      <div className="d-flex justify-content-center">
+      <ReactLoading type="cylon" color=" #191919" height={300} width={300} /> 
+      </div>
+      )
     return (
-      <div className="App">
+      <div className="App bg-secondary">
         <Router>
           <Switch>
             {/* //<main className="form-signin"> */}
@@ -110,6 +119,9 @@ class App extends Component {
             {/* </main> */}
           </Switch>
         </Router>
+        <div>
+                <Footer/>
+        </div>
       </div>
     );
   }

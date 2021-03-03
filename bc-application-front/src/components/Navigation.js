@@ -27,7 +27,7 @@ class Navigation extends Component {
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class={`${this.state.navCollapsed ? 'collapse' : ''} navbar-collapse`} id="navbarsExample09">
-                    <div className="container-fluid">
+                    <div className="container">
                         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                             <li className="navbar-brand font-weight-bolder">
                                 <Link to="/" className="nav-link">Home</Link>

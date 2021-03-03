@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Footer from './Footer';
 import Navigation from './Navigation';
 
 class Home extends Component {
@@ -8,10 +9,10 @@ class Home extends Component {
             <div>
                 <Navigation />
                 <div className="container">
-                  <p></p>
-                  <h3>Stručná osnova predmetu:</h3> 
-                  <p> OPERAČNÉ SYSTÉMY </p> 
-            </div>
+                    <p></p>
+                    <h3>Stručná osnova predmetu:</h3>
+                    <p> OPERAČNÉ SYSTÉMY </p>
+                </div>
             </div>
         )
     }

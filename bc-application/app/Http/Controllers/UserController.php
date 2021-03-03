@@ -30,10 +30,10 @@ class UserController extends Controller
 
             try {
                 if ($token == null) {
-                    return response()->json(['errors' => 'invalid_credentials'], 400);
+                    return response()->json(['errors' => ['Neplatné prihlasovacie údaje']], 400);
                 }
             } catch (JWTException $e) {
-                return response()->json(['errors' => 'could_not_create_token'], 500);
+                return response()->json(['errors' => ['could_not_create_token']], 500);
             }
 
             $user = User::where('ldap_login', $request->all()['ldap_login'])->first();

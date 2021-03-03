@@ -25,7 +25,7 @@ class AddTask extends Component {
             )[0]
             this.state = {
                 id: task.task_id,
-                type: '',
+                type: task.type,
                 content: task.content,
                 deadline: task.deadline,
             }
@@ -55,28 +55,27 @@ class AddTask extends Component {
     onSubmit(event) {
         event.preventDefault()
 
-        if (this.props.match.params.id != null)
-        {
-        this.props
-            .onSubmit({
-                task_id: this.state.id,
-                type: this.state.type,
-                content: this.state.content,
-                deadline: this.state.deadline,
-            })
-            .then(() => {
-               this.props.history.push('/')
-            })
+        if (this.props.match.params.id != null) {
+            this.props
+                .onSubmit({
+                    task_id: this.state.id,
+                    type: this.state.type,
+                    content: this.state.content,
+                    deadline: this.state.deadline,
+                })
+                .then(() => {
+                    this.props.history.push('/')
+                })
         } else {
             this.props
-            .onSubmit({
-                type: this.state.type,
-                content: this.state.content,
-                deadline: this.state.deadline,
-            })
-            .then(() => {
-                this.props.history.push('/')
-            })
+                .onSubmit({
+                    type: this.state.type,
+                    content: this.state.content,
+                    deadline: this.state.deadline,
+                })
+                .then(() => {
+                    this.props.history.push('/')
+                })
         }
         // if (this.props.match.params.id != null)
         // {
@@ -114,23 +113,37 @@ class AddTask extends Component {
         return (
             <div>
                 <Navigation />
-                <div className="container">
+                <div className="container col-md-6">
                     <p></p>
-                    <h3>Add Task:</h3>
+                    <div className="card login-card">
+                    <h3>Uprav zadanie:</h3>
+                    <p></p>
+                    <div className="justify-content-center align-items-center"> 
                     <form onSubmit={this.onSubmit}>
-                        <input type="text" className="form-control" placeholder="Type"
+                        <label for="type">Typ zadania</label>
+                        <select type="text" class="form-control" id="type" name="type" value={this.state.type} onChange={this.typeChanged} required>
+                            {/* <option value={this.state.type}>{this.state.type}</option>  */}
+                            <option value=""></option>
+                            <option value="first_check">Prvý zápočet</option>
+                            <option value="second_check">Druhý zápočet</option>
+                            <option value="semester_work">Semestrálna práca</option>
+                            <option value="homework">Domáca úloha</option>
+                        </select>
+                        {/* <input type="text" className="form-control" placeholder="Type"
                             id="type"
                             name="type"
                             value={this.state.type}
                             onChange={this.typeChanged}
-                        />
-                        <input type="text" className="form-control" placeholder="Content"
+                        /> */}
+                        <label for="type">Popis</label>
+                        <textarea type="text" className="form-control"
                             id="content"
                             name="content"
                             value={this.state.content}
                             onChange={this.contentChanged}
-                            required
-                        />
+                            required>
+                        </textarea>
+                        <label for="type">Deadline</label>
                         <input type="date" className="form-control" placeholder="Deadline"
                             id="deadline"
                             name="deadline"
@@ -138,9 +151,13 @@ class AddTask extends Component {
                             onChange={this.deadlineChanged}
                         />
                         {/* {getAllErrors(this.state.passwordErrors)} */}
-                        <button className="w-100 btn btn-lg btn-primary" type="submit">Send</button>
+                        <p></p>
+                        <button className="w-50 btn btn-lg btn-primary" type="submit">Ulož</button>
+                        <p></p>
                         {/* <p className="mt-5 mb-3 text-muted">&copy; since 2021</p> */}
                     </form>
+                    </div>
+                </div>
                 </div>
             </div>
         )

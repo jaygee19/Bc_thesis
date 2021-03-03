@@ -7,7 +7,6 @@ import OS from '../../images/OS.png'
 import { withRouter } from 'react-router-dom'
 
 
-
 class Login extends Component {
 
     constructor(props) {
@@ -18,6 +17,7 @@ class Login extends Component {
             password: '',
             redirect: false,
             passwordErrors: [],
+            otherErrors: [],
         }
 
         this.onSubmit = this.onSubmit.bind(this)
@@ -59,6 +59,7 @@ class Login extends Component {
             .catch((e) => {
                 //console.log("cathc" + e)
                 this.setState({
+                    otherErrors: e.response.data['errors'] || [],
                     passwordErrors: e.response.data['password'] || [],
                 })
             })
@@ -66,7 +67,7 @@ class Login extends Component {
 
     render() {
         return (
-            <div className="bg-dark">
+            <div>
                 <Navigation />
                 <div className="container">
                     <div className="card login-card">
@@ -87,7 +88,7 @@ class Login extends Component {
                                             onChange={this.ldapFilled}
                                             required
                                         />
-                                        <input type="password" className="form-control" placeholder="Password"
+                                        <input type="password" className="form-control" placeholder="Heslo"
                                             id="password"
                                             name="password"
                                             value={this.state.password}
@@ -95,7 +96,8 @@ class Login extends Component {
                                             required
                                         />
                                         {getAllErrors(this.state.passwordErrors)}
-                                        <button className="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+                                        {getAllErrors(this.state.otherErrors)}
+                                        <button className="w-100 btn btn-lg btn-primary" type="submit">Prihlásiť</button>
                                         <p className="mt-5 mb-3 text-muted">&copy; since 2021</p>
                                     </form>
                                 </div>
@@ -103,10 +105,6 @@ class Login extends Component {
                         </div>
                     </div>
                 </div>
-                <p>.</p>
-                <p>.</p>
-                <p>.</p>
-                <p>.</p>
             </div>
         )
     }

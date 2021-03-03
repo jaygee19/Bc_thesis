@@ -73,6 +73,7 @@
 
 .login-card{
   margin-top: 120px;
+  margin-bottom: 120px;
 }
 
 @media (max-width: 768px) {
@@ -88,3 +89,7 @@
   }
 }
 
+.foot-end {
+  margin: 0px !important;
+  padding: 50px;
+}
