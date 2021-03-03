@@ -50,9 +50,10 @@ class Navigation extends Component {
                             {AuthHelper.getInstance().isUserLoggedIn() && (
                                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                                     {AuthHelper.getInstance().isUserTeacher() && (
-                                            <li className="nav-item active">
-                                                <Link to="/myTasks" className="nav-link">Moje Zadania</Link>
-                                            </li>
+                                        <li className="nav-item active">
+                                            <Link to="/myTasks" className="nav-link">Moje Zadania</Link>
+                                        </li>
+                                        
                                     )}
                                     <li className="nav-item active">
                                         <Link to="/logout" className="nav-link">Logout</Link>

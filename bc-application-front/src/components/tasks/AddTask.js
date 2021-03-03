@@ -64,7 +64,7 @@ class AddTask extends Component {
                     deadline: this.state.deadline,
                 })
                 .then(() => {
-                    this.props.history.push('/')
+                    this.props.history.push('/myTasks')
                 })
         } else {
             this.props
@@ -74,7 +74,7 @@ class AddTask extends Component {
                     deadline: this.state.deadline,
                 })
                 .then(() => {
-                    this.props.history.push('/')
+                    this.props.history.push('/myTasks')
                 })
         }
         // if (this.props.match.params.id != null)

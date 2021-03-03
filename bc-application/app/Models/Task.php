@@ -13,6 +13,10 @@ class Task extends Model
 
     protected $guarded = [];
     
+    protected $casts = [
+        'valid_from' => 'datetime:Y-m-d',
+    ];
+
     public function user(){
         return $this->belongsTo(User::class);
     }

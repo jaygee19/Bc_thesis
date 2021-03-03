@@ -22,9 +22,9 @@ class App extends Component {
     super(props)
     this.state = {
       allTasks: [],
+      allUsers: [],
       teacherTasks: [],
       isLoading: true,
-      //   //concreteTasks: [],
     }
     this.addNewTask = this.addNewTask.bind(this)
     this.editTask = this.editTask.bind(this)
@@ -42,54 +42,55 @@ class App extends Component {
       isLoading: true,
     })
     let allSubjectTasks = await getApiResponse('tasks', 'get')
+    let allSubjectUsers = await getApiResponse('users', 'get')
     this.setState({
       allTasks: allSubjectTasks.data,
+      allUsers: allSubjectUsers.data,
       isLoading: false,
     })
   }
 
   getTasksForUser() {
     let teacherID = AuthHelper.getInstance().getUserID()
-    console.log("TEACHER ID" + teacherID)
     let currentTasks = this.state.allTasks.filter((item) => item.teacher_id === teacherID)
-    console.log("PREFILTROVANE" + this.state.allTasks.length)
     return currentTasks
   }
 
   async addNewTask(task) {
-    await getApiResponse('tasks/store', 'post', task)
-    //let currentTasks = this.state.allTasks
-    console.log("Aktualna dlzka " + this.state.allTasks.length)
-    //currentTasks.push(task)
-    //console.log("Po pushnuti " + currentTasks.length)
+    const addedTask = await getApiResponse('tasks/store', 'post', task)
+
+    task.teacher_id = addedTask.data.teacher_id
+    task.task_id = addedTask.data.task_id
+    task.valid_from = addedTask.data.valid_from
+
     this.setState(state => {
       return {
         allTasks: [...state.allTasks, task],
       }
     })
-    //await this.loadAllTasks()
   }
 
   async editTask(task) {
-    console.log("Som aspon tu" + task.task_id)
-    await getApiResponse('tasks/'+ task.task_id, 'put', task)
-    let concreteTaskIndex = this.state.allTasks.findIndex(
-      (item) => item.task_id === task.task_id
-    )
-    let currentTasks = this.state.allTasks
-    currentTasks[concreteTaskIndex] = task
+    const editedTask = await getApiResponse('tasks/'+ task.task_id, 'put', task)
 
-    this.setState({
-      allTasks: currentTasks,
+    task.teacher_id = editedTask.data.teacher_id
+    task.task_id = editedTask.data.task_id
+    task.valid_from = editedTask.data.valid_from
+
+    this.setState(state => {
+      return {
+        allTasks: state.allTasks.map(t => t.task_id === task.task_id ? task : t),
+      }
     })
   }
 
   async deleteTask(id) {
     await getApiResponse('tasks/' + id, 'delete')
 
-    let currentTasks = this.state.allTasks.filter((item) => item.task_id !== id)
-    this.setState({
-      allTasks: currentTasks,
+    this.setState(state => {
+      return {
+        allTasks: state.allTasks.filter(t => t.task_id !== id),
+      }
     })
   }
 
@@ -107,7 +108,7 @@ class App extends Component {
             {/* //<main className="form-signin"> */}
             <LoggedInRoute path="/" exact component={Home} />
             {/* <TeacherRoute path="/myTasks" exact component={MyTasks} /> */}
-            <TeacherRoute path="/myTasks" exact component={MyTasks} tasks={this.getTasksForUser()} deleteTask={this.deleteTask} />
+            <TeacherRoute path="/myTasks" exact component={MyTasks} users={this.state.allUsers} tasks={this.getTasksForUser()} deleteTask={this.deleteTask} />
             {/* tasks={this.state.concreteTasks} */}
             <TeacherRoute path="/myTasks/create" exact component={AddTask} onSubmit={this.addNewTask}/>
             <TeacherRoute path="/myTasks/:id/edit" exact component={AddTask} tasks={this.state.allTasks} onSubmit={this.editTask}/>

@@ -48,8 +48,11 @@ class TaskController extends Controller
         $user = JWTAuth::parseToken()->authenticate();
 
         // $user = JWTAuth::parseToken()->authenticate();
-        // if (!$user->is_admin)
-        //     return response()->json(['status' => 'unauthorized'], 400);
+        if ($user->role != 't')
+        {
+            return response()->json(['status' => 'unauthorized'], 400);
+        }
+            
 
         // $validator = $this->getValidator($request);
 
@@ -65,7 +68,7 @@ class TaskController extends Controller
         $task = Task::create([
             'type' => $request->get('type'),
             'content' => $request->get('content'),
-            'valid_from' => $request->get('valid_from'),
+            'valid_from' => date(DATE_RSS),
             'deadline' => $request->get('deadline'),
             'teacher_id' => $user->user_id,
         ]);
@@ -104,7 +107,7 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        // $user = JWTAuth::parseToken()->authenticate();
+        $user = JWTAuth::parseToken()->authenticate();
         // if (!$user->is_admin)
         //     return response()->json(['status' => 'unauthorized'], 400);
 
@@ -112,6 +115,11 @@ class TaskController extends Controller
 
         // if ($validator->fails())
         //     return response()->json($validator->errors(), 400);
+
+        if ($user->role != 't')
+        {
+            return response()->json(['status' => 'unauthorized'], 400);
+        }
 
         $task->update($request->all());
         return response()->json($task, 200);
@@ -125,10 +133,13 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        // $user = JWTAuth::parseToken()->authenticate();
-        // if (!$user->is_admin)
-        //     return response()->json(['status' => 'unauthorized'], 400);
+        $user = JWTAuth::parseToken()->authenticate();
 
+        if ($user->role != 't')
+        {
+            return response()->json(['status' => 'unauthorized'], 400);
+        }
+        
         $task->delete();
         return response()->json(null, 204);
     }

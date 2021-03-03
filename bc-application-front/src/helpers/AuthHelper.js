@@ -41,6 +41,8 @@ class AuthHelper {
     return {
       token: token,
       user_id: res.data.user_id,
+      name: res.data.name,
+      surname: res.data.surname,
       isTeacher : res.data.role === 't',
       isStudent : res.data.role === 's',
     }
@@ -89,6 +91,22 @@ class AuthHelper {
         return null
     }
     return this.currentUser.user_id
+  }
+
+  getUserName() {
+    if (this.currentUser == null) 
+    {
+        return null
+    }
+    return this.currentUser.name
+  }
+
+  getUserSurname() {
+    if (this.currentUser == null) 
+    {
+        return null
+    }
+    return this.currentUser.surname
   }
 
   getAuthHeaders() {
