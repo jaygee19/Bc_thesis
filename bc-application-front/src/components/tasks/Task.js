@@ -7,6 +7,11 @@ class Task extends Component {
         super(props)
         this.onEdit = this.onEdit.bind(this)
         this.onDelete = this.onDelete.bind(this)
+        this.onAssign = this.onAssign.bind(this)
+    }
+
+    onAssign() {
+        this.props.history.push('/assignTasks/' + this.props.id)
     }
 
     onEdit() {
@@ -44,32 +49,36 @@ class Task extends Component {
         //         </div>
         //     </div>
         // )
-
         return (
             <div className="container">
-                <div class="row mb-2">
-                    <div class="col-md-6">
-                        <div class="card flex-md-row mb-4 box-shadow h-md-250">
-                            <div class="card-body d-flex flex-column align-items-start">
-                                <strong class="d-inline-block mb-2 text-secondary">{this.props.type}</strong>
-                                <h3 class="mb-0">
-                                    <a class="text-dark" href="#">Title</a>
+                <div className="row mb-2">
+                    <div className="col-md-6">
+                        <div className="card flex-md-row mb-4 box-shadow h-md-250">
+                            <div className="card-body d-flex flex-column align-items-start">
+                                <strong className="d-inline-block mb-2 text-secondary">{this.props.type}</strong>
+                                <h3 className="mb-0">
+                                    <p className="text-dark" >Title</p>
                                 </h3>
-                                <div class="mb-1 text-muted"><small>Upravené: {this.props.date} ( {this.props.userName} {this.props.userSurname} )</small></div>
-                                <div class="mb-1 text-muted"><small>Deadline: {this.props.deadline}</small></div>
-                                <p class="card-text mb-auto text-info"><small>Popis zadania: {this.props.content}</small></p>
-                                <p class="card-text mb-auto text-info"><small>Priložený súbor: </small></p>
+                                <div className="mb-1 text-muted"><small>Vytvorené: {this.props.date} ( {this.props.userName} {this.props.userSurname} )</small></div>
+                                <div className="mb-1 text-muted"><small>Deadline: {this.props.deadline}</small></div>
+                                <p className="card-text mb-auto text-info"><small>Popis zadania: {this.props.content}</small></p>
+                                <p className="card-text mb-auto text-info"><small>Priložený súbor: </small></p>
                                 {/* <a href="#">Continue reading</a> */}
                                 <p></p>
                                 <div>
-                                {AuthHelper.getInstance().isUserTeacher() && (
+                                {AuthHelper.getInstance().isUserTeacher() && this.props.private && (
                                     <button onClick={this.onEdit} type="submit" className="btn btn-primary" >
                                         Upraviť
                                     </button>
                                 )}
-                                {AuthHelper.getInstance().isUserTeacher() && (
+                                {AuthHelper.getInstance().isUserTeacher() && this.props.private && (
                                     <button onClick={() => this.props.onDelete(this.props.id)} type="submit" className="btn btn-primary" >
                                         Vymazať
+                                    </button>
+                                )}
+                                {AuthHelper.getInstance().isUserTeacher() && this.props.private && (
+                                    <button onClick={this.onAssign} type="submit" className="btn btn-primary" >
+                                        Prideliť
                                     </button>
                                 )}
                                 </div>

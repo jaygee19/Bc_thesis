@@ -15,6 +15,8 @@ import TeacherRoute from './components/routes/TeacherRoute';
 import DeleteTask from './components/tasks/DeleteTask';
 import ReactLoading from 'react-loading';
 import Footer from './components/Footer';
+import SubjectTasks from './components/tasks/SubjectTasks';
+import AssignTasks from './components/tasks/AssignTasks';
 
 class App extends Component {
 
@@ -54,6 +56,11 @@ class App extends Component {
     let teacherID = AuthHelper.getInstance().getUserID()
     let currentTasks = this.state.allTasks.filter((item) => item.teacher_id === teacherID)
     return currentTasks
+  }
+
+  getOnlyStudents() {
+    let onlyStudents = this.state.allUsers.filter((item) => item.role !== 't')
+    return onlyStudents
   }
 
   async addNewTask(task) {
@@ -109,7 +116,8 @@ class App extends Component {
             <LoggedInRoute path="/" exact component={Home} />
             {/* <TeacherRoute path="/myTasks" exact component={MyTasks} /> */}
             <TeacherRoute path="/myTasks" exact component={MyTasks} users={this.state.allUsers} tasks={this.getTasksForUser()} deleteTask={this.deleteTask} />
-            {/* tasks={this.state.concreteTasks} */}
+            <TeacherRoute path="/subjectTasks" exact component={SubjectTasks} users={this.state.allUsers} tasks={this.state.allTasks}/>
+            <TeacherRoute path="/assignTasks/:id" exact component={AssignTasks} users={this.getOnlyStudents()} tasks={this.state.allTasks}/>
             <TeacherRoute path="/myTasks/create" exact component={AddTask} onSubmit={this.addNewTask}/>
             <TeacherRoute path="/myTasks/:id/edit" exact component={AddTask} tasks={this.state.allTasks} onSubmit={this.editTask}/>
             <TeacherRoute path="/myTasks/:id/delete" exact component={DeleteTask} tasks={this.state.allTasks} />

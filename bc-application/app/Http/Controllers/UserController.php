@@ -60,7 +60,7 @@ class UserController extends Controller
                 'surname' => $request->get('surname'),
                 'ldap_login' => $request->get('ldap_login'),
                 'password' => Hash::make($request->get('password')),
-                'role' => "t",
+                //'role' => "t",
             ]);
 
             $token = JWTAuth::fromUser($user);

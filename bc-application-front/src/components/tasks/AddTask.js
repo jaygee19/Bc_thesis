@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import Navigation from '../Navigation'
-import { getApiResponse } from '../../helpers/ApiHelper'
-import { Redirect, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 class AddTask extends Component {
     constructor(props) {
