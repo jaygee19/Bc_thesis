@@ -15,6 +15,10 @@ use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
+
+    public function index() {
+        return User::all();
+    }
         
     public function authenticate(Request $request)
         {
@@ -60,7 +64,7 @@ class UserController extends Controller
                 'surname' => $request->get('surname'),
                 'ldap_login' => $request->get('ldap_login'),
                 'password' => Hash::make($request->get('password')),
-                //'role' => "t",
+                'role' => "s",
             ]);
 
             $token = JWTAuth::fromUser($user);

@@ -25,6 +25,7 @@ class App extends Component {
     this.state = {
       allTasks: [],
       allUsers: [],
+      allScheduleGropus: [],
       teacherTasks: [],
       isLoading: true,
     }
@@ -45,9 +46,11 @@ class App extends Component {
     })
     let allSubjectTasks = await getApiResponse('tasks', 'get')
     let allSubjectUsers = await getApiResponse('users', 'get')
+    let allSubjectScheduleGroup = await getApiResponse('schedules', 'get')
     this.setState({
       allTasks: allSubjectTasks.data,
       allUsers: allSubjectUsers.data,
+      allScheduleGropus: allSubjectScheduleGroup.data,
       isLoading: false,
     })
   }
@@ -58,10 +61,17 @@ class App extends Component {
     return currentTasks
   }
 
-  getOnlyStudents() {
-    let onlyStudents = this.state.allUsers.filter((item) => item.role !== 't')
-    return onlyStudents
+  getOnlyGroups() {
+    let teacherID = AuthHelper.getInstance().getUserID()
+    let teacherGroups = this.state.allScheduleGropus.filter((group) => group.teacher === teacherID)
+    console.log("TEACHER GROUPS" , teacherGroups)
+    return teacherGroups
   }
+
+  // getOnlyStudents() {
+  //   let onlyStudents = this.state.allUsers.filter((item) => item.role === 's')
+  //   return onlyStudents
+  // }
 
   async addNewTask(task) {
     const addedTask = await getApiResponse('tasks/store', 'post', task)
@@ -117,7 +127,7 @@ class App extends Component {
             {/* <TeacherRoute path="/myTasks" exact component={MyTasks} /> */}
             <TeacherRoute path="/myTasks" exact component={MyTasks} users={this.state.allUsers} tasks={this.getTasksForUser()} deleteTask={this.deleteTask} />
             <TeacherRoute path="/subjectTasks" exact component={SubjectTasks} users={this.state.allUsers} tasks={this.state.allTasks}/>
-            <TeacherRoute path="/assignTasks/:id" exact component={AssignTasks} users={this.getOnlyStudents()} tasks={this.state.allTasks}/>
+            <TeacherRoute path="/assignTasks/:id" exact component={AssignTasks} groups={this.getOnlyGroups()} tasks={this.state.allTasks}/>
             <TeacherRoute path="/myTasks/create" exact component={AddTask} onSubmit={this.addNewTask}/>
             <TeacherRoute path="/myTasks/:id/edit" exact component={AddTask} tasks={this.state.allTasks} onSubmit={this.editTask}/>
             <TeacherRoute path="/myTasks/:id/delete" exact component={DeleteTask} tasks={this.state.allTasks} />

@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -19,9 +20,17 @@ use App\Http\Controllers\UserController;
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'authenticate']);
 
-Route::get('/users', [TestController::class, 'index']);
+Route::get('/users', [UserController::class, 'index']);
 Route::get('/tasks', [TaskController::class, 'index']);
+Route::get('/schedules', [TeacherController::class, 'index']);
+
 Route::get('/tasks/loggedUsersTask', [TaskController::class, 'loggedUserTasks']);
+Route::put('/schedule/update', [TestController::class, 'addingScheduling']);
+// Route::post('/schedule/detach', [TestController::class, 'detach']);
+ //Route::post('/addCourse', [TestController::class, 'addCourse']);
+  //Route::put('/schedule/addigScheduling', [TestController::class, 'addingScheduling']);
+// // Route::get('/control', [TestController::class, 'control']);
+ Route::get('/control', [TestController::class, 'getAll']);
 
 
 Route::group(['middleware' => ['jwt.verify']], function() {

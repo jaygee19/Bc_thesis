@@ -98,15 +98,7 @@ class AuthHelper {
     {
         return null
     }
-    return this.currentUser.name
-  }
-
-  getUserSurname() {
-    if (this.currentUser == null) 
-    {
-        return null
-    }
-    return this.currentUser.surname
+    return this.currentUser.name + " " + this.currentUser.surname
   }
 
   getAuthHeaders() {
