@@ -18,7 +18,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return Task::all();
+        return Task::with('stud_tasks')->get();
     }
 
     public function loggedUserTasks() {

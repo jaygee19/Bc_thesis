@@ -21,4 +21,8 @@ class Task extends Model
         // return $this->belongsTo(User::class);
         return $this->hasOne(User::class, 'user_id', 'teacher_id');
     }
+
+    public function stud_tasks() {
+        return $this->belongsToMany(User::class, 'students_tasks', 'task_id', 'student_id');
+    }
 }

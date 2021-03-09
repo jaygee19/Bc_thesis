@@ -32,6 +32,7 @@ Route::put('/schedule/update', [TestController::class, 'addingScheduling']);
 // // Route::get('/control', [TestController::class, 'control']);
  Route::get('/control', [TestController::class, 'getAll']);
 
+ Route::post('/assign/students', [TeacherController::class, 'assignTask']);
 
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('/logout', [UserController::class, 'logout']);

@@ -26,29 +26,6 @@ class Task extends Component {
 
 
     render() {
-        // return (
-        //     <div className="container col-6">
-        //         <div className="row">
-        //             <div className="col-12 jumbotron">
-        //                 <h1 className="display-4">Title</h1>
-        //                 <p className="lead">{this.props.type}</p>
-        //                 <p className="lead">{this.props.date}</p>
-        //                 <hr className="my-4" />
-        //                 <p>{this.props.content}</p>
-        //                 {AuthHelper.getInstance().isUserTeacher() && (
-        //                     <button onClick={this.onEdit} type="submit" className="btn btn-primary" >
-        //                         Upraviť
-        //                     </button> 
-        //                 )} 
-        //                 {AuthHelper.getInstance().isUserTeacher() && (
-        //                     <button  onClick={() => this.props.onDelete(this.props.id)} type="submit" className="btn btn-primary" >
-        //                         Vymazať
-        //                     </button>
-        //                 )}
-        //             </div>
-        //         </div>
-        //     </div>
-        // )
         return (
             <div className="container">
                 <div className="row mb-2">
@@ -57,7 +34,7 @@ class Task extends Component {
                             <div className="card-body d-flex flex-column align-items-start">
                                 <strong className="d-inline-block mb-2 text-secondary">{this.props.type}</strong>
                                 <h3 className="mb-0">
-                                    <p className="text-dark" >Title</p>
+                                    <p className="text-dark" >{this.props.title}</p>
                                 </h3>
                                 <div className="mb-1 text-muted"><small>Vytvorené: {this.props.date} ( {this.props.userName} {this.props.userSurname} )</small></div>
                                 <div className="mb-1 text-muted"><small>Deadline: {this.props.deadline}</small></div>

@@ -9,12 +9,14 @@ class AddTask extends Component {
         this.state = {
             id: '',
             type: '',
+            title: '',
             content: '',
             deadline: '',
         }
 
         this.onSubmit = this.onSubmit.bind(this)
         this.typeChanged = this.typeChanged.bind(this)
+        this.titleChanged = this.titleChanged.bind(this)
         this.contentChanged = this.contentChanged.bind(this)
         this.deadlineChanged = this.deadlineChanged.bind(this)
 
@@ -25,6 +27,7 @@ class AddTask extends Component {
             this.state = {
                 id: task.task_id,
                 type: task.type,
+                title: task.title,
                 content: task.content,
                 deadline: task.deadline,
             }
@@ -36,6 +39,12 @@ class AddTask extends Component {
     typeChanged(event) {
         this.setState({
             type: event.target.value,
+        })
+    }
+
+    titleChanged(event) {
+        this.setState({
+            title: event.target.value,
         })
     }
 
@@ -59,6 +68,7 @@ class AddTask extends Component {
                 .onSubmit({
                     task_id: this.state.id,
                     type: this.state.type,
+                    title: this.state.title,
                     content: this.state.content,
                     deadline: this.state.deadline,
                 })
@@ -69,6 +79,7 @@ class AddTask extends Component {
             this.props
                 .onSubmit({
                     type: this.state.type,
+                    title: this.state.title,
                     content: this.state.content,
                     deadline: this.state.deadline,
                 })
@@ -128,12 +139,13 @@ class AddTask extends Component {
                             <option value="semester_work">Semestrálna práca</option>
                             <option value="homework">Domáca úloha</option>
                         </select>
-                        {/* <input type="text" className="form-control" placeholder="Type"
-                            id="type"
-                            name="type"
-                            value={this.state.type}
-                            onChange={this.typeChanged}
-                        /> */}
+                        <label for="title">Názov</label>
+                        <input type="text" className="form-control"
+                            id="title"
+                            name="title"
+                            value={this.state.title}
+                            onChange={this.titleChanged}
+                        />
                         <label for="type">Popis</label>
                         <textarea type="text" className="form-control"
                             id="content"

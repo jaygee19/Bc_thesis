@@ -27,7 +27,6 @@ class MyTasks extends Component {
     }
 
     render() {
-        //console.log("Vstci users" + this.props.users)
         return (
             <div>
                 <Navigation />
@@ -50,7 +49,7 @@ class MyTasks extends Component {
                             id={task.task_id}
                             content={task.content}
                             userName={this.getUserName(task.teacher_id)}
-                            //title={task.title}
+                            title={task.title}
                             date={task.valid_from}
                             deadline={task.deadline}
                             type={task.type}

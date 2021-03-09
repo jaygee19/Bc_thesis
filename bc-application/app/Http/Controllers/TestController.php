@@ -33,7 +33,7 @@ class TestController extends Controller
         //dd(Schedule::with('course')->get()->toArray());
         //dd(Task::with('user')->get()->toArray());
         //dd(User::with('tasks')->get()->toArray());
-        dd(Schedule::all()->toArray());
+        dd(Task::with('stud_tasks')->get()->toArray());
         //dd(Schedule::where('course_id', '!=', null)->with('courses')->get()->toArray());
         //return Schedule::where('course_id', '!=', null)->with('courses')->get();
     }
