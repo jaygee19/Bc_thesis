@@ -8,6 +8,7 @@ class Task extends Component {
         this.onEdit = this.onEdit.bind(this)
         this.onDelete = this.onDelete.bind(this)
         this.onAssign = this.onAssign.bind(this)
+        this.onListOf = this.onListOf.bind(this)
     }
 
     onAssign() {
@@ -22,6 +23,10 @@ class Task extends Component {
     onDelete() {
         console.log("DELETE" + this.props.id)
         this.props.history.push('/myTasks/' + this.props.id + '/delete')
+    }
+
+    onListOf() {
+        this.props.history.push('/assignedTasks/' + this.props.id)
     }
 
 
@@ -58,6 +63,9 @@ class Task extends Component {
                                         Prideliť
                                     </button>
                                 )}
+                                <button onClick={this.onListOf} type="submit" className="btn btn-primary" >
+                                        Pridelené
+                                </button>
                                 </div>
                             </div>
                         </div>

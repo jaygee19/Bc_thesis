@@ -73,7 +73,9 @@ class TaskController extends Controller
             'teacher_id' => $user->user_id,
         ]);
 
-        return response()->json($task, 201);
+        $created_id = $task->task_id;
+        $created_task = Task::with('stud_tasks')->where('task_id', $created_id)->first();
+        return response()->json($created_task, 201);
     }
 
     /**
@@ -122,7 +124,9 @@ class TaskController extends Controller
         }
 
         $task->update($request->all());
-        return response()->json($task, 200);
+        $updated_id = $task->task_id;
+        $updated_task = Task::with('stud_tasks')->where('task_id', $updated_id)->first();
+        return response()->json($updated_task, 200);
     }
 
     /**

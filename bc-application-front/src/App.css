@@ -75,6 +75,9 @@
   margin-top: 120px;
   margin-bottom: 120px;
 }
+.assign-card{
+  margin-bottom: 120px !important;
+}
 
 @media (max-width: 768px) {
   .logo-card{

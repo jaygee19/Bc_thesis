@@ -26,7 +26,8 @@ class TeacherController extends Controller
             $user->stud_tasks()->attach($task);
         }    
         $task = Task::with('stud_tasks')->where('task_id', $request->get('task_id'))->first();
+        $changed_user = User::with('stud_tasks')->where('user_id', $user->user_id)->first();
 
-        return response()->json($task, 201);
+        return response()->json(['task' => $task, 'user' => $changed_user], 201);
     }
 }

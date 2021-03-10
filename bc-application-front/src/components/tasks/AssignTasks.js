@@ -51,8 +51,6 @@ class AssignTasks extends Component {
                 chosenStudents: state.chosenStudents.filter(s => s.user_id !== value)
             }
         })
-
-        console.log("ALLSY", this.state.chosenStudents)
     }
 
     assignStudent(value) {
@@ -60,44 +58,37 @@ class AssignTasks extends Component {
         let grup = this.props.groups.filter(
             (item) => item.schedule_id === value)[0]
 
-            console.log("GRUP" , grup)
-
         let together = grup.users.concat(this.state.chosenStudents)
-        console.log("TOG" , together)
 
         let result = [...new Set(together)]
-        console.log("RES" , result)
-
 
         let available = []
-
-        for (let i = 0; i < result.length; i++) {
-            let temp = 0
-            const item1 = result[i]
-            for (let j = 0; j < this.state.assignedStudents.length; j++) {
-                const item2 = this.state.assignedStudents[j]
-                if (item1.user_id === item2.user_id)
-                {
-                    temp = 1
+        if (this.state.assignedStudents !== undefined) {
+            for (let i = 0; i < result.length; i++) {
+                let temp = 0
+                const item1 = result[i]
+                for (let j = 0; j < this.state.assignedStudents.length; j++) {
+                    const item2 = this.state.assignedStudents[j]
+                    if (item1.user_id === item2.user_id) {
+                        temp = 1
+                    }
+                }
+                if (temp === 0) {
+                    available.push(item1)
                 }
             }
-            if (temp === 0)
-            {
-                available.push(item1)
-            }
         }
-        
+
         this.setState(state => {
             return {
                 chosenStudents: available
             }
         })
 
-        console.log("aSASAA" , this.state.chosenStudents)
     }
 
     render() {
-        return (
+        return (     
             <div>
                 <Navigation />
                 <div className="container">
@@ -108,38 +99,58 @@ class AssignTasks extends Component {
                     <p className="blog-post-meta"> Deadline: {this.state.concreteTask.deadline}</p>
                     <p> {this.state.concreteTask.content} </p>
                     <span className="d-flex justify-content-end">
-                        Priradený:
+                        Priradiť:
+                    </span>
+                    <span className="d-flex justify-content-start">
+                        Už pridelený:
                     </span>
                     <hr />
-                    <form onSubmit={this.onSubmit}>
+                    <div class="row">
+                        <div className=" card assign-card col ">
+                        <p></p>
+                                {this.state.assignedStudents
+                                    .map((chosen) => {
+                                        return (
+                                            <p> {chosen.name} {chosen.surname} </p>
+                                        )
+                                    })}
+                        </div>
 
+                        <div className="card assign-card col-8">
+                        <p></p>
+                        <form onSubmit={this.onSubmit}>
                         {this.state.allGroups.map((group) => {
                             return (
-                                <div>
-
-                                    <p style={{ color: "white" }}>
+                                <div className="">
+                                    <span className="font-weight-bold" style={{ color: "black" }}>
                                         {this.dayOfWeek(group.day)} - {group.time_begin} ( {AuthHelper.getInstance().getUserName()} )
-                                </p>
+                                    </span>
                                     <span onClick={() => this.assignStudent(group.schedule_id)}>  +  </span>
 
-                                    <div className="d-flex justify-content-end">
+
+
+                                    <div className="">
                                         <div>
                                             {this.state.chosenStudents.filter((student) => student.pivot.schedule_id === group.schedule_id)
                                                 .map((chosen) => {
                                                     return (
-                                                        <p onClick={() => this.removeStudent(chosen.user_id)}> {chosen.name} {chosen.surname} </p>
+                                                        <div>
+                                                            <span style={{ color: "green" }}> {chosen.name} {chosen.surname} </span>
+                                                            <span onClick={() => this.removeStudent(chosen.user_id)}> - </span>
+                                                        </div>
                                                     )
                                                 })}
                                         </div>
                                     </div>
-
                                 </div>
                             )
                         })}
                         <p></p>
                         <button className="w-50 btn btn-lg btn-primary" type="submit">Ulož</button>
                         <p></p>
-                    </form>
+                        </form>
+                        </div>
+                    </div>
                 </div>
             </div >
         )
