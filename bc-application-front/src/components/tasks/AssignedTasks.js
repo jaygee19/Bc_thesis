@@ -26,10 +26,20 @@ class AssignedTasks extends Component {
             concreteTask: task,
             assignedStudents: students,
         }
-
-        console.log("TASK", task)
-        console.log("USERS", this.props.users)
+        this.onRemove = this.onRemove.bind(this)
     }
+
+    onRemove(id) {
+        this.props
+            .onDelete({
+                student_id: id,
+                task_id: this.state.concreteTask.task_id,
+            })
+            .then(() => {
+                this.props.history.push('/myTasks')
+            })
+    }
+
 
     render() {
         return (
@@ -46,9 +56,10 @@ class AssignedTasks extends Component {
                     <table class="table table-hover table-bordered table-sm">
                         <thead class="thead-dark">
                             <tr>
-                                <th scope="col-6">Študent</th>
+                                <th scope="col">Študent</th>
                                 <th scope="col">Skupina</th>
                                 <th scope="col">Stav</th>
+                                <th scope="col">Odobrať</th>
                             </tr>
                         </thead>
                         <tbody className="table-secondary">
@@ -59,6 +70,7 @@ class AssignedTasks extends Component {
                                             <td>{chosen.name} {chosen.surname}</td>
                                             <td>{chosen.group}</td>
                                             <td className="table-danger"></td>
+                                            <td onClick={() => this.onRemove(chosen.user_id)}> <button> x </button> </td>
                                         </tr>
                                     )
                                 })}

@@ -144,7 +144,12 @@ class TaskController extends Controller
             return response()->json(['status' => 'unauthorized'], 400);
         }
 
+        //$taskForDelete = Task::with('stud_tasks')->where('task_id', $task->task_id)->first();
+
+        //$taskForDelete->delete();
+
         $task->delete();
+
         return response()->json(null, 204);
     }
 }

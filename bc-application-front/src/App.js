@@ -1,5 +1,5 @@
 import './App.css';
-import { withRouter } from 'react-router';
+import { Redirect, withRouter } from 'react-router';
 import Login from "./components/users/Login";
 import Home from './components/Home';
 import Register from './components/users/Register';
@@ -35,7 +35,8 @@ class App extends Component {
     this.editTask = this.editTask.bind(this)
     this.deleteTask = this.deleteTask.bind(this)
     this.loadAllTasks = this.loadAllTasks.bind(this)
-    this.saveAssignStudents = this.saveAssignStudents.bind(this)
+    this.saveAssignedStudents = this.saveAssignedStudents.bind(this)
+    this.removeStudent = this.removeStudent.bind(this)
   }
 
   async componentDidMount() {
@@ -67,7 +68,7 @@ class App extends Component {
   getOnlyGroups() {
     let teacherID = AuthHelper.getInstance().getUserID()
     let teacherGroups = this.state.allScheduleGropus.filter((group) => group.teacher === teacherID)
-    console.log("TEACHER GROUPS" , teacherGroups)
+    console.log("TEACHER GROUPS", teacherGroups)
     return teacherGroups
   }
 
@@ -81,7 +82,7 @@ class App extends Component {
   async addNewTask(task) {
     const addedTask = await getApiResponse('tasks/store', 'post', task)
 
-    console.log("ADDEDTASK" , addedTask)
+    console.log("ADDEDTASK", addedTask)
 
     task.teacher_id = addedTask.data.teacher_id
     task.task_id = addedTask.data.task_id
@@ -96,7 +97,7 @@ class App extends Component {
   }
 
   async editTask(task) {
-    const editedTask = await getApiResponse('tasks/'+ task.task_id, 'put', task)
+    const editedTask = await getApiResponse('tasks/' + task.task_id, 'put', task)
 
     task.teacher_id = editedTask.data.teacher_id
     task.task_id = editedTask.data.task_id
@@ -111,7 +112,9 @@ class App extends Component {
   }
 
   async deleteTask(id) {
-    await getApiResponse('tasks/' + id, 'delete')
+    const data = await getApiResponse('tasks/' + id, 'delete')
+
+    console.log("DATAA", data)
 
     this.setState(state => {
       return {
@@ -120,31 +123,57 @@ class App extends Component {
     })
   }
 
-    //******************************** TASK END*/
+  //******************************** TASK END*/
 
-    //******************************** ASSIGN STUDENT START */
+  //******************************** ASSIGN STUDENT START */
 
-    async saveAssignStudents(data) {
+  async saveAssignedStudents(data) {
 
-      const all = await getApiResponse('assign/students', 'post', data)
-  
-      this.setState(state => {
-        return {
-          allTasks: state.allTasks.map(t => t.task_id === all.data.task.task_id ? all.data.task : t),
-          allUsers: state.allUsers.map(u => u.user_id === all.data.user.user_id ? all.data.user : u),
+    const all = await getApiResponse('assign/students', 'post', data)
+
+    for (let i = 0; i < all.data.users.length; i++) {
+      const item1 = all.data.users[i]
+      for (let j = 0; j < this.state.allUsers.length; j++) {
+        const item2 = this.state.allUsers[j]
+        if (item1.user_id === item2.user_id) {
+          this.setState(state => {
+            return {
+              allUsers: state.allUsers.map(u => u.user_id === item1.user_id ? item1 : u),
+            }
+          })
         }
-      })
+      }
     }
 
-    //******************************** ASSIGN STUDENT END */
+    this.setState(state => {
+      return {
+        allTasks: state.allTasks.map(t => t.task_id === all.data.task.task_id ? all.data.task : t),
+      }
+    })
+  }
+
+  async removeStudent(data) {
+    const res = await getApiResponse('remove/' + data.task_id + '/student/' + data.student_id, 'delete')
+
+    console.log("RESDATA", res.data)
+
+    this.setState(state => {
+      return {
+        allUsers: state.allUsers.map(u => u.user_id === res.data.user.user_id ? res.data.user : u),
+        allTasks: state.allTasks.map(t => t.task_id === res.data.task.task_id ? res.data.task : t),
+      }
+    })
+  }
+
+  //******************************** ASSIGN STUDENT END */
 
 
   render() {
     if (this.state.isLoading)
       return (
-      <div className="d-flex justify-content-center">
-      <ReactLoading type="cylon" color=" #191919" height={300} width={300} /> 
-      </div>
+        <div className="d-flex justify-content-center">
+          <ReactLoading type="cylon" color=" #191919" height={300} width={300} />
+        </div>
       )
     return (
       <div className="App bg-secondary">
@@ -154,13 +183,13 @@ class App extends Component {
             <LoggedInRoute path="/" exact component={Home} />
             {/* <TeacherRoute path="/myTasks" exact component={MyTasks} /> */}
             <TeacherRoute path="/myTasks" exact component={MyTasks} users={this.state.allUsers} tasks={this.getTasksForUser()} deleteTask={this.deleteTask} />
-            <TeacherRoute path="/subjectTasks" exact component={SubjectTasks} users={this.state.allUsers} tasks={this.state.allTasks}/>
-            <TeacherRoute path="/assignTasks/:id" exact component={AssignTasks} groups={this.getOnlyGroups()} tasks={this.state.allTasks} onSubmit={this.saveAssignStudents}/>
-            <TeacherRoute path="/assignedTasks/:id" exact component={AssignedTasks} users={this.state.allUsers} tasks={this.state.allTasks}/>
-            <TeacherRoute path="/myTasks/create" exact component={AddTask} onSubmit={this.addNewTask}/>
-            <TeacherRoute path="/myTasks/:id/edit" exact component={AddTask} tasks={this.state.allTasks} onSubmit={this.editTask}/>
-            <TeacherRoute path="/myTasks/:id/delete" exact component={DeleteTask} tasks={this.state.allTasks} />
-            <Route path="/login" exact render={() => <Login onLogin={this.loadAllTasks}/> } />
+            <TeacherRoute path="/subjectTasks" exact component={SubjectTasks} users={this.state.allUsers} tasks={this.state.allTasks} />
+            <TeacherRoute path="/assignTasks/:id" exact component={AssignTasks} groups={this.getOnlyGroups()} tasks={this.state.allTasks} onSubmit={this.saveAssignedStudents} />
+            <TeacherRoute path="/assignedTasks/:id" exact component={AssignedTasks} users={this.state.allUsers} tasks={this.state.allTasks} onDelete={this.removeStudent}/>
+            <TeacherRoute path="/myTasks/create" exact component={AddTask} onSubmit={this.addNewTask} />
+            <TeacherRoute path="/myTasks/:id/edit" exact component={AddTask} tasks={this.state.allTasks} onSubmit={this.editTask} />
+            {/* <TeacherRoute path="/myTasks/:id/delete" exact component={DeleteTask} tasks={this.state.allTasks} /> */}
+            <Route path="/login" exact render={() => <Login onLogin={this.loadAllTasks} />} />
             <Route path="/register" exact component={Register} />
             <Route path="/logout" exact component={Logout} />
             <Route path="/test" exact component={Test} />
@@ -168,7 +197,7 @@ class App extends Component {
           </Switch>
         </Router>
         <div>
-                <Footer/>
+          <Footer />
         </div>
       </div>
     );

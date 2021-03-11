@@ -6,7 +6,6 @@ class Task extends Component {
     constructor(props) {
         super(props)
         this.onEdit = this.onEdit.bind(this)
-        this.onDelete = this.onDelete.bind(this)
         this.onAssign = this.onAssign.bind(this)
         this.onListOf = this.onListOf.bind(this)
     }
@@ -18,11 +17,6 @@ class Task extends Component {
     onEdit() {
         console.log("IDCKO" + this.props.id)
         this.props.history.push('/myTasks/' + this.props.id + '/edit')
-    }
-
-    onDelete() {
-        console.log("DELETE" + this.props.id)
-        this.props.history.push('/myTasks/' + this.props.id + '/delete')
     }
 
     onListOf() {

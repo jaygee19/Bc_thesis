@@ -19,15 +19,30 @@ class TeacherController extends Controller
     public function assignTask(Request $request) {
 
         $task = $request->get('task_id');
+        $array = array();
 
         for ($i = 0; $i < count($request->chosenStudents); $i++) {
             $temp = $request->chosenStudents[$i];
             $user = User::where('user_id', Arr::get($temp, 'user_id'))->first();
             $user->stud_tasks()->attach($task);
+
+            $array[$i] = User::with('stud_tasks')->where('user_id', Arr::get($temp, 'user_id'))->first();
         }    
         $task = Task::with('stud_tasks')->where('task_id', $request->get('task_id'))->first();
-        $changed_user = User::with('stud_tasks')->where('user_id', $user->user_id)->first();
 
-        return response()->json(['task' => $task, 'user' => $changed_user], 201);
+        return response()->json(['task' => $task, 'users' => $array], 201);
+    }
+
+    public function removeStudent(Task $task, User $user) {
+
+        //$taskA = Task::with('stud_tasks')->where('task_id', $request->get('task_id'))->first();
+       // $userA = User::with('stud_tasks')->where('user_id', $request->get('student_id'))->first();
+
+       $user->stud_tasks()->detach($task);
+
+       $updated_task = Task::with('stud_tasks')->where('task_id', $task->task_id)->first();
+       $removed_user = User::with('stud_tasks')->where('user_id', $user->user_id)->first();
+
+       return response()->json(['task' => $updated_task, 'user' => $removed_user], 200);
     }
 }
