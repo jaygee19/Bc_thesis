@@ -68,9 +68,11 @@ class TaskController extends Controller
         $task = Task::create([
             'type' => $request->get('type'),
             'content' => $request->get('content'),
+            'title' => $request->get('title'),
             'valid_from' => date(DATE_RSS),
             'deadline' => $request->get('deadline'),
             'teacher_id' => $user->user_id,
+            'path_to_file' => $request->file('filename')->store('public/uploads'),
         ]);
 
         $created_id = $task->task_id;
@@ -126,6 +128,7 @@ class TaskController extends Controller
         $task->update($request->all());
         $updated_id = $task->task_id;
         $updated_task = Task::with('stud_tasks')->where('task_id', $updated_id)->first();
+
         return response()->json($updated_task, 200);
     }
 

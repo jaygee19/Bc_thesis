@@ -26,6 +26,7 @@ Route::get('/schedules', [TeacherController::class, 'index']);
 
 //Route::put('/schedule/update', [TestController::class, 'addingScheduling']);
 // Route::post('/schedule/detach', [TestController::class, 'detach']);
+Route::post('/test/store', [TestController::class, 'uploadFile']);
  //Route::post('/addCourse', [TestController::class, 'addCourse']);
   //Route::put('/schedule/addigScheduling', [TestController::class, 'addingScheduling']);
 // // Route::get('/control', [TestController::class, 'control']);

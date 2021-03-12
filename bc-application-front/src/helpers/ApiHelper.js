@@ -9,7 +9,6 @@ export async function getApiResponse(
   data = null,
   contentType = 'application/json'
 ) {
-   console.log("Textik " + AuthHelper.getInstance().getCurrentUser()) 
    //if (AuthHelper.getInstance().getCurrentUser() !== undefined)
   return await axios.request({
     method: method,

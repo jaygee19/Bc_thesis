@@ -37,6 +37,7 @@ class App extends Component {
     this.loadAllTasks = this.loadAllTasks.bind(this)
     this.saveAssignedStudents = this.saveAssignedStudents.bind(this)
     this.removeStudent = this.removeStudent.bind(this)
+    this.uploadTest = this.uploadTest.bind(this)
   }
 
   async componentDidMount() {
@@ -80,9 +81,10 @@ class App extends Component {
   //******************************** TASK START*/
 
   async addNewTask(task) {
+        
     const addedTask = await getApiResponse('tasks/store', 'post', task)
 
-    console.log("ADDEDTASK", addedTask)
+
 
     task.teacher_id = addedTask.data.teacher_id
     task.task_id = addedTask.data.task_id
@@ -91,30 +93,33 @@ class App extends Component {
 
     this.setState(state => {
       return {
-        allTasks: [...state.allTasks, task],
+        allTasks: [...state.allTasks, addedTask.data],
       }
     })
   }
 
-  async editTask(task) {
-    const editedTask = await getApiResponse('tasks/' + task.task_id, 'put', task)
+  async editTask(data) {
+    console.log("BEFOREEEEE", data)
 
-    task.teacher_id = editedTask.data.teacher_id
-    task.task_id = editedTask.data.task_id
-    task.valid_from = editedTask.data.valid_from
-    task.stud_tasks = editedTask.data.stud_tasks
+    const editedTask = await getApiResponse('tasks/' + data.task_id, 'put', data)
+
+    console.log("UPDATED", editedTask.data)
+
+
+    data.teacher_id = editedTask.data.teacher_id
+    data.task_id = editedTask.data.task_id
+    data.valid_from = editedTask.data.valid_from
+    data.stud_tasks = editedTask.data.stud_tasks
 
     this.setState(state => {
       return {
-        allTasks: state.allTasks.map(t => t.task_id === task.task_id ? task : t),
+        allTasks: state.allTasks.map(t => t.task_id === editedTask.data.task_id ? editedTask.data : t),
       }
     })
   }
 
   async deleteTask(id) {
-    const data = await getApiResponse('tasks/' + id, 'delete')
-
-    console.log("DATAA", data)
+    await getApiResponse('tasks/' + id, 'delete')
 
     this.setState(state => {
       return {
@@ -153,16 +158,22 @@ class App extends Component {
   }
 
   async removeStudent(data) {
-    const res = await getApiResponse('remove/' + data.task_id + '/student/' + data.student_id, 'delete')
-
-    console.log("RESDATA", res.data)
+    const all = await getApiResponse('remove/' + data.task_id + '/student/' + data.student_id, 'delete')
 
     this.setState(state => {
       return {
-        allUsers: state.allUsers.map(u => u.user_id === res.data.user.user_id ? res.data.user : u),
-        allTasks: state.allTasks.map(t => t.task_id === res.data.task.task_id ? res.data.task : t),
+        allUsers: state.allUsers.map(u => u.user_id === all.data.user.user_id ? all.data.user : u),
+        allTasks: state.allTasks.map(t => t.task_id === all.data.task.task_id ? all.data.task : t),
       }
     })
+  }
+
+  async uploadTest(data) {
+
+      const res = await getApiResponse('test/store', 'post', data)
+
+      console.log("VYSLEDNE DAT ", res)
+
   }
 
   //******************************** ASSIGN STUDENT END */
@@ -192,7 +203,7 @@ class App extends Component {
             <Route path="/login" exact render={() => <Login onLogin={this.loadAllTasks} />} />
             <Route path="/register" exact component={Register} />
             <Route path="/logout" exact component={Logout} />
-            <Route path="/test" exact component={Test} />
+            <TeacherRoute path="/test" exact component={Test} onSubmit={this.uploadTest} />
             {/* </main> */}
           </Switch>
         </Router>

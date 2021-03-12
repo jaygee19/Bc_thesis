@@ -42,9 +42,6 @@ class Navigation extends Component {
                                     <li className="nav-item active">
                                         <Link to="/register" className="nav-link">Register</Link>
                                     </li>
-                                    <li className="nav-item active">
-                                        <Link to="/test" className="nav-link">Test</Link>
-                                    </li>
                                 </ul>
                             )}
                             {AuthHelper.getInstance().isUserLoggedIn() && (
@@ -59,6 +56,9 @@ class Navigation extends Component {
                                             <Link to="/subjectTasks" className="nav-link">Všetky zadania</Link>
                                         </li>
                                     )}
+                                    <li className="nav-item active">
+                                        <Link to="/test" className="nav-link">Test</Link>
+                                    </li>
                                     <li className="nav-item active">
                                         <Link to="/logout" className="nav-link">Logout</Link>
                                     </li>

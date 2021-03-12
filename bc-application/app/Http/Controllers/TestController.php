@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Schedule;
 use App\Models\Course;
 use App\Models\Task;
+use Illuminate\Support\Facades\Storage;
+
 
 class TestController extends Controller
 {
@@ -28,6 +30,20 @@ class TestController extends Controller
 
     //     return response()->json($course, 201);
     // }
+
+    public function uploadFile(Request $request) {
+
+        //$uniqueid=uniqid();
+        //$extension=$request->file('image')->getClientOriginalExtension();
+        //$name=$uniqueid.'.'.$extension;
+        if ($request->hasFile('filename')) {
+            $path = $request->file('filename')->store('public/uploads');  
+        }else{
+           //$path = $request->file('image')->store('public/uploads');  
+           //$path = "SLAVA";
+        }
+        return response()->json($path, 200);   
+     }
 
     public function getAll() {
         //dd(Schedule::with('course')->get()->toArray());
