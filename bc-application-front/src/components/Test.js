@@ -25,6 +25,7 @@ class Test extends Component {
 
         const formData = new FormData();
         formData.append('filename', this.state.file);
+        formData.append('id', 64);
 
 
         this.props

@@ -38,7 +38,7 @@ class Task extends Component {
                                 <div className="mb-1 text-muted"><small>Vytvorené: {this.props.date} ( {this.props.userName} {this.props.userSurname} )</small></div>
                                 <div className="mb-1 text-muted"><small>Deadline: {this.props.deadline}</small></div>
                                 <p className="card-text mb-auto text-info"><small>Popis zadania: {this.props.content}</small></p>
-                                <p className="card-text mb-auto text-info"><small>Priložený súbor: </small></p>
+                                <p className="card-text mb-auto text-info"><small>Priložený súbor: {this.props.path} </small></p>
                                 {/* <a href="#">Continue reading</a> */}
                                 <p></p>
                                 <div>

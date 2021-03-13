@@ -7,6 +7,8 @@ use App\Models\Task;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Storage;
+
 
 
 class TaskController extends Controller
@@ -25,16 +27,6 @@ class TaskController extends Controller
         $user = JWTAuth::parseToken()->authenticate();
         $tasks = Task::where('teacher_id', $user->user_id)->get();
         return response()->json($tasks);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -78,28 +70,6 @@ class TaskController extends Controller
         $created_id = $task->task_id;
         $created_task = Task::with('stud_tasks')->where('task_id', $created_id)->first();
         return response()->json($created_task, 201);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -155,4 +125,18 @@ class TaskController extends Controller
 
         return response()->json(null, 204);
     }
+
+    public function updateFile(Request $request) {
+
+        $task = Task::with('stud_tasks')->where('task_id', $request->get('id'))->first();
+
+        if ($task->path_to_file != null)
+        {
+            Storage::delete($task->path_to_file);
+        }
+
+        $task->update(['path_to_file' => $request->file('filename')->store('public/uploads')]);
+
+        return response()->json($task, 200);   
+     }
 }

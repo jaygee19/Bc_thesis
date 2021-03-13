@@ -37,7 +37,7 @@ class App extends Component {
     this.loadAllTasks = this.loadAllTasks.bind(this)
     this.saveAssignedStudents = this.saveAssignedStudents.bind(this)
     this.removeStudent = this.removeStudent.bind(this)
-    this.uploadTest = this.uploadTest.bind(this)
+    this.updateFile = this.updateFile.bind(this)
   }
 
   async componentDidMount() {
@@ -81,15 +81,8 @@ class App extends Component {
   //******************************** TASK START*/
 
   async addNewTask(task) {
-        
+
     const addedTask = await getApiResponse('tasks/store', 'post', task)
-
-
-
-    task.teacher_id = addedTask.data.teacher_id
-    task.task_id = addedTask.data.task_id
-    task.valid_from = addedTask.data.valid_from
-    task.stud_tasks = addedTask.data.stud_tasks
 
     this.setState(state => {
       return {
@@ -99,23 +92,26 @@ class App extends Component {
   }
 
   async editTask(data) {
-    console.log("BEFOREEEEE", data)
 
     const editedTask = await getApiResponse('tasks/' + data.task_id, 'put', data)
-
-    console.log("UPDATED", editedTask.data)
-
-
-    data.teacher_id = editedTask.data.teacher_id
-    data.task_id = editedTask.data.task_id
-    data.valid_from = editedTask.data.valid_from
-    data.stud_tasks = editedTask.data.stud_tasks
 
     this.setState(state => {
       return {
         allTasks: state.allTasks.map(t => t.task_id === editedTask.data.task_id ? editedTask.data : t),
       }
     })
+  }
+
+  async updateFile(data) {
+
+    const editedTask = await getApiResponse('task/updateFile', 'post', data)
+
+    this.setState(state => {
+      return {
+        allTasks: state.allTasks.map(t => t.task_id === editedTask.data.task_id ? editedTask.data : t),
+      }
+    })
+
   }
 
   async deleteTask(id) {
@@ -168,14 +164,6 @@ class App extends Component {
     })
   }
 
-  async uploadTest(data) {
-
-      const res = await getApiResponse('test/store', 'post', data)
-
-      console.log("VYSLEDNE DAT ", res)
-
-  }
-
   //******************************** ASSIGN STUDENT END */
 
 
@@ -192,18 +180,17 @@ class App extends Component {
           <Switch>
             {/* //<main className="form-signin"> */}
             <LoggedInRoute path="/" exact component={Home} />
-            {/* <TeacherRoute path="/myTasks" exact component={MyTasks} /> */}
             <TeacherRoute path="/myTasks" exact component={MyTasks} users={this.state.allUsers} tasks={this.getTasksForUser()} deleteTask={this.deleteTask} />
             <TeacherRoute path="/subjectTasks" exact component={SubjectTasks} users={this.state.allUsers} tasks={this.state.allTasks} />
             <TeacherRoute path="/assignTasks/:id" exact component={AssignTasks} groups={this.getOnlyGroups()} tasks={this.state.allTasks} onSubmit={this.saveAssignedStudents} />
-            <TeacherRoute path="/assignedTasks/:id" exact component={AssignedTasks} users={this.state.allUsers} tasks={this.state.allTasks} onDelete={this.removeStudent}/>
+            <TeacherRoute path="/assignedTasks/:id" exact component={AssignedTasks} users={this.state.allUsers} tasks={this.state.allTasks} onDelete={this.removeStudent} />
             <TeacherRoute path="/myTasks/create" exact component={AddTask} onSubmit={this.addNewTask} />
-            <TeacherRoute path="/myTasks/:id/edit" exact component={AddTask} tasks={this.state.allTasks} onSubmit={this.editTask} />
+            <TeacherRoute path="/myTasks/:id/edit" exact component={AddTask} tasks={this.state.allTasks} onSubmit={this.editTask} onUpdate={this.updateFile} />
             {/* <TeacherRoute path="/myTasks/:id/delete" exact component={DeleteTask} tasks={this.state.allTasks} /> */}
             <Route path="/login" exact render={() => <Login onLogin={this.loadAllTasks} />} />
             <Route path="/register" exact component={Register} />
             <Route path="/logout" exact component={Logout} />
-            <TeacherRoute path="/test" exact component={Test} onSubmit={this.uploadTest} />
+            <TeacherRoute path="/test" exact component={Test} />
             {/* </main> */}
           </Switch>
         </Router>

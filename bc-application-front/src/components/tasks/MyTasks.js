@@ -53,6 +53,7 @@ class MyTasks extends Component {
                             date={task.valid_from}
                             deadline={task.deadline}
                             type={task.type}
+                            path={task.path_to_file}
                             onDelete={this.props.deleteTask}
                             private={true}
                         />

@@ -24,16 +24,7 @@ Route::get('/users', [UserController::class, 'index']);
 Route::get('/tasks', [TaskController::class, 'index']);
 Route::get('/schedules', [TeacherController::class, 'index']);
 
-//Route::put('/schedule/update', [TestController::class, 'addingScheduling']);
-// Route::post('/schedule/detach', [TestController::class, 'detach']);
-Route::post('/test/store', [TestController::class, 'uploadFile']);
- //Route::post('/addCourse', [TestController::class, 'addCourse']);
-  //Route::put('/schedule/addigScheduling', [TestController::class, 'addingScheduling']);
-// // Route::get('/control', [TestController::class, 'control']);
- Route::get('/control', [TestController::class, 'getAll']);
-
- Route::delete('/remove/{task}/student/{user}', [TeacherController::class, 'removeStudent']);
-
+Route::get('/control', [TestController::class, 'getAll']);
 
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('/logout', [UserController::class, 'logout']);
@@ -41,9 +32,11 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/tasks/store', [TaskController::class, 'store']);
     Route::put('/tasks/{task}', [TaskController::class, 'update']);
     Route::delete('/tasks/{task}', [TaskController::class, 'destroy']);
+    Route::post('/task/updateFile', [TaskController::class, 'updateFile']);
 
     Route::get('/tasks/loggedUsersTask', [TaskController::class, 'loggedUserTasks']);
     Route::post('/assign/students', [TeacherController::class, 'assignTask']);
+    Route::delete('/remove/{task}/student/{user}', [TeacherController::class, 'removeStudent']);
 
 
 });

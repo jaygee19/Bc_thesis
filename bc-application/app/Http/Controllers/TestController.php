@@ -31,19 +31,34 @@ class TestController extends Controller
     //     return response()->json($course, 201);
     // }
 
-    public function uploadFile(Request $request) {
+    // public function uploadFile(Request $request) {
 
-        //$uniqueid=uniqid();
-        //$extension=$request->file('image')->getClientOriginalExtension();
-        //$name=$uniqueid.'.'.$extension;
-        if ($request->hasFile('filename')) {
-            $path = $request->file('filename')->store('public/uploads');  
-        }else{
-           //$path = $request->file('image')->store('public/uploads');  
-           //$path = "SLAVA";
-        }
-        return response()->json($path, 200);   
-     }
+    //     //$uniqueid=uniqid();
+    //     //$extension=$request->file('image')->getClientOriginalExtension();
+    //     //$name=$uniqueid.'.'.$extension;
+
+
+
+    //     // if ($request->hasFile('filename')) {
+    //     //     $path = $request->file('filename')->store('public/uploads');  
+    //     //     //$path = Storage::put('file.jpg', $request->file('filename'));  
+    //     // }else{
+    //     //     $path = "MISTAKE";
+    //     // }
+
+    //     //$file = Storage::files('public/uploads/');
+
+    //     $task = Task::with('stud_tasks')->where('task_id', $request->get('id'))->first();
+
+    //     if ($task->path_to_file != null)
+    //     {
+    //         Storage::delete($task->path_to_file);
+    //     }
+
+    //     $task->update(['path_to_file' => $request->file('filename')->store('public/uploads')]);
+
+    //     return response()->json($task, 200);   
+    //  }
 
     public function getAll() {
         //dd(Schedule::with('course')->get()->toArray());

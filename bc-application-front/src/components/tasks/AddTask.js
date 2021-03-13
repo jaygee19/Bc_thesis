@@ -13,6 +13,7 @@ class AddTask extends Component {
             content: '',
             deadline: '',
             path_to_file: '',
+            path_to_file_updated: '',
         }
 
         this.onSubmit = this.onSubmit.bind(this)
@@ -21,6 +22,7 @@ class AddTask extends Component {
         this.contentChanged = this.contentChanged.bind(this)
         this.deadlineChanged = this.deadlineChanged.bind(this)
         this.fileChanged = this.fileChanged.bind(this)
+        this.onUpdate = this.onUpdate.bind(this)
 
         if (this.props.match.params.id != null) {
             let task = this.props.tasks.filter(
@@ -65,7 +67,18 @@ class AddTask extends Component {
 
     fileChanged(event) {
         this.setState({
-            path_to_file: event.target.files[0],
+            path_to_file_updated: event.target.files[0],
+        })
+    }
+
+    onUpdate() {
+        const dataTask = new FormData();
+        dataTask.append('filename', this.state.path_to_file_updated);
+        dataTask.append('id', this.props.match.params.id);
+
+        this.props.onUpdate(dataTask)
+        .then(() => {
+            this.props.history.push('/myTasks')
         })
     }
 
@@ -73,16 +86,15 @@ class AddTask extends Component {
         event.preventDefault()
 
         const dataTask = new FormData();
-        dataTask.append('filename' , this.state.path_to_file);
-        dataTask.append('type' , this.state.type);
-        dataTask.append('title' , this.state.title);
-        dataTask.append('content' , this.state.content);
-        dataTask.append('deadline' , this.state.deadline);
+        dataTask.append('filename', this.state.path_to_file);
+        dataTask.append('type', this.state.type);
+        dataTask.append('title', this.state.title);
+        dataTask.append('content', this.state.content);
+        dataTask.append('deadline', this.state.deadline);
 
-        
-        for (var key of dataTask.entries()) {
-            console.log(key[0] + ', ' + key[1]);
-        }
+        // for (var key of dataTask.entries()) {
+        //     console.log(key[0] + ', ' + key[1]);
+        // }
 
         if (this.props.match.params.id != null) {
             this.props
@@ -177,18 +189,40 @@ class AddTask extends Component {
                                     value={this.state.deadline}
                                     onChange={this.deadlineChanged}
                                 />
-                                <label for="filename">Priložiť súbor</label>
-                                <input type="file" className="form-control"
-                                    name="filename"
-                                    id="filename"
-                                    onChange={this.fileChanged}
-                                />
+                                {(this.props.match.params.id == null) && (
+                                    <div>
+                                        <label for="filename">Priložiť súbor</label>
+                                        <input type="file" className="form-control"
+                                            name="filename"
+                                            id="filename"
+                                            onChange={this.fileChanged}
+                                        />
+                                    </div>
+                                )}
                                 {/* {getAllErrors(this.state.passwordErrors)} */}
                                 <p></p>
                                 <button className="w-50 btn btn-lg btn-primary" type="submit">Ulož</button>
                                 <p></p>
                                 {/* <p className="mt-5 mb-3 text-muted">&copy; since 2021</p> */}
                             </form>
+
+                            {(this.props.match.params.id != null) && (
+                                <div>
+                                    <label for="filename">Zmeniť súbor</label>
+                                    <p>{this.state.path_to_file}</p>
+                                    <input type="file" className="form-control"
+                                        name="filename"
+                                        id="filename"
+                                        onChange={this.fileChanged}
+                                    />
+                                    <p></p>
+                                    <button onClick={() => this.onUpdate()} 
+                                    className="w-50 btn btn-lg btn-primary" type="submit">Zmeň súbor
+                                    </button>
+                                    <p></p>
+                                </div>
+
+                            )}
                         </div>
                     </div>
                 </div>
