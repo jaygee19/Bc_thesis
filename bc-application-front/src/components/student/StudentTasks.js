@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import AuthHelper from '../../helpers/AuthHelper'
 import Navigation from '../Navigation'
 
 class StudentTasks extends Component {
@@ -15,6 +14,12 @@ class StudentTasks extends Component {
             studentTasks: tasks,
             submittedAssignments: sub,
         }
+
+        this.onClick = this.onClick.bind(this)
+    }
+
+    onClick(id) {
+        this.props.history.push('/manageAssignment/' + id)
     }
 
     dayOfWeek(dayIndex) {
@@ -27,19 +32,20 @@ class StudentTasks extends Component {
     }
 
     render() {
-        console.log("USER", this.state.submittedAssignments)
         return (
             <div>
                 <Navigation />
+                <div style={{ color: 'white' }}>
                 <p></p>
                 <h3>Zoznam pridelených zadaní:</h3>
                 <br />
                 <h2 className="blog-post-title"> Kurz: {this.dayOfWeek(this.props.group.day)} - {this.props.group.time_begin}:00 </h2>
                 <p className="blog-post-meta"> Cvičiaci: {this.state.concreteTeacher.name} {this.state.concreteTeacher.surname} </p>
+                </div>
                 <div className="container">
                     <p></p>
                     
-                    <table className="table table-hover table-bordered table-sm">
+                    <table className="table table-bordered table-sm">
                         <thead className="thead-dark">
                             <tr>
                                 <th scope="col">Názov</th>
@@ -57,7 +63,7 @@ class StudentTasks extends Component {
                                             <td>{chosen.title}</td>
                                             <td>{chosen.type}</td>
                                             <td>{chosen.deadline}</td>
-                                            <td><a href={chosen.path_to_file}>Zobraz</a></td>
+                                            <td><button onClick={() => this.onClick(chosen.task_id)} className="btn btn-sm btn-dark">Zobraz</button></td>
                                             {this.isSubmitted(chosen.task_id) && (
                                             <td className="table-warning">Odovzdané</td>
                                             )}

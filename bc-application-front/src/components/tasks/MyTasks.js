@@ -32,12 +32,12 @@ class MyTasks extends Component {
                 <Navigation />
                 <div className="container">
                     <p></p>
-                    <button onClick={this.onAddNew} type="submit" className="btn btn-primary" > + </button>
+                    <button onClick={this.onAddNew} type="submit" className="btn btn-light" > + </button>
                     <p></p>
-                    <div className="d-flex justify-content-start">
+                    <div className="d-flex justify-content-center" style={{ color: 'white' }}> 
                     <h3> Moje zadania: </h3>
                     </div>
-                    <div className="d-flex justify-content-start">
+                    <div className="d-flex justify-content-center" style={{ color: 'white' }}>
                     <p> ({this.getUserName(AuthHelper.getInstance().getUserID())}) </p>
                     </div>
                     <p></p>

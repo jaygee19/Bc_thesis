@@ -41,8 +41,7 @@ class TeacherController extends Controller
        $user->stud_tasks()->detach($task);
 
        $updated_task = Task::with('stud_tasks')->where('task_id', $task->task_id)->first();
-       $removed_user = User::with('schedules')->with('stud_tasks')->with('enrolled_student')
-                        ->with('submitted_assignments')->where('user_id', $user->user_id)->first();
+       $removed_user = User::with('schedules')->with('stud_tasks')->with('enrolled_student')->with('submitted_assignments')->where('user_id', $user->user_id)->first();
 
        return response()->json(['task' => $updated_task, 'user' => $removed_user], 200);
     }

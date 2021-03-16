@@ -18,11 +18,6 @@ class User extends Authenticatable implements JWTSubject
      *
      * @var array
      */
-    // protected $fillable = [
-    //     'name',
-    //     'ldap_login',
-    //     'password',
-    // ];
     protected $guarded = [];
 
     public $timestamps = false;

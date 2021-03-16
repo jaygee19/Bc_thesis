@@ -43,6 +43,7 @@ class AssignedTasks extends Component {
     render() {
         return (
             <div>
+                <div style={{ color: 'white' }}>
                 <Navigation />
                 <p></p>
                 <h3>Zoznam pridelených študentov:</h3>
@@ -50,6 +51,7 @@ class AssignedTasks extends Component {
                 <h2 className="blog-post-title">{this.state.concreteTask.title}</h2>
                 <p className="blog-post-meta"> Deadline: {this.state.concreteTask.deadline}</p>
                 <p> {this.state.concreteTask.content} </p>
+                </div>
                 <div className="container">
                     <p></p>
                     <table className="table table-hover table-bordered table-sm">
@@ -69,7 +71,7 @@ class AssignedTasks extends Component {
                                             <td>{chosen.name} {chosen.surname}</td>
                                             <td>{chosen.group}</td>
                                             <td className="table-danger"></td>
-                                            <td onClick={() => this.onRemove(chosen.user_id)}> <button> x </button> </td>
+                                            <td onClick={() => this.onRemove(chosen.user_id)}> <button className="btn-dark"> x </button> </td>
                                         </tr>
                                     )
                                 })}

@@ -63,7 +63,7 @@ class Login extends Component {
 
     render() {
         return (
-            <div>
+            <div className="">
                 <Navigation />
                 <div className="container">
                     <div className="card login-card">
@@ -74,6 +74,7 @@ class Login extends Component {
                             <div className="col-md-6">
                                 <div className="card-body sign-card">
                                     <h3 className="login-card-description">Princípy operačných systémov</h3>
+                                    <hr/>
                                     <p></p>
                                     <form onSubmit={this.onSubmit}>
                                         <h5 className="mb-3 fw-normal">Prihlásenie</h5>
@@ -93,8 +94,7 @@ class Login extends Component {
                                         />
                                         {getAllErrors(this.state.passwordErrors)}
                                         {getAllErrors(this.state.otherErrors)}
-                                        <button className="w-100 btn btn-lg btn-primary" type="submit">Prihlásiť</button>
-                                        <p className="mt-5 mb-3 text-muted">&copy; since 2021</p>
+                                        <button className="w-100 btn btn-lg btn-dark" type="submit">Prihlásiť</button>
                                     </form>
                                 </div>
                             </div>

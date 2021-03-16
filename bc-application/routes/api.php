@@ -40,6 +40,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('/assign/students', [TeacherController::class, 'assignTask']);
     Route::delete('/remove/{task}/student/{user}', [TeacherController::class, 'removeStudent']);
 
+    Route::post('submit/assignment', [StudentController::class, 'storeAssignment']);
+    Route::post('update/assignment', [StudentController::class, 'updateAssignment']);
 
 });
 

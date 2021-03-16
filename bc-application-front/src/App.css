@@ -37,6 +37,10 @@
   }
 }
 
+.form-controlM {
+  background-color: red !important;
+}
+
 .form-signin {
   width: 100%;
   max-width: 330px;
@@ -94,5 +98,40 @@
 
 .foot-end {
   margin: 0px !important;
-  padding: 50px;
+  padding: 15px;
+}
+
+.nav-link {
+  color: grey !important;
+}
+
+.nav-link:hover{
+  color: #343a40 !important;
+}
+
+.nav-link:focus{
+  color: #343a40 !important;
+  transform: scale(1.08);
+}
+
+.form-control{
+  margin: 5px 0px;
+}
+
+.form-control:focus{
+  box-shadow: 0 0 0 3px #343a40 !important;
+  border-color: grey !important;
+}
+
+.table_points {
+  margin: 60px 0px !important;
+}
+
+.my_btn:focus {
+  box-shadow: 0 0 0 8px #343a40 !important;
+  border-color: grey !important;
+}
+
+.my_btn {
+  margin: 0px 5px;
 }

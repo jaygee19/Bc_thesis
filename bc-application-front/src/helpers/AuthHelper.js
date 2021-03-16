@@ -49,7 +49,6 @@ class AuthHelper {
   logoutUser() {
     localStorage.removeItem('token')
     this.currentUser = null
-    console.log("po logoute " + this.currentUser)
   }
 
   isUserLoggedIn() {

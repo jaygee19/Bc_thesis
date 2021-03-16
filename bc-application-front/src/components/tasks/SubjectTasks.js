@@ -24,8 +24,8 @@ class SubjectTasks extends Component {
                 <Navigation />
                 <div className="container">
                     <p></p>
-                    <div className="d-flex justify-content-start">
-                    <h3> Všetky zadania: </h3>
+                    <div className="d-flex justify-content-center">
+                    <h3 style={{ color: 'white' }}> Všetky zadania: </h3>
                     </div>
                     <p></p>
                 </div>
@@ -40,6 +40,7 @@ class SubjectTasks extends Component {
                             date={task.valid_from}
                             deadline={task.deadline}
                             type={task.type}
+                            path={task.path_to_file}
                             onDelete={this.props.deleteTask}
                             private={false}
                         />

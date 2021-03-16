@@ -20,5 +20,4 @@ class Course extends Model
     public function enrolled_students() {
         return $this->hasMany(EnrolledStudent::class, 'course_id');
     }
-
 }

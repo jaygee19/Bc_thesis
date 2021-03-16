@@ -1,5 +1,4 @@
 import './App.css';
-import { Redirect, withRouter } from 'react-router';
 import Login from "./components/users/Login";
 import Home from './components/Home';
 import Register from './components/users/Register';
@@ -13,7 +12,6 @@ import MyTasks from './components/tasks/MyTasks';
 import AddTask from './components/tasks/AddTask';
 import LoggedInRoute from './components/routes/LoggedInRoute';
 import TeacherRoute from './components/routes/TeacherRoute';
-import DeleteTask from './components/tasks/DeleteTask';
 import ReactLoading from 'react-loading';
 import Footer from './components/Footer';
 import SubjectTasks from './components/tasks/SubjectTasks';
@@ -21,6 +19,7 @@ import AssignTasks from './components/tasks/AssignTasks';
 import AssignedTasks from './components/tasks/AssignedTasks';
 import StudentRoute from './components/routes/StudentRoute';
 import StudentTasks from './components/student/StudentTasks';
+import ManageAssignments from './components/student/ManageAssignments';
 
 class App extends Component {
 
@@ -40,6 +39,8 @@ class App extends Component {
     this.saveAssignedStudents = this.saveAssignedStudents.bind(this)
     this.removeStudent = this.removeStudent.bind(this)
     this.updateFile = this.updateFile.bind(this)
+    this.submitAssignment = this.submitAssignment.bind(this)
+    this.updateAssignment = this.updateAssignment.bind(this)
   }
 
   async componentDidMount() {
@@ -95,11 +96,6 @@ class App extends Component {
       return user[0]
     }
   }
-
-  // getOnlyStudents() {
-  //   let onlyStudents = this.state.allUsers.filter((item) => item.role === 's')
-  //   return onlyStudents
-  // }
 
   //******************************** TASK START*/
 
@@ -189,6 +185,29 @@ class App extends Component {
 
   //******************************** ASSIGN STUDENT END */
 
+  //******************************** SUBMIT ASSIGNMENT START */
+
+  async submitAssignment(data) {
+    const user = await getApiResponse('submit/assignment', 'post', data)
+
+    this.setState(state => {
+      return {
+        allUsers: state.allUsers.map(u => u.user_id === user.data.user_id ? user.data : u),
+      }
+    })
+  }
+
+  async updateAssignment(data) {
+    const user = await getApiResponse('update/assignment', 'post', data)
+
+    this.setState(state => {
+      return {
+        allUsers: state.allUsers.map(u => u.user_id === user.data.user_id ? user.data : u),
+      }
+    })
+  }
+
+  //******************************** SUBMIT ASSIGNMENT END */
 
   render() {
     if (this.state.isLoading)
@@ -198,7 +217,7 @@ class App extends Component {
         </div>
       )
     return (
-      <div className="App bg-secondary">
+      <div className="App bg-dark">
         <Router>
           <Switch>
             {/* //<main className="form-signin"> */}
@@ -211,6 +230,7 @@ class App extends Component {
             <TeacherRoute path="/myTasks/:id/edit" exact component={AddTask} tasks={this.state.allTasks} onSubmit={this.editTask} onUpdate={this.updateFile} />
             {/* <TeacherRoute path="/myTasks/:id/delete" exact component={DeleteTask} tasks={this.state.allTasks} /> */}
             <StudentRoute path="/studentTasks" exact component={StudentTasks} users={this.state.allUsers} user={this.getMyself()} group={this.getStudentGroup()} />
+            <StudentRoute path="/manageAssignment/:id" exact component={ManageAssignments} user={this.getMyself()} onSubmit={this.submitAssignment} onUpdate={this.updateAssignment} />
             <Route path="/login" exact render={() => <Login onLogin={this.loadAllTasks} />} />
             <Route path="/register" exact component={Register} />
             <Route path="/logout" exact component={Logout} />

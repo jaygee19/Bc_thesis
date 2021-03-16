@@ -28,9 +28,9 @@ class Task extends Component {
         return (
             <div className="container" key={this.props.key}>
                 <div className="row mb-2">
-                    <div className="col-md-6">
+                    <div className="col-md-12">
                         <div className="card flex-md-row mb-4 box-shadow h-md-250">
-                            <div className="card-body d-flex flex-column align-items-start">
+                            <div className="card-body d-flex flex-column align-items-center">
                                 <strong className="d-inline-block mb-2 text-secondary">{this.props.type}</strong>
                                 <h3 className="mb-0">
                                     <p className="text-dark" >{this.props.title}</p>
@@ -43,22 +43,22 @@ class Task extends Component {
                                 <p></p>
                                 <div>
                                 {AuthHelper.getInstance().isUserTeacher() && this.props.private && (
-                                    <button onClick={this.onEdit} type="submit" className="btn btn-primary" >
-                                        Upraviť
-                                    </button>
+                                    <button onClick={this.onEdit} type="submit" className="my_btn btn btn-dark" >
+                                        Upraviť 
+                                    </button> 
                                 )}
                                 {AuthHelper.getInstance().isUserTeacher() && this.props.private && (
-                                    <button onClick={() => this.props.onDelete(this.props.id)} type="submit" className="btn btn-primary" >
+                                    <button onClick={() => this.props.onDelete(this.props.id)} type="submit" className="my_btn btn btn-dark" >
                                         Vymazať
                                     </button>
                                 )}
                                 {AuthHelper.getInstance().isUserTeacher() && this.props.private && (
-                                    <button onClick={this.onAssign} type="submit" className="btn btn-primary" >
+                                    <button onClick={this.onAssign} type="submit" className="my_btn btn btn-dark" >
                                         Prideliť
                                     </button>
                                 )}
-                                <button onClick={this.onListOf} type="submit" className="btn btn-primary" >
-                                        Pridelené
+                                <button onClick={this.onListOf} type="submit" className="my_btn btn btn-dark" >
+                                        Pridelení študenti
                                 </button>
                                 </div>
                             </div>
