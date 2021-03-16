@@ -2,11 +2,11 @@ import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import AuthHelper from '../../helpers/AuthHelper'
 
-const LoggedInRoute = ({ component: Component, ...rest }) => (
+const StudentRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={(props) => {
-      if (!AuthHelper.getInstance().isUserLoggedIn() ) {
+      if (!AuthHelper.getInstance().isUserStudent() ) {
         return (
           <Redirect
             to={{ pathname: '/login', state: { from: props.location } }}
@@ -18,4 +18,4 @@ const LoggedInRoute = ({ component: Component, ...rest }) => (
   />
 )
 
-export default LoggedInRoute
+export default StudentRoute

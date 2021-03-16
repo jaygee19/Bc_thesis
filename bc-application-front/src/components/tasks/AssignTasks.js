@@ -105,7 +105,7 @@ class AssignTasks extends Component {
                         Už pridelený:
                     </span>
                     <hr />
-                    <div class="row">
+                    <div className="row">
                         <div className=" card assign-card col ">
                         <p></p>
                                 {this.state.assignedStudents
@@ -121,7 +121,7 @@ class AssignTasks extends Component {
                         <form onSubmit={this.onSubmit}>
                         {this.state.allGroups.map((group) => {
                             return (
-                                <div className="">
+                                <div key={group.schedule_id}>
                                     <span className="font-weight-bold" style={{ color: "black" }}>
                                         {this.dayOfWeek(group.day)} - {group.time_begin} ( {AuthHelper.getInstance().getUserName()} )
                                     </span>
@@ -134,7 +134,7 @@ class AssignTasks extends Component {
                                             {this.state.chosenStudents.filter((student) => student.pivot.schedule_id === group.schedule_id)
                                                 .map((chosen) => {
                                                     return (
-                                                        <div>
+                                                        <div key={chosen.user_id}>
                                                             <span style={{ color: "green" }}> {chosen.name} {chosen.surname} </span>
                                                             <span onClick={() => this.removeStudent(chosen.user_id)}> - </span>
                                                         </div>

@@ -56,9 +56,16 @@ class Navigation extends Component {
                                             <Link to="/subjectTasks" className="nav-link">Všetky zadania</Link>
                                         </li>
                                     )}
-                                    <li className="nav-item active">
-                                        <Link to="/test" className="nav-link">Test</Link>
-                                    </li>
+                                    {AuthHelper.getInstance().isUserTeacher() && (
+                                        <li className="nav-item active">
+                                            <Link to="/test" className="nav-link">Test</Link>
+                                        </li>
+                                    )}
+                                    {AuthHelper.getInstance().isUserStudent() && (
+                                        <li className="nav-item active">
+                                            <Link to="/studentTasks" className="nav-link">Pridelené zadania</Link>
+                                        </li>
+                                    )}
                                     <li className="nav-item active">
                                         <Link to="/logout" className="nav-link">Logout</Link>
                                     </li>
@@ -74,59 +81,3 @@ class Navigation extends Component {
 }
 
 export default Navigation
-
-
-// function Navigation(props) {
-
-//     let menu;
-
-//     const [isNavCollapsed, setIsNavCollapsed] = useState(true);
-//     const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
-
-//     if (!AuthHelper.getInstance().isUserLoggedIn()) {
-//         menu = (
-//             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-//                 <li className="nav-item active">
-//                     <Link to="/login" className="nav-link" >Login</Link>
-//                 </li>
-//                 <li className="nav-item active">
-//                     <Link to="/register" className="nav-link">Register</Link>
-//                 </li>
-//                 <li className="nav-item active">
-//                     <Link to="/test" className="nav-link">Test</Link>
-//                 </li>
-//             </ul>
-//         )
-//     } else {
-//         menu = (
-//             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-//                 <li className="nav-item active">
-//                     <Link to="/logout" className="nav-link">Logout</Link>
-//                 </li>
-//             </ul>
-//         )
-//     }
-
-//     return (
-//         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-//             <button class="custom-toggler navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded={!isNavCollapsed ? true : false} aria-label="Toggle navigation" onClick={handleNavCollapse}>
-//                 <span class="navbar-toggler-icon"></span>
-//             </button>
-//             <div class={`${isNavCollapsed ? 'collapse' : ''} navbar-collapse`} id="navbarTogglerDemo02">
-//                 <div className="container-fluid">
-//                     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-//                         <li className="navbar-brand font-weight-bolder">
-//                             <Link to="/" className="nav-link">Home</Link>
-//                         </li>
-//                     </ul>
-//                     <div>
-//                         {menu}
-//                     </div>
-//                 </div>
-//             </div>
-//         </nav>
-//     );
-// };
-
-// export default Navigation;
-

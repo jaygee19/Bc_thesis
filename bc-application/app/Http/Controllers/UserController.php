@@ -18,7 +18,7 @@ class UserController extends Controller
 
     public function index() {
         //return User::all();
-        return User::with('schedules')->with('stud_tasks')->get();
+        return User::with('schedules')->with('stud_tasks')->with('enrolled_student')->with('submitted_assignments')->get();
     }
         
     public function authenticate(Request $request)

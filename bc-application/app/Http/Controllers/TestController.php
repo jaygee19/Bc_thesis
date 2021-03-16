@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Schedule;
 use App\Models\Course;
+use App\Models\EnrolledStudent;
+use App\Models\SubmittedAssignment;
 use App\Models\Task;
 use Illuminate\Support\Facades\Storage;
 
@@ -64,7 +66,8 @@ class TestController extends Controller
         //dd(Schedule::with('course')->get()->toArray());
         //dd(Task::with('user')->get()->toArray());
         //dd(User::with('tasks')->get()->toArray());
-        dd(Task::with('stud_tasks')->get()->toArray());
+        //dd(Task::with('stud_tasks')->get()->toArray());
+        dd(User::with('submitted_assignments')->get()->toArray());
         //dd(Schedule::where('course_id', '!=', null)->with('courses')->get()->toArray());
         //return Schedule::where('course_id', '!=', null)->with('courses')->get();
     }

@@ -40,15 +40,12 @@ class Login extends Component {
 
     onSubmit(event) {
         event.preventDefault()
-        
-        console.log(this.state.ldap_login)
-        console.log(this.state.password)
+
         getApiResponse('login', 'post', {
             ldap_login: this.state.ldap_login,
             password: this.state.password,
         })
             .then((res) => {
-                //console.log("okej" + res.data.token)
                 AuthHelper.getInstance()
                     .loginUser(res.data.token)
                     .then(() => {
@@ -57,7 +54,6 @@ class Login extends Component {
                     })
             })
             .catch((e) => {
-                //console.log("cathc" + e)
                 this.setState({
                     otherErrors: e.response.data['errors'] || [],
                     passwordErrors: e.response.data['password'] || [],

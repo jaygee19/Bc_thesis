@@ -26,7 +26,7 @@ class Task extends Component {
 
     render() {
         return (
-            <div className="container">
+            <div className="container" key={this.props.key}>
                 <div className="row mb-2">
                     <div className="col-md-6">
                         <div className="card flex-md-row mb-4 box-shadow h-md-250">

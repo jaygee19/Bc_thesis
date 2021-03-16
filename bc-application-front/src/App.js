@@ -19,6 +19,8 @@ import Footer from './components/Footer';
 import SubjectTasks from './components/tasks/SubjectTasks';
 import AssignTasks from './components/tasks/AssignTasks';
 import AssignedTasks from './components/tasks/AssignedTasks';
+import StudentRoute from './components/routes/StudentRoute';
+import StudentTasks from './components/student/StudentTasks';
 
 class App extends Component {
 
@@ -52,6 +54,7 @@ class App extends Component {
     let allSubjectTasks = await getApiResponse('tasks', 'get')
     let allSubjectUsers = await getApiResponse('users', 'get')
     let allSubjectScheduleGroup = await getApiResponse('schedules', 'get')
+
     this.setState({
       allTasks: allSubjectTasks.data,
       allUsers: allSubjectUsers.data,
@@ -61,16 +64,36 @@ class App extends Component {
   }
 
   getTasksForUser() {
-    let teacherID = AuthHelper.getInstance().getUserID()
-    let currentTasks = this.state.allTasks.filter((item) => item.teacher_id === teacherID)
-    return currentTasks
+    if (AuthHelper.getInstance().getCurrentUser() !== null) {
+      let teacherID = AuthHelper.getInstance().getUserID()
+      let currentTasks = this.state.allTasks.filter((item) => item.teacher_id === teacherID)
+      return currentTasks
+    }
   }
 
   getOnlyGroups() {
-    let teacherID = AuthHelper.getInstance().getUserID()
-    let teacherGroups = this.state.allScheduleGropus.filter((group) => group.teacher === teacherID)
-    console.log("TEACHER GROUPS", teacherGroups)
-    return teacherGroups
+    if (AuthHelper.getInstance().getCurrentUser() !== null) {
+      let teacherID = AuthHelper.getInstance().getUserID()
+      let teacherGroups = this.state.allScheduleGropus.filter((group) => group.teacher === teacherID)
+      return teacherGroups
+    }
+  }
+
+  getStudentGroup() {
+    if (AuthHelper.getInstance().getCurrentUser() !== null) {
+      let studentID = AuthHelper.getInstance().getUserID()
+      let user = this.state.allUsers.filter(u => u.user_id === studentID)
+      let group = user[0].schedules.filter(s => s.course_id === user[0].enrolled_student.course_id)
+      return group[0]
+    }
+  }
+
+  getMyself() {
+    if (AuthHelper.getInstance().getCurrentUser() !== null) {
+      let userID = AuthHelper.getInstance().getUserID()
+      let user = this.state.allUsers.filter(u => u.user_id === userID)
+      return user[0]
+    }
   }
 
   // getOnlyStudents() {
@@ -187,6 +210,7 @@ class App extends Component {
             <TeacherRoute path="/myTasks/create" exact component={AddTask} onSubmit={this.addNewTask} />
             <TeacherRoute path="/myTasks/:id/edit" exact component={AddTask} tasks={this.state.allTasks} onSubmit={this.editTask} onUpdate={this.updateFile} />
             {/* <TeacherRoute path="/myTasks/:id/delete" exact component={DeleteTask} tasks={this.state.allTasks} /> */}
+            <StudentRoute path="/studentTasks" exact component={StudentTasks} users={this.state.allUsers} user={this.getMyself()} group={this.getStudentGroup()} />
             <Route path="/login" exact render={() => <Login onLogin={this.loadAllTasks} />} />
             <Route path="/register" exact component={Register} />
             <Route path="/logout" exact component={Logout} />

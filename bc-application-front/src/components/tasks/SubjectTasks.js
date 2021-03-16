@@ -32,7 +32,7 @@ class SubjectTasks extends Component {
                 {this.props.tasks.map((task) => {
                     return (
                         <Task
-                            key={task.id}
+                            key={task.task_id}
                             id={task.task_id}
                             content={task.content}
                             userName={this.getUserName(task.teacher_id)}

@@ -1,4 +1,3 @@
-import userEvent from '@testing-library/user-event'
 import React, { Component } from 'react'
 import Navigation from '../Navigation'
 
@@ -53,8 +52,8 @@ class AssignedTasks extends Component {
                 <p> {this.state.concreteTask.content} </p>
                 <div className="container">
                     <p></p>
-                    <table class="table table-hover table-bordered table-sm">
-                        <thead class="thead-dark">
+                    <table className="table table-hover table-bordered table-sm">
+                        <thead className="thead-dark">
                             <tr>
                                 <th scope="col">Študent</th>
                                 <th scope="col">Skupina</th>
@@ -66,7 +65,7 @@ class AssignedTasks extends Component {
                             {this.state.assignedStudents
                                 .map((chosen) => {
                                     return (
-                                        <tr>
+                                        <tr key={chosen.user_id}>
                                             <td>{chosen.name} {chosen.surname}</td>
                                             <td>{chosen.group}</td>
                                             <td className="table-danger"></td>

@@ -9,21 +9,17 @@ class AuthHelper {
 
   async loadCurrentUser() {
     const token = localStorage.getItem('token')
-    //console.log("MAM TOKEN" + token)
     this.currentUser = await this.getUserFromToken(token)
   }
 
   async loginUser(token) {
     localStorage.setItem('token', token)
     this.currentUser = await this.getUserFromToken(token)
-    //console.log("po logine" + this.currentUser)
   }
 
   async getUserFromToken(token) {
-    //console.log("Ziskavam usera")
     if (token == null) 
     {
-        //console.log("Token je NULL")
         return null
     }
 
@@ -33,11 +29,9 @@ class AuthHelper {
 
     if ( res.data.status === 'Authorization Token not found' || res.data.user === null)
     {
-        //console.log("Neviem preco som tu")
         return null
     }
 
-    ///console.log("Som spravne")
     return {
       token: token,
       user_id: res.data.user_id,
@@ -79,7 +73,6 @@ class AuthHelper {
   isUserTeacher() {
     if (this.currentUser == null) 
     {
-        console.log("Halus")
         return false
     }
     return this.currentUser.isTeacher

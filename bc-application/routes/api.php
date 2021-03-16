@@ -6,6 +6,7 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\StudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,7 @@ Route::post('/login', [UserController::class, 'authenticate']);
 Route::get('/users', [UserController::class, 'index']);
 Route::get('/tasks', [TaskController::class, 'index']);
 Route::get('/schedules', [TeacherController::class, 'index']);
+Route::get('/students', [StudentController::class, 'index']);
 
 Route::get('/control', [TestController::class, 'getAll']);
 

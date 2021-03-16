@@ -13,11 +13,6 @@ use Illuminate\Support\Facades\Storage;
 
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return Task::with('stud_tasks')->get();
@@ -29,12 +24,6 @@ class TaskController extends Controller
         return response()->json($tasks);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $user = JWTAuth::parseToken()->authenticate();
@@ -69,16 +58,10 @@ class TaskController extends Controller
 
         $created_id = $task->task_id;
         $created_task = Task::with('stud_tasks')->where('task_id', $created_id)->first();
+
         return response()->json($created_task, 201);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Task $task)
     {
         $user = JWTAuth::parseToken()->authenticate();
@@ -102,12 +85,6 @@ class TaskController extends Controller
         return response()->json($updated_task, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Task $task)
     {
         $user = JWTAuth::parseToken()->authenticate();
@@ -120,7 +97,10 @@ class TaskController extends Controller
         //$taskForDelete = Task::with('stud_tasks')->where('task_id', $task->task_id)->first();
 
         //$taskForDelete->delete();
-
+        if ($task->path_to_file != null)
+        {
+            Storage::delete($task->path_to_file);
+        }
         $task->delete();
 
         return response()->json(null, 204);

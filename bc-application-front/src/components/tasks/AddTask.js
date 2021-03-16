@@ -23,6 +23,7 @@ class AddTask extends Component {
         this.deadlineChanged = this.deadlineChanged.bind(this)
         this.fileChanged = this.fileChanged.bind(this)
         this.onUpdate = this.onUpdate.bind(this)
+        this.fileUpdated = this.fileUpdated.bind(this)
 
         if (this.props.match.params.id != null) {
             let task = this.props.tasks.filter(
@@ -67,6 +68,12 @@ class AddTask extends Component {
 
     fileChanged(event) {
         this.setState({
+            path_to_file: event.target.files[0],
+        })
+    }
+
+    fileUpdated(event) {
+        this.setState({
             path_to_file_updated: event.target.files[0],
         })
     }
@@ -92,9 +99,9 @@ class AddTask extends Component {
         dataTask.append('content', this.state.content);
         dataTask.append('deadline', this.state.deadline);
 
-        // for (var key of dataTask.entries()) {
-        //     console.log(key[0] + ', ' + key[1]);
-        // }
+        for (var key of dataTask.entries()) {
+            console.log(key[0] + ', ' + key[1]);
+        }
 
         if (this.props.match.params.id != null) {
             this.props
@@ -213,7 +220,7 @@ class AddTask extends Component {
                                     <input type="file" className="form-control"
                                         name="filename"
                                         id="filename"
-                                        onChange={this.fileChanged}
+                                        onChange={this.fileUpdated}
                                     />
                                     <p></p>
                                     <button onClick={() => this.onUpdate()} 
