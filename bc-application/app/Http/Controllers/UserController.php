@@ -17,11 +17,10 @@ class UserController extends Controller
 {
 
     public function index() {
-        //return User::all();
         return User::with('schedules')->with('stud_tasks')->with('enrolled_student')->with('submitted_assignments')->get();
     }
         
-    public function authenticate(Request $request)
+    public function login(Request $request)
         {
             $validator = Validator::make($request->all(), [
                 'password' => 'required|min:6',
@@ -38,7 +37,7 @@ class UserController extends Controller
                     return response()->json(['errors' => ['Neplatné prihlasovacie údaje']], 400);
                 }
             } catch (JWTException $e) {
-                return response()->json(['errors' => ['could_not_create_token']], 500);
+                return response()->json(['errors' => ['Nie je možne vytvoriť token']], 500);
             }
 
             $user = User::where('ldap_login', $request->all()['ldap_login'])->first();

@@ -20,6 +20,7 @@ import AssignedTasks from './components/tasks/AssignedTasks';
 import StudentRoute from './components/routes/StudentRoute';
 import StudentTasks from './components/student/StudentTasks';
 import ManageAssignments from './components/student/ManageAssignments';
+import EvaluateAssignment from './components/evaluation/EvaluateAssignment';
 
 class App extends Component {
 
@@ -29,6 +30,7 @@ class App extends Component {
       allTasks: [],
       allUsers: [],
       allScheduleGropus: [],
+      allSubmittedAssignments: [],
       teacherTasks: [],
       isLoading: true,
     }
@@ -213,7 +215,7 @@ class App extends Component {
     if (this.state.isLoading)
       return (
         <div className="d-flex justify-content-center">
-          <ReactLoading type="cylon" color=" #191919" height={300} width={300} />
+          <ReactLoading type="bubbles" color=" #191919" height={300} width={300} />
         </div>
       )
     return (
@@ -228,6 +230,7 @@ class App extends Component {
             <TeacherRoute path="/assignedTasks/:id" exact component={AssignedTasks} users={this.state.allUsers} tasks={this.state.allTasks} onDelete={this.removeStudent} />
             <TeacherRoute path="/myTasks/create" exact component={AddTask} onSubmit={this.addNewTask} />
             <TeacherRoute path="/myTasks/:id/edit" exact component={AddTask} tasks={this.state.allTasks} onSubmit={this.editTask} onUpdate={this.updateFile} />
+            <TeacherRoute path="/evaluate/:task/assignment/:id" exact component={EvaluateAssignment} users={this.state.allUsers} tasks={this.state.allTasks}/>
             {/* <TeacherRoute path="/myTasks/:id/delete" exact component={DeleteTask} tasks={this.state.allTasks} /> */}
             <StudentRoute path="/studentTasks" exact component={StudentTasks} users={this.state.allUsers} user={this.getMyself()} group={this.getStudentGroup()} />
             <StudentRoute path="/manageAssignment/:id" exact component={ManageAssignments} user={this.getMyself()} onSubmit={this.submitAssignment} onUpdate={this.updateAssignment} />

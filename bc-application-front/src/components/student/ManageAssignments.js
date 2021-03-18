@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import Navigation from '../Navigation'
+import dateFormat from 'dateformat';
+
 
 class ManageAssignments extends Component {
     constructor(props) {
@@ -20,6 +22,10 @@ class ManageAssignments extends Component {
         this.ipAdressChanged = this.ipAdressChanged.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
         this.onUpdate = this.onUpdate.bind(this)
+    }
+
+    toDate(time) {
+        return dateFormat(time, "d.mm.yyyy")
     }
 
     fileChanged(event) {
@@ -75,7 +81,7 @@ class ManageAssignments extends Component {
                     <div className="jumbotron bg-white">
                         <h1>{this.state.concreteTask.title}</h1>
                         <p className="lead">{this.state.concreteTask.content}</p>
-                        <p className="lead">Deadline: {this.state.concreteTask.deadline}</p>
+                        <p className="lead">Deadline: {this.toDate(this.state.concreteTask.deadline)}</p>
                         {this.state.concreteTask.path_to_file !== null && (
                             <a className="btn btn-lg btn-dark" href={this.state.concreteTask.path_to_file} role="button">Zobraz zadanie  &raquo;</a>
                         )}

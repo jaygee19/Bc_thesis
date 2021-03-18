@@ -1,6 +1,7 @@
 import { React, Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import AuthHelper from '../../helpers/AuthHelper'
+import dateFormat from 'dateformat';
 
 class Task extends Component {
     constructor(props) {
@@ -8,6 +9,10 @@ class Task extends Component {
         this.onEdit = this.onEdit.bind(this)
         this.onAssign = this.onAssign.bind(this)
         this.onListOf = this.onListOf.bind(this)
+    }
+
+    toDate(time) {
+        return dateFormat(time, "d.mm.yyyy")
     }
 
     onAssign() {
@@ -35,8 +40,8 @@ class Task extends Component {
                                 <h3 className="mb-0">
                                     <p className="text-dark" >{this.props.title}</p>
                                 </h3>
-                                <div className="mb-1 text-muted"><small>Vytvorené: {this.props.date} ( {this.props.userName} {this.props.userSurname} )</small></div>
-                                <div className="mb-1 text-muted"><small>Deadline: {this.props.deadline}</small></div>
+                                <div className="mb-1 text-muted"><small>Vytvorené: {this.toDate(this.props.date)} ( {this.props.userName} {this.props.userSurname} )</small></div>
+                                <div className="mb-1 text-muted"><small>Deadline: {this.toDate(this.props.deadline)}</small></div>
                                 <p className="card-text mb-auto text-info"><small>Popis zadania: {this.props.content}</small></p>
                                 <p className="card-text mb-auto text-info"><small>Priložený súbor: {this.props.path} </small></p>
                                 {/* <a href="#">Continue reading</a> */}

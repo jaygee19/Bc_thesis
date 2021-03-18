@@ -18,17 +18,18 @@ use App\Http\Controllers\StudentController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::post('/register', [UserController::class, 'register']);
-Route::post('/login', [UserController::class, 'authenticate']);
 
-Route::get('/users', [UserController::class, 'index']);
-Route::get('/tasks', [TaskController::class, 'index']);
-Route::get('/schedules', [TeacherController::class, 'index']);
-Route::get('/students', [StudentController::class, 'index']);
+Route::post('/register', [UserController::class, 'register']);
+Route::post('/login', [UserController::class, 'login']);
 
 Route::get('/control', [TestController::class, 'getAll']);
 
-Route::group(['middleware' => ['jwt.verify']], function() {
+Route::group(['middleware' => ['jwt.verify']], function () {
+    Route::get('/users', [UserController::class, 'index']);
+    Route::get('/tasks', [TaskController::class, 'index']);
+    Route::get('/schedules', [TeacherController::class, 'index']);
+    Route::get('/students', [StudentController::class, 'index']);
+
     Route::get('/logout', [UserController::class, 'logout']);
     Route::get('/user', [UserController::class, 'getAuthenticatedUser']);
     Route::post('/tasks/store', [TaskController::class, 'store']);
@@ -42,7 +43,6 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     Route::post('submit/assignment', [StudentController::class, 'storeAssignment']);
     Route::post('update/assignment', [StudentController::class, 'updateAssignment']);
-
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

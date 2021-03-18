@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Navigation from './Navigation';
+import bsCustomFileInput from 'bs-custom-file-input';
 
 class Test extends Component {
     constructor(props) {
@@ -32,28 +33,23 @@ class Test extends Component {
             .onSubmit(formData)
     }
 
-    render() {
+
+    componentDidMount() {
+        bsCustomFileInput.init()
+      }
+    
+      render() {
         return (
-            <div>
-                <Navigation />
-                <div className="container">
-                    <form onSubmit={this.onSubmit} encType="multipart/form-data">
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" name="filename" id="filename"
-                                onChange={this.fileChanged}
-                            />
-                            <label class="custom-file-label" for="customFile">Choose file</label>
-                        </div>
-                        <button className="w-50 btn btn-lg btn-primary" type="submit">Ulož</button>
-                    </form>
-                </div>
-
+          <div class="container">
+            <div class="custom-file">
+              <input id="inputGroupFile01" type="file" class="custom-file-input" />
+              <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
             </div>
-
-
-        )
-    }
+          </div>
+        );
+      }
 
 }
+
 
 export default Test;

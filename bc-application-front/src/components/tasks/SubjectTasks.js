@@ -8,28 +8,48 @@ class SubjectTasks extends Component {
         super(props)
 
         this.state = {
-          }
+            value:'',
+        }
+
+        this.valueChanged = this.valueChanged.bind(this)
     }
-    
-    getUserName(id)
-    {
-       let concreteUser = this.props.users.filter(item => item.user_id === id)
-       let fullName = concreteUser[0].name + " " + concreteUser[0].surname
-       return fullName
+
+    getUserName(id) {
+        let concreteUser = this.props.users.filter(item => item.user_id === id)
+        let fullName = concreteUser[0].name + " " + concreteUser[0].surname
+        return fullName
+    }
+
+    valueChanged(event) {
+        this.setState({
+            value: event.target.value,
+        })
     }
 
     render() {
         return (
             <div>
                 <Navigation />
-                <div className="container">
+                <div className="container" style={{ color: 'white' }}>
                     <p></p>
                     <div className="d-flex justify-content-center">
-                    <h3 style={{ color: 'white' }}> Všetky zadania: </h3>
+                        <h3> Všetky zadania: </h3>
+                    </div>
+                    <p></p>
+                    <div className="row col-3">
+                        <label>Vyberte si typ: </label>
+                        <select type="text" className="form-control" value={this.state.value} onChange={this.valueChanged}>
+                                    <option value=""></option>
+                                    <option value="first_check">Prvý zápočet</option>
+                                    <option value="second_check">Druhý zápočet</option>
+                                    <option value="semester_work">Semestrálna práca</option>
+                                    <option value="homework">Domáca úloha</option>
+                        </select>
                     </div>
                     <p></p>
                 </div>
-                {this.props.tasks.map((task) => {
+                {this.props.tasks.filter((task) => task.type === this.state.value || this.state.value === "")
+                .map((task) => {
                     return (
                         <Task
                             key={task.task_id}

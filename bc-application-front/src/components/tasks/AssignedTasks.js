@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Navigation from '../Navigation'
+import dateFormat from 'dateformat';
 
 class AssignedTasks extends Component {
     constructor(props) {
@@ -21,11 +22,23 @@ class AssignedTasks extends Component {
             }
         }
 
+
         this.state = {
             concreteTask: task,
             assignedStudents: students,
         }
+
         this.onRemove = this.onRemove.bind(this)
+        this.onDisplay = this.onDisplay.bind(this)
+    }
+
+    toDate(time) {
+        return dateFormat(time, "d.mm.yyyy")
+    }
+
+    isSubmitted(array) {
+        let temp = array.filter(item => item.task_id == this.props.match.params.id)
+        return temp.length !== 0
     }
 
     onRemove(id) {
@@ -39,6 +52,11 @@ class AssignedTasks extends Component {
             })
     }
 
+    onDisplay(array) {
+        let chosen_assignment = array.filter(item => item.task_id == this.props.match.params.id)
+        this.props.history.push('/evaluate/' + this.props.match.params.id + '/assignment/' + chosen_assignment[0].assignment_id)
+    }
+
 
     render() {
         return (
@@ -49,7 +67,7 @@ class AssignedTasks extends Component {
                 <h3>Zoznam pridelených študentov:</h3>
                 <br />
                 <h2 className="blog-post-title">{this.state.concreteTask.title}</h2>
-                <p className="blog-post-meta"> Deadline: {this.state.concreteTask.deadline}</p>
+                <p className="blog-post-meta"> Deadline: {this.toDate(this.state.concreteTask.deadline)}</p>
                 <p> {this.state.concreteTask.content} </p>
                 </div>
                 <div className="container">
@@ -61,6 +79,7 @@ class AssignedTasks extends Component {
                                 <th scope="col">Skupina</th>
                                 <th scope="col">Stav</th>
                                 <th scope="col">Odobrať</th>
+                                <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody className="table-secondary">
@@ -70,8 +89,19 @@ class AssignedTasks extends Component {
                                         <tr key={chosen.user_id}>
                                             <td>{chosen.name} {chosen.surname}</td>
                                             <td>{chosen.group}</td>
-                                            <td className="table-danger"></td>
+                                            { this.isSubmitted(chosen.submitted_assignments) && (
+                                            <td className="table-success">Odovzdané</td>
+                                            )} 
+                                            { !this.isSubmitted(chosen.submitted_assignments) && (
+                                            <td className="table-danger">Neodovzdané</td>
+                                            )} 
                                             <td onClick={() => this.onRemove(chosen.user_id)}> <button className="btn-dark"> x </button> </td>
+                                            { this.isSubmitted(chosen.submitted_assignments) && (
+                                            <td onClick={() => this.onDisplay(chosen.submitted_assignments)}> <button className="btn-dark"> Ohodnoť </button> </td>
+                                            )}
+                                            {!this.isSubmitted(chosen.submitted_assignments) && (
+                                            <td></td>
+                                            )}  
                                         </tr>
                                     )
                                 })}

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Navigation from '../Navigation'
+import dateFormat from 'dateformat';
 
 class StudentTasks extends Component {
     constructor(props) {
@@ -16,6 +17,10 @@ class StudentTasks extends Component {
         }
 
         this.onClick = this.onClick.bind(this)
+    }
+
+    toDate(time) {
+        return dateFormat(time, "d.mm.yyyy")
     }
 
     onClick(id) {
@@ -62,7 +67,7 @@ class StudentTasks extends Component {
                                         <tr key={chosen.task_id}>
                                             <td>{chosen.title}</td>
                                             <td>{chosen.type}</td>
-                                            <td>{chosen.deadline}</td>
+                                            <td>{this.toDate(chosen.deadline)}</td>
                                             <td><button onClick={() => this.onClick(chosen.task_id)} className="btn btn-sm btn-dark">Zobraz</button></td>
                                             {this.isSubmitted(chosen.task_id) && (
                                             <td className="table-warning">Odovzdané</td>

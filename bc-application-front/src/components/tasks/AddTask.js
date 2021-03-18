@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import Navigation from '../Navigation'
 import { withRouter } from 'react-router-dom'
+import bsCustomFileInput from 'bs-custom-file-input';
+
 
 class AddTask extends Component {
     constructor(props) {
@@ -38,9 +40,12 @@ class AddTask extends Component {
                 path_to_file: task.path_to_file,
             }
         }
-
-        //console.log(this.state.id)
     }
+
+    
+    componentDidMount() {
+        bsCustomFileInput.init()
+      }
 
     typeChanged(event) {
         this.setState({
@@ -84,9 +89,9 @@ class AddTask extends Component {
         dataTask.append('id', this.props.match.params.id);
 
         this.props.onUpdate(dataTask)
-        .then(() => {
-            this.props.history.push('/myTasks')
-        })
+            .then(() => {
+                this.props.history.push('/myTasks')
+            })
     }
 
     onSubmit(event) {
@@ -122,28 +127,6 @@ class AddTask extends Component {
                     this.props.history.push('/myTasks')
                 })
         }
-        // if (this.props.match.params.id != null)
-        // {
-        //     getApiResponse('tasks/' + this.state.id, 'put', {
-        //         type: this.state.type,
-        //         content: this.state.content,
-        //         deadline: this.state.deadline,
-        //     })
-        //     .then(() => {
-        //         this.props.history.push('/')
-        //     })
-        // } else {
-        //     getApiResponse('tasks/store', 'post', {
-        //         type: this.state.type,
-        //         content: this.state.content,
-        //         deadline: this.state.deadline,
-        //     })
-        //     .then(() => {
-        //         this.props.history.push('/')
-        //     })
-        // }
-
-
         //   .catch((e) => {
         //     this.setState({
         //       nameErrors: e.response.data['name'] || [],
@@ -165,23 +148,22 @@ class AddTask extends Component {
                         <p></p>
                         <div className="justify-content-center align-items-center">
                             <form onSubmit={this.onSubmit} encType="multipart/form-data">
-                                <label for="type">Typ zadania</label>
-                                <select type="text" class="form-control" id="type" name="type" value={this.state.type} onChange={this.typeChanged} required>
-                                    {/* <option value={this.state.type}>{this.state.type}</option>  */}
+                                <label>Typ zadania</label>
+                                <select type="text" className="form-control" id="type" name="type" value={this.state.type} onChange={this.typeChanged} required>
                                     <option value=""></option>
                                     <option value="first_check">Prvý zápočet</option>
                                     <option value="second_check">Druhý zápočet</option>
                                     <option value="semester_work">Semestrálna práca</option>
                                     <option value="homework">Domáca úloha</option>
                                 </select>
-                                <label for="title">Názov</label>
+                                <label>Názov</label>
                                 <input type="text" className="form-control"
                                     id="title"
                                     name="title"
                                     value={this.state.title}
                                     onChange={this.titleChanged}
                                 />
-                                <label for="type">Popis</label>
+                                <label>Popis</label>
                                 <textarea type="text" className="form-control"
                                     id="content"
                                     name="content"
@@ -189,7 +171,7 @@ class AddTask extends Component {
                                     onChange={this.contentChanged}
                                     required>
                                 </textarea>
-                                <label for="type">Deadline</label>
+                                <label>Deadline</label>
                                 <input type="date" className="form-control" placeholder="Deadline"
                                     id="deadline"
                                     name="deadline"
@@ -198,37 +180,43 @@ class AddTask extends Component {
                                 />
                                 {(this.props.match.params.id == null) && (
                                     <div>
-                                        <label for="filename">Priložiť súbor</label>
-                                        <input type="file" className="form-control"
+                                        <label>Priložiť súbor</label>
+                                        <div className="custom-file">
+                                            <input id="inputGroupFile01" type="file" className="custom-file-input" 
                                             name="filename"
                                             id="filename"
                                             onChange={this.fileChanged}
-                                        />
+                                            />
+                                            <label className="custom-file-label">Choose file</label>
+                                        </div>
                                     </div>
                                 )}
                                 {/* {getAllErrors(this.state.passwordErrors)} */}
                                 <p></p>
                                 <button className="w-50 btn btn-lg btn-primary" type="submit">Ulož</button>
                                 <p></p>
-                                {/* <p className="mt-5 mb-3 text-muted">&copy; since 2021</p> */}
                             </form>
 
                             {(this.props.match.params.id != null) && (
                                 <div>
-                                    <label for="filename">Zmeniť súbor</label>
+                                    <label>Zmeniť súbor</label>
                                     <p>{this.state.path_to_file}</p>
-                                    <input type="file" className="form-control"
-                                        name="filename"
-                                        id="filename"
-                                        onChange={this.fileUpdated}
-                                    />
+                                    
+                                    <div className="custom-file">
+                                            <input id="inputGroupFile01" type="file" className="custom-file-input" 
+                                            name="filename"
+                                            id="filename"
+                                            onChange={this.fileUpdated}
+                                            />
+                                            <label className="custom-file-label">Choose file</label>
+                                        </div>
+
                                     <p></p>
-                                    <button onClick={() => this.onUpdate()} 
-                                    className="w-50 btn btn-lg btn-primary" type="submit">Zmeň súbor
+                                    <button onClick={() => this.onUpdate()}
+                                        className="w-50 btn btn-lg btn-primary" type="submit">Zmeň súbor
                                     </button>
                                     <p></p>
                                 </div>
-
                             )}
                         </div>
                     </div>

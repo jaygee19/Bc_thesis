@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Navigation from '../Navigation'
 import AuthHelper from '../../helpers/AuthHelper';
+import dateFormat from 'dateformat';
 
 class AssignTasks extends Component {
     constructor(props) {
@@ -29,6 +30,10 @@ class AssignTasks extends Component {
 
     dayOfWeek(dayIndex) {
         return ["Nedeľa", "Pondelok", "Utorok", "Streda", "Štvrtok", "Piatok", "Sobota"][dayIndex] || '';
+    }
+
+    toDate(time) {
+        return dateFormat(time, "d.mm.yyyy")
     }
 
     onSubmit(event) {
@@ -87,67 +92,72 @@ class AssignTasks extends Component {
     }
 
     render() {
-        return (     
+        return (
             <div>
                 <Navigation />
                 <div className="container">
                     <p></p>
-                    <h3>Pridelenie študentov:</h3>
-                    <br />
-                    <h2 className="blog-post-title">{this.state.concreteTask.title}</h2>
-                    <p className="blog-post-meta"> Deadline: {this.state.concreteTask.deadline}</p>
-                    <p> {this.state.concreteTask.content} </p>
-                    <span className="d-flex justify-content-end">
-                        Priradiť:
-                    </span>
-                    <span className="d-flex justify-content-start">
-                        Už pridelený:
-                    </span>
-                    <hr />
+                    <div style={{ color: 'white' }}>
+                        <h3>Pridelenie študentov:</h3>
+                        <br />
+                        <h2 className="blog-post-title">{this.state.concreteTask.title}</h2>
+                        <p className="blog-post-meta"> Deadline: {this.toDate(this.state.concreteTask.deadline)}</p>
+                        <p> {this.state.concreteTask.content} </p>
+                        <hr />
+                    </div>
                     <div className="row">
                         <div className=" card assign-card col ">
                         <p></p>
-                                {this.state.assignedStudents
-                                    .map((chosen) => {
-                                        return (
-                                            <p> {chosen.name} {chosen.surname} </p>
-                                        )
-                                    })}
+                            <h3 className="d-flex justify-content-start">
+                                Už pridelený:
+                            </h3>
+                            <hr/>
+                            <p></p>
+                            {this.state.assignedStudents
+                                .map((chosen) => {
+                                    return (
+                                        <h6> {chosen.name} {chosen.surname} </h6>
+                                    )
+                                })}
                         </div>
 
                         <div className="card assign-card col-8">
-                        <p></p>
-                        <form onSubmit={this.onSubmit}>
-                        {this.state.allGroups.map((group) => {
-                            return (
-                                <div key={group.schedule_id}>
-                                    <span className="font-weight-bold" style={{ color: "black" }}>
-                                        {this.dayOfWeek(group.day)} - {group.time_begin} ( {AuthHelper.getInstance().getUserName()} )
-                                    </span>
-                                    <span onClick={() => this.assignStudent(group.schedule_id)}>  +  </span>
+                            <p></p>
+                            <h3 className="d-flex justify-content-start">
+                                Priradiť:
+                            </h3>
+                            <form onSubmit={this.onSubmit}>
+                                {this.state.allGroups.map((group) => {
+                                    return (
+                                        <div key={group.schedule_id}>
+                                            <h4 className="font-weight-bold" style={{ color: "black" }}>
+                                                {this.dayOfWeek(group.day)} - {group.time_begin} ( {AuthHelper.getInstance().getUserName()} )
+                                        <span className="my_btn btn btn-sm btn-dark" onClick={() => this.assignStudent(group.schedule_id)}>  +  </span>
+                                            </h4>
 
 
 
-                                    <div className="">
-                                        <div>
-                                            {this.state.chosenStudents.filter((student) => student.pivot.schedule_id === group.schedule_id)
-                                                .map((chosen) => {
-                                                    return (
-                                                        <div key={chosen.user_id}>
-                                                            <span style={{ color: "green" }}> {chosen.name} {chosen.surname} </span>
-                                                            <span onClick={() => this.removeStudent(chosen.user_id)}> - </span>
-                                                        </div>
-                                                    )
-                                                })}
+                                            <div className="">
+                                                <div>
+                                                    {this.state.chosenStudents.filter((student) => student.pivot.schedule_id === group.schedule_id)
+                                                        .map((chosen) => {
+                                                            return (
+                                                                <div key={chosen.user_id}>
+                                                                    <h6 style={{ color: "green" }}> {chosen.name} {chosen.surname}
+                                                                        <span className="my_btn btn btn-sm btn-dark" onClick={() => this.removeStudent(chosen.user_id)}> - </span>
+                                                                    </h6>
+                                                                </div>
+                                                            )
+                                                        })}
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            )
-                        })}
-                        <p></p>
-                        <button className="w-50 btn btn-lg btn-primary" type="submit">Ulož</button>
-                        <p></p>
-                        </form>
+                                    )
+                                })}
+                                <p></p>
+                                <button className="w-50 btn btn-lg btn-dark" type="submit">Ulož</button>
+                                <p></p>
+                            </form>
                         </div>
                     </div>
                 </div>
