@@ -8,17 +8,34 @@ class EvaluateAssignment extends Component {
         let filteredTask = this.props.tasks.filter(task => task.task_id == this.props.match.params.task)
         let filteredAssignment = filteredTask[0].submitted_assignments.filter(assignment => assignment.assignment_id == this.props.match.params.id)
         let filteredStudent = this.props.users.filter(user => user.user_id === filteredAssignment[0].student_id)
-        this.state = {
-            assignment: filteredAssignment[0],
-            student: filteredStudent[0],
-            task: filteredTask[0],
-            evaluate: '',
-            comment: '',
+        let assignmentResult = filteredStudent[0].submitted_assignments.filter(assignment => assignment.assignment_id == filteredAssignment[0].assignment_id)
+
+        if (assignmentResult[0].result !== null) {
+            console.log("OK")
+            this.state = {
+                assignment: filteredAssignment[0],
+                student: filteredStudent[0],
+                task: filteredTask[0],
+                evaluation: assignmentResult[0].result.evaluation,
+                comment: assignmentResult[0].result.comment,
+                evaluatedBefore: true,
+                resultID: assignmentResult[0].result.result_id,
+            }
+        } else {
+            console.log("NE - OK")
+            this.state = {
+                assignment: filteredAssignment[0],
+                student: filteredStudent[0],
+                task: filteredTask[0],
+                evaluation: '',
+                comment: '',
+                evaluatedBefore: false,
+            }
         }
 
         this.onSubmit = this.onSubmit.bind(this)
         this.commentChanged = this.commentChanged.bind(this)
-        this.evaluateChanged = this.evaluateChanged.bind(this)
+        this.evaluationChanged = this.evaluationChanged.bind(this)
     }
 
     commentChanged(event) {
@@ -27,16 +44,40 @@ class EvaluateAssignment extends Component {
         })
     }
 
-    evaluateChanged(event) {
+    evaluationChanged(event) {
         this.setState({
-            evaluate: event.target.value,
+            evaluation: event.target.value,
         })
     }
 
     onSubmit(event) {
         event.preventDefault()
 
-        this.props.history.push('/assignedTasks/' + this.props.match.params.task)
+        if(this.state.evaluatedBefore){
+            console.log("SOM DOBRE", this.state.resultID)
+            this.props
+            .onUpdate({
+                evaluation: this.state.evaluation,
+                comment: this.state.comment,
+                id: this.state.assignment.assignment_id,
+                user_id: this.state.student.user_id,
+                result_id: this.state.resultID,
+            })
+            .then(() => {
+                this.props.history.push('/assignedTasks/' + this.state.task.task_id)
+            })
+        } else {
+            this.props
+            .onSubmit({
+                evaluation: this.state.evaluation,
+                comment: this.state.comment,
+                id: this.state.assignment.assignment_id,
+                user_id: this.state.student.user_id,
+            })
+            .then(() => {
+                this.props.history.push('/assignedTasks/' + this.state.task.task_id)
+            })
+        }
     }
 
     render() {
@@ -59,10 +100,10 @@ class EvaluateAssignment extends Component {
                             <p></p>
                             <label className="d-flex justify-content-start">Počet bodov:</label>
                             <input type="text" className="col-1 form-control"
-                                id="evaluate"
-                                name="evaluate"
-                                value={this.state.evaluate}
-                                onChange={this.evaluateChanged}
+                                id="evaluation"
+                                name="evaluation"
+                                value={this.state.evaluation}
+                                onChange={this.evaluationChanged}
                             />
                             <p></p>
                             <label className="d-flex justify-content-start">Komentár:</label>
@@ -71,7 +112,7 @@ class EvaluateAssignment extends Component {
                                 name="comment"
                                 value={this.state.comment}
                                 onChange={this.commentChanged}
-                                >
+                            >
                             </textarea>
                             <p></p>
                             <button className="w-50 btn btn-lg btn-dark" type="submit">Ulož</button>

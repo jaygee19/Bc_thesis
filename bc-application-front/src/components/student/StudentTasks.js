@@ -5,8 +5,8 @@ import dateFormat from 'dateformat';
 class StudentTasks extends Component {
     constructor(props) {
         super(props)
-        
-        let teacher = this.props.users.filter(u => u.user_id === this.props.group.teacher)  
+
+        let teacher = this.props.users.filter(u => u.user_id === this.props.group.teacher)
         let tasks = this.props.user.stud_tasks
         let sub = this.props.user.submitted_assignments
 
@@ -14,6 +14,7 @@ class StudentTasks extends Component {
             concreteTeacher: teacher[0],
             studentTasks: tasks,
             submittedAssignments: sub,
+            count: 0,
         }
 
         this.onClick = this.onClick.bind(this)
@@ -36,20 +37,36 @@ class StudentTasks extends Component {
         return temp.length !== 0
     }
 
+    isEvaluated(id) {
+        let filtered = this.state.submittedAssignments.filter(item => item.task_id === id)
+        if (filtered.length !== 0) {
+            return filtered[0].result !== null
+        } else {
+            return false
+        }
+    }
+
+    countPoints(data) {
+        let counter = 0
+        for (let i = 0; i < data.length; i++) {
+            counter = counter + data[i].result.evaluation
+        }
+        return counter
+    }
+
     render() {
         return (
             <div>
                 <Navigation />
                 <div style={{ color: 'white' }}>
-                <p></p>
-                <h3>Zoznam pridelených zadaní:</h3>
-                <br />
-                <h2 className="blog-post-title"> Kurz: {this.dayOfWeek(this.props.group.day)} - {this.props.group.time_begin}:00 </h2>
-                <p className="blog-post-meta"> Cvičiaci: {this.state.concreteTeacher.name} {this.state.concreteTeacher.surname} </p>
+                    <p></p>
+                    <h3>Zoznam pridelených zadaní:</h3>
+                    <br />
+                    <h2 className="blog-post-title"> Kurz: {this.dayOfWeek(this.props.group.day)} - {this.props.group.time_begin}:00 </h2>
+                    <p className="blog-post-meta"> Cvičiaci: {this.state.concreteTeacher.name} {this.state.concreteTeacher.surname} </p>
                 </div>
                 <div className="container">
-                    <p></p>
-                    
+                    <p style={{ color: 'white' }} className="d-flex justify-content-start"> Body za semester: {this.countPoints(this.state.submittedAssignments)} / 100 </p>
                     <table className="table table-bordered table-sm">
                         <thead className="thead-dark">
                             <tr>
@@ -68,12 +85,20 @@ class StudentTasks extends Component {
                                             <td>{chosen.title}</td>
                                             <td>{chosen.type}</td>
                                             <td>{this.toDate(chosen.deadline)}</td>
-                                            <td><button onClick={() => this.onClick(chosen.task_id)} className="btn btn-sm btn-dark">Zobraz</button></td>
-                                            {this.isSubmitted(chosen.task_id) && (
-                                            <td className="table-warning">Odovzdané</td>
+                                            {this.isEvaluated(chosen.task_id) && (
+                                                <td><button className="btn btn-sm btn-dark">Výsledok</button></td>
                                             )}
-                                            {!this.isSubmitted(chosen.task_id) && (
-                                            <td className="table-danger">Neodovzdané</td>
+                                            {!this.isEvaluated(chosen.task_id) && (
+                                                <td><button onClick={() => this.onClick(chosen.task_id)} className="btn btn-sm btn-dark">Odovzdaj</button></td>
+                                            )}
+                                            {this.isEvaluated(chosen.task_id) && (
+                                                <td className="table-success">Hodnotené</td>
+                                            )}
+                                            {this.isSubmitted(chosen.task_id) && !this.isEvaluated(chosen.task_id) && (
+                                                <td className="table-warning">Odovzdané</td>
+                                            )}
+                                            {!this.isSubmitted(chosen.task_id) && !this.isEvaluated(chosen.task_id) && (
+                                                <td className="table-danger">Neodovzdané</td>
                                             )}
                                         </tr>
                                     )

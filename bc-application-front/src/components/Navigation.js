@@ -42,11 +42,6 @@ class Navigation extends Component {
                                     <Link to="/subjectTasks" className="nav-link">Všetky zadania</Link>
                                 </li>
                             )}
-                            {AuthHelper.getInstance().isUserTeacher() && (
-                                <li className="nav-item active font-weight-bolder">
-                                    <Link to="/test" className="nav-link">Test</Link>
-                                </li>
-                            )}
                             {AuthHelper.getInstance().isUserStudent() && (
                                 <li className="nav-item active font-weight-bolder">
                                     <Link to="/studentTasks" className="nav-link">Pridelené zadania</Link>

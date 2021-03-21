@@ -34,7 +34,7 @@ class StudentController extends Controller
             'ip_adress' => $request->get('ip_adress'),
         ]);
 
-        $stored_by = User::with('schedules')->with('stud_tasks')->with('enrolled_student')->with('submitted_assignments')->where('user_id', $user->user_id)->first();
+        $stored_by = User::with('schedules')->with('stud_tasks')->with('enrolled_student')->with('submitted_assignments.result')->where('user_id', $user->user_id)->first();
 
         return response()->json($stored_by, 201);
     }
@@ -52,7 +52,7 @@ class StudentController extends Controller
 
         $sub_assignment->update(['path_to_file' => $request->file('filename')->store('public/uploads')]);
 
-        $updated_by = User::with('schedules')->with('stud_tasks')->with('enrolled_student')->with('submitted_assignments')->where('user_id', $user->user_id)->first();
+        $updated_by = User::with('schedules')->with('stud_tasks')->with('enrolled_student')->with('submitted_assignments.result')->where('user_id', $user->user_id)->first();
 
         return response()->json($updated_by, 200);   
      }

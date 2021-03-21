@@ -22,7 +22,6 @@ class AssignedTasks extends Component {
             }
         }
 
-
         this.state = {
             concreteTask: task,
             assignedStudents: students,
@@ -39,6 +38,15 @@ class AssignedTasks extends Component {
     isSubmitted(array) {
         let temp = array.filter(item => item.task_id == this.props.match.params.id)
         return temp.length !== 0
+    }
+
+    isEvaluated(array) {
+        let filtered = array.filter(item => item.task_id === this.state.concreteTask.task_id)
+        if (filtered.length !== 0) {
+            return filtered[0].result !== null
+        } else {
+            return false
+        }
     }
 
     onRemove(id) {
@@ -62,13 +70,13 @@ class AssignedTasks extends Component {
         return (
             <div>
                 <div style={{ color: 'white' }}>
-                <Navigation />
-                <p></p>
-                <h3>Zoznam pridelených študentov:</h3>
-                <br />
-                <h2 className="blog-post-title">{this.state.concreteTask.title}</h2>
-                <p className="blog-post-meta"> Deadline: {this.toDate(this.state.concreteTask.deadline)}</p>
-                <p> {this.state.concreteTask.content} </p>
+                    <Navigation />
+                    <p></p>
+                    <h3>Zoznam pridelených študentov:</h3>
+                    <br />
+                    <h2 className="blog-post-title">{this.state.concreteTask.title}</h2>
+                    <p className="blog-post-meta"> Deadline: {this.toDate(this.state.concreteTask.deadline)}</p>
+                    <p> {this.state.concreteTask.content} </p>
                 </div>
                 <div className="container">
                     <p></p>
@@ -79,7 +87,7 @@ class AssignedTasks extends Component {
                                 <th scope="col">Skupina</th>
                                 <th scope="col">Stav</th>
                                 <th scope="col">Odobrať</th>
-                                <th scope="col"></th>
+                                <th scope="col">Stav hodnotenia</th>
                             </tr>
                         </thead>
                         <tbody className="table-secondary">
@@ -90,18 +98,25 @@ class AssignedTasks extends Component {
                                             <td>{chosen.name} {chosen.surname}</td>
                                             <td>{chosen.group}</td>
                                             { this.isSubmitted(chosen.submitted_assignments) && (
-                                            <td className="table-success">Odovzdané</td>
-                                            )} 
-                                            { !this.isSubmitted(chosen.submitted_assignments) && (
-                                            <td className="table-danger">Neodovzdané</td>
-                                            )} 
-                                            <td onClick={() => this.onRemove(chosen.user_id)}> <button className="btn-dark"> x </button> </td>
-                                            { this.isSubmitted(chosen.submitted_assignments) && (
-                                            <td onClick={() => this.onDisplay(chosen.submitted_assignments)}> <button className="btn-dark"> Ohodnoť </button> </td>
+                                                <td className="table-success">Odovzdané</td>
                                             )}
+                                            { !this.isSubmitted(chosen.submitted_assignments) && (
+                                                <td className="table-danger">Neodovzdané</td>
+                                            )}
+                                            <td onClick={() => this.onRemove(chosen.user_id)}> <button className="btn-dark"> x </button> </td>
+
+
+                                            { this.isSubmitted(chosen.submitted_assignments) && this.isEvaluated(chosen.submitted_assignments) && (
+                                                <td className="table-success" onClick={() => this.onDisplay(chosen.submitted_assignments)}> <button className="btn-dark"> <i> Hodnotené </i> </button> </td>
+                                            )}
+
+                                            { this.isSubmitted(chosen.submitted_assignments) && !this.isEvaluated(chosen.submitted_assignments) && (
+                                                <td onClick={() => this.onDisplay(chosen.submitted_assignments)}> <button className="btn-dark"> Ohodnoť </button> </td>
+                                            )}
+
                                             {!this.isSubmitted(chosen.submitted_assignments) && (
-                                            <td></td>
-                                            )}  
+                                                <td> <i> Nehodnotené </i> </td>
+                                            )}
                                         </tr>
                                     )
                                 })}

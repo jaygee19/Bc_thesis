@@ -7,6 +7,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\ResultController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +44,9 @@ Route::group(['middleware' => ['jwt.verify']], function () {
 
     Route::post('submit/assignment', [StudentController::class, 'storeAssignment']);
     Route::post('update/assignment', [StudentController::class, 'updateAssignment']);
+    
+    Route::post('store/result', [ResultController::class, 'store']);
+    Route::put('update/result/{result}', [ResultController::class, 'update']);
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

@@ -126,7 +126,9 @@ class TaskController extends Controller
             Storage::delete($task->path_to_file);
         }
 
-        $task->update(['path_to_file' => $request->file('filename')->store('public/uploads')]);
+        $task->update(
+            ['path_to_file' => $request->file('filename')->store('public/uploads')]
+        );
 
         return response()->json($task, 200);   
      }

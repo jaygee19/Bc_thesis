@@ -43,6 +43,8 @@ class App extends Component {
     this.updateFile = this.updateFile.bind(this)
     this.submitAssignment = this.submitAssignment.bind(this)
     this.updateAssignment = this.updateAssignment.bind(this)
+    this.storeResult = this.storeResult.bind(this)
+    this.updateResult = this.updateResult.bind(this)
   }
 
   async componentDidMount() {
@@ -57,6 +59,8 @@ class App extends Component {
     let allSubjectTasks = await getApiResponse('tasks', 'get')
     let allSubjectUsers = await getApiResponse('users', 'get')
     let allSubjectScheduleGroup = await getApiResponse('schedules', 'get')
+
+    console.log(allSubjectUsers)
 
     this.setState({
       allTasks: allSubjectTasks.data,
@@ -211,6 +215,31 @@ class App extends Component {
 
   //******************************** SUBMIT ASSIGNMENT END */
 
+  //******************************** RESULT START */
+
+  async storeResult(data) {
+    const user = await getApiResponse('store/result', 'post', data)
+    console.log("RESULT SUER", user)
+    this.setState(state => {
+      return {
+        allUsers: state.allUsers.map(u => u.user_id === user.data.user_id ? user.data : u),
+      }
+    })
+  }
+
+  async updateResult(data) {
+    const user = await getApiResponse('update/result/' + data.result_id, 'put', data)
+    console.log("RESULT SUER po Update", user)
+    this.setState(state => {
+      return {
+        allUsers: state.allUsers.map(u => u.user_id === user.data.user_id ? user.data : u),
+      }
+    })
+  }
+
+  //******************************** RESULT START */
+
+
   render() {
     if (this.state.isLoading)
       return (
@@ -219,7 +248,7 @@ class App extends Component {
         </div>
       )
     return (
-      <div className="App bg-dark">
+      <div className="App bg-dark" style = {{height:"100%", "min-height": "100vh"}}>
         <Router>
           <Switch>
             {/* //<main className="form-signin"> */}
@@ -230,7 +259,7 @@ class App extends Component {
             <TeacherRoute path="/assignedTasks/:id" exact component={AssignedTasks} users={this.state.allUsers} tasks={this.state.allTasks} onDelete={this.removeStudent} />
             <TeacherRoute path="/myTasks/create" exact component={AddTask} onSubmit={this.addNewTask} />
             <TeacherRoute path="/myTasks/:id/edit" exact component={AddTask} tasks={this.state.allTasks} onSubmit={this.editTask} onUpdate={this.updateFile} />
-            <TeacherRoute path="/evaluate/:task/assignment/:id" exact component={EvaluateAssignment} users={this.state.allUsers} tasks={this.state.allTasks}/>
+            <TeacherRoute path="/evaluate/:task/assignment/:id" exact component={EvaluateAssignment} users={this.state.allUsers} tasks={this.state.allTasks} onSubmit={this.storeResult} onUpdate={this.updateResult}/>
             {/* <TeacherRoute path="/myTasks/:id/delete" exact component={DeleteTask} tasks={this.state.allTasks} /> */}
             <StudentRoute path="/studentTasks" exact component={StudentTasks} users={this.state.allUsers} user={this.getMyself()} group={this.getStudentGroup()} />
             <StudentRoute path="/manageAssignment/:id" exact component={ManageAssignments} user={this.getMyself()} onSubmit={this.submitAssignment} onUpdate={this.updateAssignment} />

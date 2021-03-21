@@ -59,22 +59,6 @@ class MyTasks extends Component {
                         />
                     )
                 })}
-                {/* {this.props.tasks.filter(task => task.type === 'first_check').map((task) => {
-                    return (
-                        <Task
-                            key={task.id}
-                            id={task.task_id}
-                            content={task.content}
-                            userName={this.getUserName(task.teacher_id)}
-                            userSurname={this.getUserSurname(task.teacher_id)}
-                            //title={task.title}
-                            date={task.valid_from}
-                            deadline={task.deadline}
-                            type={task.type}
-                            onDelete={this.props.deleteTask}
-                        />
-                    )
-                })} */}
             </div>
         )
     }
