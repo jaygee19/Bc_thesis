@@ -49,7 +49,9 @@ class StudentTasks extends Component {
     countPoints(data) {
         let counter = 0
         for (let i = 0; i < data.length; i++) {
-            counter = counter + data[i].result.evaluation
+            if(data[i].result !== null) {
+                counter = counter + data[i].result.evaluation
+            }
         }
         return counter
     }
