@@ -31,6 +31,7 @@ class StudentController extends Controller
             'task_id' => $request->get('task_id'),
             'student_id' => $user->user_id,
             'path_to_file' => $request->file('filename')->store('public/uploads'),
+            'submit_date' => date(DATE_RSS),
             'ip_adress' => $request->get('ip_adress'),
         ]);
 

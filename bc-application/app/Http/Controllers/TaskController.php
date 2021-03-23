@@ -105,13 +105,14 @@ class TaskController extends Controller
             return response()->json(['status' => 'unauthorized'], 400);
         }
 
-        //$taskForDelete = Task::with('stud_tasks')->where('task_id', $task->task_id)->first();
+        //$taskForDelete = Task::with('stud_tasks')->where('task_id', $task->task_id)->first(); 
 
         //$taskForDelete->delete();
         if ($task->path_to_file != null)
         {
             Storage::delete($task->path_to_file);
         }
+
         $task->delete();
 
         return response()->json(null, 204);
@@ -131,5 +132,23 @@ class TaskController extends Controller
         );
 
         return response()->json($task, 200);   
-     }
+    }
+
+    public function hide(Task $task)
+    {
+        $task->update(
+            ['hidden' => true]
+        );
+
+        return response()->json($task, 200);   
+    }
+
+    public function uncover(Task $task)
+    {
+        $task->update(
+            ['hidden' => false]
+        );
+
+        return response()->json($task, 200);   
+    }
 }

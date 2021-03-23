@@ -25,6 +25,8 @@ Route::post('/login', [UserController::class, 'login']);
 
 Route::get('/control', [TestController::class, 'getAll']);
 
+
+
 Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('/users', [UserController::class, 'index']);
     Route::get('/tasks', [TaskController::class, 'index']);
@@ -35,6 +37,8 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('/user', [UserController::class, 'getAuthenticatedUser']);
     Route::post('/tasks/store', [TaskController::class, 'store']);
     Route::put('/tasks/{task}', [TaskController::class, 'update']);
+    Route::put('/tasks/hide/{task}', [TaskController::class, 'hide']);
+    Route::put('/tasks/uncover/{task}', [TaskController::class, 'uncover']);
     Route::delete('/tasks/{task}', [TaskController::class, 'destroy']);
     Route::post('/task/updateFile', [TaskController::class, 'updateFile']);
 

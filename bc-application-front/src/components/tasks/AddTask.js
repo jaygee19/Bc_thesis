@@ -172,7 +172,7 @@ class AddTask extends Component {
                                     required>
                                 </textarea>
                                 <label>Deadline</label>
-                                <input type="date" className="form-control" placeholder="Deadline"
+                                <input type="datetime-local" className="form-control" placeholder="Deadline"
                                     id="deadline"
                                     name="deadline"
                                     value={this.state.deadline}
@@ -193,7 +193,7 @@ class AddTask extends Component {
                                 )}
                                 {/* {getAllErrors(this.state.passwordErrors)} */}
                                 <p></p>
-                                <button className="w-50 btn btn-lg btn-primary" type="submit">Ulož</button>
+                                <button className="w-50 btn btn-lg btn-dark" type="submit">Ulož</button>
                                 <p></p>
                             </form>
 
@@ -213,7 +213,7 @@ class AddTask extends Component {
 
                                     <p></p>
                                     <button onClick={() => this.onUpdate()}
-                                        className="w-50 btn btn-lg btn-primary" type="submit">Zmeň súbor
+                                        className="w-50 btn btn-lg btn-dark" type="submit">Zmeň súbor
                                     </button>
                                     <p></p>
                                 </div>

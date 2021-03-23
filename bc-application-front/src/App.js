@@ -3,7 +3,7 @@ import Login from "./components/users/Login";
 import Home from './components/Home';
 import Register from './components/users/Register';
 import Test from './components/Test';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { React, Component } from 'react';
 import { getApiResponse } from './helpers/ApiHelper';
 import AuthHelper from './helpers/AuthHelper';
@@ -21,6 +21,7 @@ import StudentRoute from './components/routes/StudentRoute';
 import StudentTasks from './components/student/StudentTasks';
 import ManageAssignments from './components/student/ManageAssignments';
 import EvaluateAssignment from './components/evaluation/EvaluateAssignment';
+import HiddenTasks from './components/tasks/HiddenTasks';
 
 class App extends Component {
 
@@ -45,6 +46,8 @@ class App extends Component {
     this.updateAssignment = this.updateAssignment.bind(this)
     this.storeResult = this.storeResult.bind(this)
     this.updateResult = this.updateResult.bind(this)
+    this.hideTask = this.hideTask.bind(this)
+    this.uncoverTask = this.uncoverTask.bind(this)
   }
 
   async componentDidMount() {
@@ -145,6 +148,26 @@ class App extends Component {
     this.setState(state => {
       return {
         allTasks: state.allTasks.filter(t => t.task_id !== id),
+      }
+    })
+  }
+
+  async hideTask(id) {
+    const hiddenTask = await getApiResponse('tasks/hide/' + id, 'put')
+
+    this.setState(state => {
+      return {
+        allTasks: state.allTasks.map(t => t.task_id === hiddenTask.data.task_id ? hiddenTask.data : t),
+      }
+    })
+  }
+
+  async uncoverTask(id) {
+    const uncoveredTask = await getApiResponse('tasks/uncover/' + id, 'put')
+
+    this.setState(state => {
+      return {
+        allTasks: state.allTasks.map(t => t.task_id === uncoveredTask.data.task_id ? uncoveredTask.data : t),
       }
     })
   }
@@ -253,8 +276,9 @@ class App extends Component {
           <Switch>
             {/* //<main className="form-signin"> */}
             <LoggedInRoute path="/" exact component={Home} />
-            <TeacherRoute path="/myTasks" exact component={MyTasks} users={this.state.allUsers} tasks={this.getTasksForUser()} deleteTask={this.deleteTask} />
+            <TeacherRoute path="/myTasks" exact component={MyTasks} users={this.state.allUsers} tasks={this.getTasksForUser()} deleteTask={this.deleteTask} hideTask={this.hideTask}/>
             <TeacherRoute path="/subjectTasks" exact component={SubjectTasks} users={this.state.allUsers} tasks={this.state.allTasks} />
+            <TeacherRoute path="/hiddenTasks" exact component={HiddenTasks} users={this.state.allUsers} tasks={this.state.allTasks} uncoverTask={this.uncoverTask}/>
             <TeacherRoute path="/assignTasks/:id" exact component={AssignTasks} groups={this.getOnlyGroups()} tasks={this.state.allTasks} onSubmit={this.saveAssignedStudents} />
             <TeacherRoute path="/assignedTasks/:id" exact component={AssignedTasks} users={this.state.allUsers} tasks={this.state.allTasks} onDelete={this.removeStudent} />
             <TeacherRoute path="/myTasks/create" exact component={AddTask} onSubmit={this.addNewTask} />

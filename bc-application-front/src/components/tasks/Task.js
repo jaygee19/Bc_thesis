@@ -12,7 +12,7 @@ class Task extends Component {
     }
 
     toDate(time) {
-        return dateFormat(time, "d.mm.yyyy")
+        return dateFormat(time, "d.mm.yyyy, h:MM")
     }
 
     onAssign() {
@@ -20,14 +20,12 @@ class Task extends Component {
     }
 
     onEdit() {
-        console.log("IDCKO" + this.props.id)
         this.props.history.push('/myTasks/' + this.props.id + '/edit')
     }
 
     onListOf() {
         this.props.history.push('/assignedTasks/' + this.props.id)
     }
-
 
     render() {
         return (
@@ -47,19 +45,29 @@ class Task extends Component {
                                 {/* <a href="#">Continue reading</a> */}
                                 <p></p>
                                 <div>
-                                {AuthHelper.getInstance().isUserTeacher() && this.props.private && (
+                                {AuthHelper.getInstance().isUserTeacher() && this.props.private && this.props.hidden !== true && (
                                     <button onClick={this.onEdit} type="submit" className="my_btn btn btn-dark" >
                                         Upraviť 
                                     </button> 
                                 )}
-                                {AuthHelper.getInstance().isUserTeacher() && this.props.private && (
+                                {AuthHelper.getInstance().isUserTeacher() && this.props.private && this.props.hidden !== true && (
                                     <button onClick={() => this.props.onDelete(this.props.id)} type="submit" className="my_btn btn btn-dark" >
                                         Vymazať
                                     </button>
                                 )}
-                                {AuthHelper.getInstance().isUserTeacher() && this.props.private && (
+                                {AuthHelper.getInstance().isUserTeacher() && this.props.private && this.props.hidden !== true && (
                                     <button onClick={this.onAssign} type="submit" className="my_btn btn btn-dark" >
                                         Prideliť
+                                    </button>
+                                )}
+                                {AuthHelper.getInstance().isUserTeacher() && this.props.private && this.props.hidden !== true && (
+                                    <button onClick={() => this.props.onHide(this.props.id)} type="submit" className="my_btn btn btn-dark" >
+                                        Skryť
+                                    </button>
+                                )}
+                                {AuthHelper.getInstance().isUserTeacher() && this.props.private && this.props.hidden === true && (
+                                    <button onClick={() => this.props.onUncover(this.props.id)} type="submit" className="my_btn btn btn-dark" >
+                                        Odkryť
                                     </button>
                                 )}
                                 <button onClick={this.onListOf} type="submit" className="my_btn btn btn-dark" >

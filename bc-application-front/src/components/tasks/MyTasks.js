@@ -42,7 +42,8 @@ class MyTasks extends Component {
                     </div>
                     <p></p>
                 </div>
-                {this.props.tasks.map((task) => {
+                {this.props.tasks.filter((task) => task.hidden !== true)
+                .map((task) => {
                     return (
                         <Task
                             key={task.task_id}
@@ -55,7 +56,9 @@ class MyTasks extends Component {
                             type={task.type}
                             path={task.path_to_file}
                             onDelete={this.props.deleteTask}
+                            onHide={this.props.hideTask}
                             private={true}
+                            hidden={task.hidden}
                         />
                     )
                 })}

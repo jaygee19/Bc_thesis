@@ -39,6 +39,11 @@ class Navigation extends Component {
                             )}
                             {AuthHelper.getInstance().isUserTeacher() && (
                                 <li className="nav-item active font-weight-bolder">
+                                    <Link to="/hiddenTasks" className="nav-link">Skryté zadania</Link>
+                                </li>
+                            )}
+                            {AuthHelper.getInstance().isUserTeacher() && (
+                                <li className="nav-item active font-weight-bolder">
                                     <Link to="/subjectTasks" className="nav-link">Všetky zadania</Link>
                                 </li>
                             )}

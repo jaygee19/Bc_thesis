@@ -27,6 +27,8 @@ class SubjectTasks extends Component {
     }
 
     render() {
+        console.log(this.props.tasks)
+
         return (
             <div>
                 <Navigation />
@@ -48,7 +50,7 @@ class SubjectTasks extends Component {
                     </div>
                     <p></p>
                 </div>
-                {this.props.tasks.filter((task) => task.type === this.state.value || this.state.value === "")
+                {this.props.tasks.filter((task) => task.type === this.state.value || this.state.value === "" && task.hidden !== true)
                 .map((task) => {
                     return (
                         <Task
@@ -63,6 +65,7 @@ class SubjectTasks extends Component {
                             path={task.path_to_file}
                             onDelete={this.props.deleteTask}
                             private={false}
+                            hidden={task.hidden}
                         />
                     )
                 })}

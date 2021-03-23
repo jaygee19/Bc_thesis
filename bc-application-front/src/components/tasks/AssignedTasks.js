@@ -32,7 +32,7 @@ class AssignedTasks extends Component {
     }
 
     toDate(time) {
-        return dateFormat(time, "d.mm.yyyy")
+        return dateFormat(time, "d.mm.yyyy, h:MM")
     }
 
     isSubmitted(array) {
