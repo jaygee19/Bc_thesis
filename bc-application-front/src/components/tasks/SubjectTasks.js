@@ -27,7 +27,6 @@ class SubjectTasks extends Component {
     }
 
     render() {
-        console.log(this.props.tasks)
 
         return (
             <div>
