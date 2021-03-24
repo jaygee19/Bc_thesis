@@ -45,7 +45,7 @@ class AddTask extends Component {
     
     componentDidMount() {
         bsCustomFileInput.init()
-      }
+    }
 
     typeChanged(event) {
         this.setState({

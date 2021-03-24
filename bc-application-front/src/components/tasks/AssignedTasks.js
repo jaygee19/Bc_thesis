@@ -32,12 +32,28 @@ class AssignedTasks extends Component {
     }
 
     toDate(time) {
-        return dateFormat(time, "d.mm.yyyy, h:MM")
+        return dateFormat(time, "d.mm.yyyy, HH:MM")
     }
 
     isSubmitted(array) {
         let temp = array.filter(item => item.task_id == this.props.match.params.id)
         return temp.length !== 0
+    }
+
+    isSubmittedBeforeDeadline(array) {
+        let temp = array.filter(item => item.task_id == this.props.match.params.id)
+        let dateDeadline = new Date(this.state.concreteTask.deadline)
+        let submittedDay = new Date(temp[0].submit_date)
+        if (submittedDay > dateDeadline) {
+            return false
+        } else {
+            return true
+        }
+    }
+
+    submitDate(array) {
+        let temp = array.filter(item => item.task_id == this.props.match.params.id)
+        return this.toDate(temp[0].submit_date)
     }
 
     isEvaluated(array) {
@@ -86,8 +102,9 @@ class AssignedTasks extends Component {
                                 <th scope="col">Študent</th>
                                 <th scope="col">Skupina</th>
                                 <th scope="col">Stav</th>
-                                <th scope="col">Odobrať</th>
+                                <th scope="col">Čas odovzdania</th>
                                 <th scope="col">Stav hodnotenia</th>
+                                <th scope="col">Odobrať</th>
                             </tr>
                         </thead>
                         <tbody className="table-secondary">
@@ -103,8 +120,18 @@ class AssignedTasks extends Component {
                                             { !this.isSubmitted(chosen.submitted_assignments) && (
                                                 <td className="table-danger">Neodovzdané</td>
                                             )}
-                                            <td onClick={() => this.onRemove(chosen.user_id)}> <button className="btn-dark"> x </button> </td>
 
+                                            {this.isSubmitted(chosen.submitted_assignments) && this.isSubmittedBeforeDeadline(chosen.submitted_assignments) && (
+                                                <td className="table-success"> { this.submitDate(chosen.submitted_assignments)} </td>
+                                            )}
+
+                                            {this.isSubmitted(chosen.submitted_assignments) && !this.isSubmittedBeforeDeadline(chosen.submitted_assignments) && (
+                                                <td className="table-danger"> { this.submitDate(chosen.submitted_assignments)} </td>
+                                            )}
+
+                                            {!this.isSubmitted(chosen.submitted_assignments) && (
+                                                <td> - </td>
+                                            )}
 
                                             { this.isSubmitted(chosen.submitted_assignments) && this.isEvaluated(chosen.submitted_assignments) && (
                                                 <td className="table-success" onClick={() => this.onDisplay(chosen.submitted_assignments)}> <button className="btn-dark"> <i> Hodnotené </i> </button> </td>
@@ -117,6 +144,9 @@ class AssignedTasks extends Component {
                                             {!this.isSubmitted(chosen.submitted_assignments) && (
                                                 <td> <i> Nehodnotené </i> </td>
                                             )}
+
+                                            <td onClick={() => this.onRemove(chosen.user_id)}> <button className="btn-dark"> x </button> </td>
+
                                         </tr>
                                     )
                                 })}

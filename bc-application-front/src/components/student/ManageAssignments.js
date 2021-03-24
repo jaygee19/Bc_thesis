@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Navigation from '../Navigation'
 import dateFormat from 'dateformat';
-
+import bsCustomFileInput from 'bs-custom-file-input';
 
 class ManageAssignments extends Component {
     constructor(props) {
@@ -22,6 +22,10 @@ class ManageAssignments extends Component {
         this.ipAdressChanged = this.ipAdressChanged.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
         this.onUpdate = this.onUpdate.bind(this)
+    }
+
+    componentDidMount() {
+        bsCustomFileInput.init()
     }
 
     toDate(time) {
@@ -99,11 +103,14 @@ class ManageAssignments extends Component {
                                     />
                                     <p></p>
                                     <label>Priložiť súbor</label>
-                                    <input type="file" className="form-control"
-                                        name="filename"
-                                        id="filename"
-                                        onChange={this.fileChanged}
-                                    />
+                                    <div className="custom-file">
+                                            <input id="inputGroupFile01" type="file" className="custom-file-input" 
+                                            name="filename"
+                                            id="filename"
+                                            onChange={this.fileChanged}
+                                            />
+                                            <label className="custom-file-label">Choose file</label>
+                                    </div>
                                     <p></p>
                                     <button className="w-50 btn btn-lg btn-dark" type="submit">Ulož</button>
                                     <p></p>

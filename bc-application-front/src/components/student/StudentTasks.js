@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Navigation from '../Navigation'
 import dateFormat from 'dateformat';
+import Countdown from 'react-countdown';
 
 class StudentTasks extends Component {
     constructor(props) {
@@ -21,7 +22,7 @@ class StudentTasks extends Component {
     }
 
     toDate(time) {
-        return dateFormat(time, "d.mm.yyyy, h:MM")
+        return dateFormat(time, "d.mm.yyyy, HH:MM")
     }
 
     onClick(id) {
@@ -45,6 +46,21 @@ class StudentTasks extends Component {
             return false
         }
     }
+
+    timeBeforeDeadline(id) {
+        let filtered = this.state.studentTasks.filter(item => item.task_id === id)
+        let dateDeadline = new Date(filtered[0].deadline)
+        let today = new Date(Date())
+
+        const result = Math.abs(dateDeadline - today)
+
+        if (dateDeadline > today) {
+            return Math.round(result)
+        } else {
+            return Math.round(0)
+        }
+    }
+
 
     countPoints(data) {
         let counter = 0
@@ -86,7 +102,7 @@ class StudentTasks extends Component {
                                         <tr key={chosen.task_id}>
                                             <td>{chosen.title}</td>
                                             <td>{chosen.type}</td>
-                                            <td>{this.toDate(chosen.deadline)}</td>
+                                            <td> <Countdown date={Date.now() + this.timeBeforeDeadline(chosen.task_id)} /> </td>
                                             {this.isEvaluated(chosen.task_id) && (
                                                 <td><button className="btn btn-sm btn-dark">Výsledok</button></td>
                                             )}
