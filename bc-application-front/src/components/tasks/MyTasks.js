@@ -32,7 +32,7 @@ class MyTasks extends Component {
                 <Navigation />
                 <div className="container">
                     <p></p>
-                    <button onClick={this.onAddNew} type="submit" className="btn btn-light" > + </button>
+                    <button onClick={this.onAddNew} type="submit" className="btn btn-light" > Nové zadanie + </button>
                     <p></p>
                     <div className="d-flex justify-content-center" style={{ color: 'white' }}> 
                     <h3> Moje zadania: </h3>

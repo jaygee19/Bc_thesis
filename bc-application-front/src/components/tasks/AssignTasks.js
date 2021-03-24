@@ -113,12 +113,12 @@ class AssignTasks extends Component {
                             </h3>
                             <hr/>
                             <p></p>
-                            {this.state.assignedStudents
-                                .map((chosen) => {
-                                    return (
-                                        <h6> {chosen.name} {chosen.surname} </h6>
-                                    )
-                                })}
+                                {this.state.assignedStudents
+                                    .map((chosen) => {
+                                        return (
+                                            <h6> {chosen.name} {chosen.surname} </h6>
+                                        )
+                                    })}
                         </div>
 
                         <div className="card assign-card col-8">
