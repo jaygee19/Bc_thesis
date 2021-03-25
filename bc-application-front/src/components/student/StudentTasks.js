@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import Navigation from '../Navigation'
-import dateFormat from 'dateformat';
-import Countdown from 'react-countdown';
+import dateFormat from 'dateformat'
+import Countdown from 'react-countdown'
+import Modal from 'react-bootstrap/Modal'
 
 class StudentTasks extends Component {
     constructor(props) {
@@ -16,6 +17,9 @@ class StudentTasks extends Component {
             studentTasks: tasks,
             submittedAssignments: sub,
             count: 0,
+            showModal: false,
+            evaluation: '',
+            comment: '',
         }
 
         this.onClick = this.onClick.bind(this)
@@ -61,11 +65,40 @@ class StudentTasks extends Component {
         }
     }
 
+    isSubmittedBeforeDeadline(id) {
+        let filteredAssignment = this.state.submittedAssignments.filter(item => item.task_id === id)
+        let filteredTask = this.state.studentTasks.filter(item => item.task_id === id)
+        let dateDeadline = new Date(filteredTask[0].deadline)
+        let dateSubmitted = new Date(filteredAssignment[0].submit_date)
+        if (dateSubmitted === null || dateSubmitted > dateDeadline) {
+            return false
+        } else {
+            return true
+        }
+    }
+
+    getEvaluation(id) {
+        let filtered = this.state.submittedAssignments.filter(item => item.task_id === id)
+        if (filtered.length !== 0) {
+            return filtered[0].result.evaluation
+        } else {
+            return ''
+        }
+    }
+
+    getComment(id) {
+        let filtered = this.state.submittedAssignments.filter(item => item.task_id === id)
+        if (filtered.length !== 0) {
+            return filtered[0].result.comment
+        } else {
+            return ''
+        }
+    }
 
     countPoints(data) {
         let counter = 0
         for (let i = 0; i < data.length; i++) {
-            if(data[i].result !== null) {
+            if (data[i].result !== null) {
                 counter = counter + data[i].result.evaluation
             }
         }
@@ -90,7 +123,7 @@ class StudentTasks extends Component {
                             <tr>
                                 <th scope="col">Názov</th>
                                 <th scope="col">Typ</th>
-                                <th scope="col">Deadline</th>
+                                <th scope="col">Deadline (D:H:M:S)</th>
                                 <th scope="col-1">#</th>
                                 <th scope="col">Stav</th>
                             </tr>
@@ -102,9 +135,24 @@ class StudentTasks extends Component {
                                         <tr key={chosen.task_id}>
                                             <td>{chosen.title}</td>
                                             <td>{chosen.type}</td>
-                                            <td> <Countdown date={Date.now() + this.timeBeforeDeadline(chosen.task_id)} /> </td>
+
+                                            {this.isSubmittedBeforeDeadline(chosen.task_id) && (
+                                                <td className="table-success"> <Countdown date={Date.now() + this.timeBeforeDeadline(chosen.task_id)} /> </td>
+                                            )}
+
+                                            {!this.isSubmittedBeforeDeadline(chosen.task_id) && (
+                                                <td className="table-danger"> <Countdown date={Date.now() + this.timeBeforeDeadline(chosen.task_id)} /> (po termíne) </td>
+                                            )}
+
                                             {this.isEvaluated(chosen.task_id) && (
-                                                <td><button className="btn btn-sm btn-dark">Výsledok</button></td>
+                                                <td><button className="btn btn-sm btn-dark"
+                                                    onClick={() =>
+                                                        this.setState({
+                                                            showModal: true,
+                                                            comment: this.getComment(chosen.task_id),
+                                                            evaluation: this.getEvaluation(chosen.task_id),
+                                                        })
+                                                    }> Výsledok</button></td>
                                             )}
                                             {!this.isEvaluated(chosen.task_id) && (
                                                 <td><button onClick={() => this.onClick(chosen.task_id)} className="btn btn-sm btn-dark">Odovzdaj</button></td>
@@ -124,6 +172,38 @@ class StudentTasks extends Component {
                         </tbody>
                     </table>
                 </div>
+
+
+                <Modal
+                    show={this.state.showModal}
+                    onHide={() =>
+                        this.setState({
+                            showModal: false,
+                        })
+                    }
+                >
+                    <Modal.Header>
+                        <Modal.Title>Hodnotenie</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        <p> <u>Počet bodov:</u> {this.state.evaluation} </p>
+                        <p> <u>Komentár:</u> {this.state.comment} </p>
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <button
+                            className="btn btn-sm btn-dark"
+                            onClick={() =>
+                                this.setState({
+                                    showModal: false,
+                                })
+                            }
+                        >
+                            Zavrieť
+                        </button>
+                    </Modal.Footer>
+                </Modal>
             </div>
         )
     }

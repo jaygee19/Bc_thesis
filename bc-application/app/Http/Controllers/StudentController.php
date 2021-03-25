@@ -51,7 +51,11 @@ class StudentController extends Controller
             Storage::delete($sub_assignment->path_to_file);
         }
 
-        $sub_assignment->update(['path_to_file' => $request->file('filename')->store('public/uploads')]);
+        $sub_assignment->update(
+            [ 'path_to_file' => $request->file('filename')->store('public/uploads'),
+              'submit_date' => date(DATE_RSS),
+            ]
+        );
 
         $updated_by = User::with('schedules')->with('stud_tasks')->with('enrolled_student')->with('submitted_assignments.result')->where('user_id', $user->user_id)->first();
 
