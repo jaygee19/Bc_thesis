@@ -274,7 +274,6 @@ class App extends Component {
       <div className="App bg-dark" style = {{height:"100%", "min-height": "100vh"}}>
         <Router>
           <Switch>
-            {/* //<main className="form-signin"> */}
             <LoggedInRoute path="/" exact component={Home} />
             <TeacherRoute path="/myTasks" exact component={MyTasks} users={this.state.allUsers} tasks={this.getTasksForUser()} deleteTask={this.deleteTask} hideTask={this.hideTask}/>
             <TeacherRoute path="/subjectTasks" exact component={SubjectTasks} users={this.state.allUsers} tasks={this.state.allTasks} />
@@ -284,14 +283,12 @@ class App extends Component {
             <TeacherRoute path="/myTasks/create" exact component={AddTask} onSubmit={this.addNewTask} />
             <TeacherRoute path="/myTasks/:id/edit" exact component={AddTask} tasks={this.state.allTasks} onSubmit={this.editTask} onUpdate={this.updateFile} />
             <TeacherRoute path="/evaluate/:task/assignment/:id" exact component={EvaluateAssignment} users={this.state.allUsers} tasks={this.state.allTasks} onSubmit={this.storeResult} onUpdate={this.updateResult}/>
-            {/* <TeacherRoute path="/myTasks/:id/delete" exact component={DeleteTask} tasks={this.state.allTasks} /> */}
             <StudentRoute path="/studentTasks" exact component={StudentTasks} users={this.state.allUsers} user={this.getMyself()} group={this.getStudentGroup()} />
             <StudentRoute path="/manageAssignment/:id" exact component={ManageAssignments} user={this.getMyself()} onSubmit={this.submitAssignment} onUpdate={this.updateAssignment} />
             <Route path="/login" exact render={() => <Login onLogin={this.loadAllTasks} />} />
             <Route path="/register" exact component={Register} />
             <Route path="/logout" exact component={Logout} />
             <TeacherRoute path="/test" exact component={Test} />
-            {/* </main> */}
           </Switch>
         </Router>
         <div>

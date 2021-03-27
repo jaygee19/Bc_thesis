@@ -125,11 +125,14 @@ class ManageAssignments extends Component {
                                 <p></p>
                                 <label>Zmeniť súbor</label>
                                 <p>{this.state.concreteAssignments[0].path_to_file}</p>
-                                <input type="file" className="form-control"
-                                    name="filename"
-                                    id="filename"
-                                    onChange={this.fileChanged}
-                                />
+                                <div className="custom-file">
+                                            <input id="inputGroupFile01" type="file" className="custom-file-input" 
+                                            name="filename"
+                                            id="filename"
+                                            onChange={this.fileChanged}
+                                            />
+                                            <label className="custom-file-label">Choose file</label>
+                                </div>
                                 <p></p>
                                 <button onClick={() => this.onUpdate()}
                                     className="w-50 btn btn-lg btn-dark" type="submit">Zmeň súbor

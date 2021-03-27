@@ -8,10 +8,12 @@ class SubjectTasks extends Component {
         super(props)
 
         this.state = {
-            value:'',
+            valueType:'',
+            valueTeacher: '',
         }
 
-        this.valueChanged = this.valueChanged.bind(this)
+        this.valueTypeChanged = this.valueTypeChanged.bind(this)
+        this.valueTeacherChanged = this.valueTeacherChanged.bind(this)
     }
 
     getUserName(id) {
@@ -20,14 +22,19 @@ class SubjectTasks extends Component {
         return fullName
     }
 
-    valueChanged(event) {
+    valueTypeChanged(event) {
         this.setState({
-            value: event.target.value,
+            valueType: event.target.value,
+        })
+    }
+
+    valueTeacherChanged(event) {
+        this.setState({
+            valueTeacher: event.target.value,
         })
     }
 
     render() {
-
         return (
             <div>
                 <Navigation />
@@ -37,19 +44,37 @@ class SubjectTasks extends Component {
                         <h3> Všetky zadania: </h3>
                     </div>
                     <p></p>
-                    <div className="row col-3">
+                    <div className="row ">
+                        <div className="col-3">
                         <label>Vyberte si typ: </label>
-                        <select type="text" className="form-control" value={this.state.value} onChange={this.valueChanged}>
+                        <select type="text" className="form-control" value={this.state.valueType} onChange={this.valueTypeChanged}>
                                     <option value=""></option>
                                     <option value="first_check">Prvý zápočet</option>
                                     <option value="second_check">Druhý zápočet</option>
                                     <option value="semester_work">Semestrálna práca</option>
                                     <option value="homework">Domáca úloha</option>
                         </select>
+                        </div>
+                        <div className="col-3">
+                        <label>Vyberte si vyučujúceho: </label>
+                        <select type="text" className="form-control" value={this.state.valueTeacher} onChange={this.valueTeacherChanged}>
+                                    <option value=""></option>
+                                    {this.props.users.filter((user) => user.role === 't')
+                                    .map((user) => {
+                                    return(
+                                        <option value={user.user_id}>{this.getUserName(user.user_id)}</option>
+                                    )
+                                })}
+                        </select>
+                        </div>
                     </div>
                     <p></p>
                 </div>
-                {this.props.tasks.filter((task) => task.type === this.state.value || this.state.value === "" && task.hidden !== true)
+
+                {this.props.tasks.filter((task) => 
+                                        (task.type === this.state.valueType || this.state.valueType === '') 
+                                        && (this.state.valueTeacher === '' || task.teacher_id == this.state.valueTeacher)
+                                        && task.hidden !== true)
                 .map((task) => {
                     return (
                         <Task

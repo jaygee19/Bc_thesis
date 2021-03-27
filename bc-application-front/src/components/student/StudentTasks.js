@@ -68,12 +68,17 @@ class StudentTasks extends Component {
     isSubmittedBeforeDeadline(id) {
         let filteredAssignment = this.state.submittedAssignments.filter(item => item.task_id === id)
         let filteredTask = this.state.studentTasks.filter(item => item.task_id === id)
-        let dateDeadline = new Date(filteredTask[0].deadline)
-        let dateSubmitted = new Date(filteredAssignment[0].submit_date)
-        if (dateSubmitted === null || dateSubmitted > dateDeadline) {
-            return false
-        } else {
+        console.log("ASSIGNMENT", filteredAssignment[0])
+        if (filteredAssignment[0] === undefined) {
             return true
+        } else {
+            let dateDeadline = new Date(filteredTask[0].deadline)
+            let dateSubmitted = new Date(filteredAssignment[0].submit_date)
+            if (dateSubmitted === null || dateSubmitted > dateDeadline) {
+                return false
+            } else {
+                return true
+            }
         }
     }
 
@@ -154,9 +159,14 @@ class StudentTasks extends Component {
                                                         })
                                                     }> Výsledok</button></td>
                                             )}
-                                            {!this.isEvaluated(chosen.task_id) && (
+
+                                            {!this.isEvaluated(chosen.task_id) && !this.isSubmitted(chosen.task_id) && (
                                                 <td><button onClick={() => this.onClick(chosen.task_id)} className="btn btn-sm btn-dark">Odovzdaj</button></td>
                                             )}
+                                            {!this.isEvaluated(chosen.task_id) && this.isSubmitted(chosen.task_id) && (
+                                                <td><button onClick={() => this.onClick(chosen.task_id)} className="btn btn-sm btn-dark">Zmeň</button></td>
+                                            )}
+
                                             {this.isEvaluated(chosen.task_id) && (
                                                 <td className="table-success">Hodnotené</td>
                                             )}
