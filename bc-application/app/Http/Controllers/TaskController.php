@@ -28,18 +28,12 @@ class TaskController extends Controller
     {
         $user = JWTAuth::parseToken()->authenticate();
 
-        // $user = JWTAuth::parseToken()->authenticate();
         if ($user->role != 't')
         {
-            return response()->json(['status' => 'unauthorized'], 400);
+            return response()->json(['status' => 'Neautorizovaný prístup'], 400);
         }
-            
-
+        
         // $validator = $this->getValidator($request);
-
-        // $validator = Validator::make($request->all(), [
-        //     'teacher_id' => 'required',
-        // ]);
 
         // if($validator->fails()){
         //         return response()->json($validator->errors()->toJson(), 400);
@@ -66,7 +60,6 @@ class TaskController extends Controller
             ]);
         }
         
-
         $created_id = $task->task_id;
         $created_task = Task::with('stud_tasks')->with('submitted_assignments')->where('task_id', $created_id)->first();
 
@@ -76,8 +69,6 @@ class TaskController extends Controller
     public function update(Request $request, Task $task)
     {
         $user = JWTAuth::parseToken()->authenticate();
-        // if (!$user->is_admin)
-        //     return response()->json(['status' => 'unauthorized'], 400);
 
         // $validator = $this->getValidator($request);
 
@@ -105,9 +96,6 @@ class TaskController extends Controller
             return response()->json(['status' => 'unauthorized'], 400);
         }
 
-        //$taskForDelete = Task::with('stud_tasks')->where('task_id', $task->task_id)->first(); 
-
-        //$taskForDelete->delete();
         if ($task->path_to_file != null)
         {
             Storage::delete($task->path_to_file);
@@ -119,6 +107,13 @@ class TaskController extends Controller
     }
 
     public function updateFile(Request $request) {
+
+        $user = JWTAuth::parseToken()->authenticate();
+
+        if ($user->role != 't')
+        {
+            return response()->json(['status' => 'unauthorized'], 400);
+        }
 
         $task = Task::with('stud_tasks')->with('submitted_assignments')->where('task_id', $request->get('id'))->first();
 
@@ -136,6 +131,13 @@ class TaskController extends Controller
 
     public function hide(Task $task)
     {
+        $user = JWTAuth::parseToken()->authenticate();
+
+        if ($user->role != 't')
+        {
+            return response()->json(['status' => 'unauthorized'], 400);
+        }
+
         $task->update(
             ['hidden' => true]
         );
@@ -145,6 +147,13 @@ class TaskController extends Controller
 
     public function uncover(Task $task)
     {
+        $user = JWTAuth::parseToken()->authenticate();
+
+        if ($user->role != 't')
+        {
+            return response()->json(['status' => 'unauthorized'], 400);
+        }
+
         $task->update(
             ['hidden' => false]
         );

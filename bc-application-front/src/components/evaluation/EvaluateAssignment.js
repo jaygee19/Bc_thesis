@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Navigation from '../Navigation'
+import DownloadLink from "react-download-link";
 
 class EvaluateAssignment extends Component {
     constructor(props) {
@@ -11,7 +12,6 @@ class EvaluateAssignment extends Component {
         let assignmentResult = filteredStudent[0].submitted_assignments.filter(assignment => assignment.assignment_id == filteredAssignment[0].assignment_id)
 
         if (assignmentResult[0].result !== null) {
-            console.log("OK")
             this.state = {
                 assignment: filteredAssignment[0],
                 student: filteredStudent[0],
@@ -22,7 +22,6 @@ class EvaluateAssignment extends Component {
                 resultID: assignmentResult[0].result.result_id,
             }
         } else {
-            console.log("NE - OK")
             this.state = {
                 assignment: filteredAssignment[0],
                 student: filteredStudent[0],
@@ -48,6 +47,12 @@ class EvaluateAssignment extends Component {
         this.setState({
             evaluation: event.target.value,
         })
+    }
+
+    showAssignment(path) {
+         if(this.props.path !== null) {
+             return 'http://127.0.0.1:8000/storage'+path
+         }          
     }
 
     onSubmit(event) {
@@ -91,9 +96,11 @@ class EvaluateAssignment extends Component {
                         <p>{this.state.task.type}</p>
                         <hr />
                         <h5>{this.state.student.name} {this.state.student.surname}, {this.state.student.group}</h5>
-                        <p></p>
+                        <p> Vypracované zadanie: </p>
                         {this.state.assignment.path_to_file !== null && (
-                            <a className="btn btn-lg btn-dark" href={this.state.assignment.path_to_file} role="button">Zobraz odovzdané zadanie  &raquo;</a>
+                            <a className="btn btn-lg btn-dark" href={this.showAssignment(this.state.assignment.path_to_file.substr(6))} target="_blank" download>
+                               Otvor 
+                            </a>
                         )}
 
                         <form onSubmit={this.onSubmit}>

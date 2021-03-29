@@ -41,6 +41,12 @@ class StudentController extends Controller
     }
 
     public function updateAssignment(Request $request) {
+
+        $user = JWTAuth::parseToken()->authenticate();
+
+        if ($user->role != 's') {
+            return response()->json(['status' => 'unauthorized'], 400);
+        }
         
         $user = JWTAuth::parseToken()->authenticate();
 

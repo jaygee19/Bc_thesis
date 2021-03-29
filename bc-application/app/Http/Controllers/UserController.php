@@ -23,7 +23,7 @@ class UserController extends Controller
     public function login(Request $request)
         {
             $validator = Validator::make($request->all(), [
-                'password' => 'required|min:6',
+                'password' => 'required',
             ]);
 
             if($validator->fails()){
@@ -77,7 +77,7 @@ class UserController extends Controller
                  try {
 
                     if (! $user = JWTAuth::parseToken()->authenticate()) {
-                        return response()->json(['user_not_found'], 404);
+                        return response()->json(['Užívateľa sa nepodarilo nájsť'], 404);
                     }
 
                 } catch (TokenExpiredException $e) {
@@ -100,25 +100,17 @@ class UserController extends Controller
 
         public function logout(Request $request)
         {
-            // $this->validate($request, [
-            //      'api_token' => 'required'
-            // ]);
-            
-            // $user = User::where('api_token', $request->all()['api_token'])->get()->first();
-            // $user->api_token = null;
-            // $user->save();
-
             try {
                 JWTAuth::invalidate($request->api_token);
 
                 return response()->json([
                     'success' => true,
-                    'message' => 'User logged out successfully'
+                    'message' => 'Užívateľ úspešne odhlásený'
                 ]);
             } catch (JWTException $exception) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Sorry, the user cannot be logged out'
+                    'message' => 'Prepáčte, užívateľa sa nepodarilo odhlásiť'
                 ], Response::HTTP_INTERNAL_SERVER_ERROR);
             }
         }

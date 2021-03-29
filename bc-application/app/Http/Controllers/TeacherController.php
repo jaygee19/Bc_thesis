@@ -12,11 +12,17 @@ use Illuminate\Support\Arr;
 class TeacherController extends Controller
 {
     public function index() {
-        //$user = JWTAuth::parseToken()->authenticate();
         return Schedule::with('users')->get();
     }
 
     public function assignTask(Request $request) {
+
+        $user = JWTAuth::parseToken()->authenticate();
+
+        if ($user->role != 't')
+        {
+            return response()->json(['status' => 'unauthorized'], 400);
+        }
 
         $task = $request->get('task_id');
         $array = array();
@@ -35,8 +41,12 @@ class TeacherController extends Controller
 
     public function removeStudent(Task $task, User $user) {
 
-        //$taskA = Task::with('stud_tasks')->where('task_id', $request->get('task_id'))->first();
-       // $userA = User::with('stud_tasks')->where('user_id', $request->get('student_id'))->first();
+        $user = JWTAuth::parseToken()->authenticate();
+
+        if ($user->role != 't')
+        {
+            return response()->json(['status' => 'unauthorized'], 400);
+        }
 
        $user->stud_tasks()->detach($task);
 

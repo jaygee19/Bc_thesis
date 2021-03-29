@@ -63,8 +63,6 @@ class App extends Component {
     let allSubjectUsers = await getApiResponse('users', 'get')
     let allSubjectScheduleGroup = await getApiResponse('schedules', 'get')
 
-    console.log(allSubjectUsers)
-
     this.setState({
       allTasks: allSubjectTasks.data,
       allUsers: allSubjectUsers.data,
