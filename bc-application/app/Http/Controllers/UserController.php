@@ -24,6 +24,10 @@ class UserController extends Controller
         {
             $validator = Validator::make($request->all(), [
                 'password' => 'required',
+                'ldap_login' => 'required',
+            ], [
+                'password.required' => 'Zadajte heslo',
+                'ldap_login.required' => 'Zadajte vaše univerzitné LDAP meno',
             ]);
 
             if($validator->fails()){

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Navigation from '../Navigation'
 import { withRouter } from 'react-router-dom'
 import bsCustomFileInput from 'bs-custom-file-input';
-
+import { getAllErrors } from '../../helpers/ErrorHelper'
 
 class AddTask extends Component {
     constructor(props) {
@@ -16,6 +16,7 @@ class AddTask extends Component {
             deadline: '',
             path_to_file: '',
             path_to_file_updated: '',
+            statusErrors: [],
         }
 
         this.onSubmit = this.onSubmit.bind(this)
@@ -120,21 +121,23 @@ class AddTask extends Component {
                 .then(() => {
                     this.props.history.push('/myTasks')
                 })
+                .catch((e) => {
+                    this.setState({
+                        statusErrors: e.response.data['status'] || [],
+                    })
+                })
         } else {
             this.props
                 .onSubmit(dataTask)
                 .then(() => {
                     this.props.history.push('/myTasks')
                 })
+                .catch((e) => {
+                    this.setState({
+                        statusErrors: e.response.data['status'] || [],
+                    })
+                })
         }
-        //   .catch((e) => {
-        //     this.setState({
-        //       nameErrors: e.response.data['name'] || [],
-        //       phoneErrors: e.response.data['phone'] || [],
-        //       emailErrors: e.response.data['email'] || [],
-        //       passwordErrors: e.response.data['password'] || [],
-        //     })
-        //   })
     }
 
     render() {
@@ -191,7 +194,7 @@ class AddTask extends Component {
                                         </div>
                                     </div>
                                 )}
-                                {/* {getAllErrors(this.state.passwordErrors)} */}
+                                {getAllErrors(this.state.statusErrors)} 
                                 <p></p>
                                 <button className="w-50 btn btn-lg btn-dark" type="submit">Ulož</button>
                                 <p></p>

@@ -32,12 +32,11 @@ class TaskController extends Controller
         {
             return response()->json(['status' => 'Neautorizovaný prístup'], 400);
         }
-        
+
         // $validator = $this->getValidator($request);
 
-        // if($validator->fails()){
-        //         return response()->json($validator->errors()->toJson(), 400);
-        // }
+        // if ($validator->fails())
+        //     return response()->json($validator->errors(), 400);
 
         if($request->file('filename') == null){
             $task = Task::create([

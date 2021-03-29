@@ -18,6 +18,7 @@ class Login extends Component {
             redirect: false,
             passwordErrors: [],
             otherErrors: [],
+            ldapErrors: [],
         }
 
         this.onSubmit = this.onSubmit.bind(this)
@@ -26,15 +27,15 @@ class Login extends Component {
 
     }
 
-    ldapFilled(e) {
+    ldapFilled(event) {
         this.setState({
-            ldap_login: e.target.value,
+            ldap_login: event.target.value,
         })
     }
 
-    passwordFilled(e) {
+    passwordFilled(event) {
         this.setState({
-            password: e.target.value,
+            password: event.target.value,
         })
     }
 
@@ -57,6 +58,7 @@ class Login extends Component {
                 this.setState({
                     otherErrors: e.response.data['errors'] || [],
                     passwordErrors: e.response.data['password'] || [],
+                    ldapErrors: e.response.data['ldap_login'] || [],
                 })
             })
     }
@@ -85,6 +87,7 @@ class Login extends Component {
                                             onChange={this.ldapFilled}
                                             required
                                         />
+                                        {getAllErrors(this.state.ldapErrors)}
                                         <input type="password" className="form-control" placeholder="Heslo"
                                             id="password"
                                             name="password"
