@@ -24,14 +24,14 @@ Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
 
 Route::get('/control', [TestController::class, 'getAll']);
-
+Route::get('/users', [UserController::class, 'index']);
+Route::get('/tasks', [TaskController::class, 'index']);
+Route::get('/schedules', [TeacherController::class, 'index']);
+Route::get('/students', [StudentController::class, 'index']);
 
 
 Route::group(['middleware' => ['jwt.verify']], function () {
-    Route::get('/users', [UserController::class, 'index']);
-    Route::get('/tasks', [TaskController::class, 'index']);
-    Route::get('/schedules', [TeacherController::class, 'index']);
-    Route::get('/students', [StudentController::class, 'index']);
+    
 
     Route::get('/logout', [UserController::class, 'logout']);
     Route::get('/user', [UserController::class, 'getAuthenticatedUser']);

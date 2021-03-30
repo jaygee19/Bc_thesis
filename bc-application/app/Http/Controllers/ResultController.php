@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EnrolledStudent;
 use App\Models\Result;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ResultController extends Controller
@@ -17,14 +19,29 @@ class ResultController extends Controller
         {
             return response()->json(['status' => 'unauthorized'], 400);
         }
+
+        $validator = Validator::make($request->all(), [
+            'evaluation' => 'required|numeric',
+            'comment' => 'required',
+        ], [
+            'evaluation.required' => 'Zadajte počet získaných bodov',
+            'evaluation.numeric' => 'Hodnotenie obsahuje aj iné znaky ako sú čísla',
+            'comment.required' => 'Zadajte komentár',
+        ]);
+
+        if($validator->fails()){
+                return response()->json($validator->errors(), 400);
+        }
         
-        $result = Result::create([
+        Result::create([
                 'evaluation' => $request->get('evaluation'),
                 'comment' => $request->get('comment'),
                 'assignment_id' => $request->get('id'),
                 'teacher_id' => $user->user_id,
         ]);
-       
+
+        $enrolled = EnrolledStudent::where('user_id', $request->get('user_id'))->first();
+        $enrolled->increment('points', $request->get('evaluation'));
         $updated_student = User::with('schedules')->with('stud_tasks')->with('enrolled_student')->with('submitted_assignments.result')->where('user_id', $request->get('user_id'))->first();
 
         return response()->json($updated_student, 201);
@@ -37,6 +54,19 @@ class ResultController extends Controller
         if ($user->role != 't')
         {
             return response()->json(['status' => 'unauthorized'], 400);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'evaluation' => 'required|numeric',
+            'comment' => 'required',
+        ], [
+            'evaluation.required' => 'Zadajte počet získaných bodov',
+            'evaluation.numeric' => 'Hodnotenie obsahuje aj iné znaky ako sú čísla',
+            'comment.required' => 'Zadajte komentár',
+        ]);
+
+        if($validator->fails()){
+                return response()->json($validator->errors(), 400);
         }
 
         $result->update(

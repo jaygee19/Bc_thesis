@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Navigation from '../Navigation'
-import DownloadLink from "react-download-link";
+import { getAllErrors } from '../../helpers/ErrorHelper'
 
 class EvaluateAssignment extends Component {
     constructor(props) {
@@ -10,6 +10,12 @@ class EvaluateAssignment extends Component {
         let filteredAssignment = filteredTask[0].submitted_assignments.filter(assignment => assignment.assignment_id == this.props.match.params.id)
         let filteredStudent = this.props.users.filter(user => user.user_id === filteredAssignment[0].student_id)
         let assignmentResult = filteredStudent[0].submitted_assignments.filter(assignment => assignment.assignment_id == filteredAssignment[0].assignment_id)
+
+        this.state = {
+            statusErrors: [],
+            evaluationErrors: [],
+            commentErrors: [],
+        }
 
         if (assignmentResult[0].result !== null) {
             this.state = {
@@ -50,9 +56,7 @@ class EvaluateAssignment extends Component {
     }
 
     showAssignment(path) {
-         if(this.props.path !== null) {
-             return 'http://127.0.0.1:8000/storage'+path
-         }          
+        return 'http://127.0.0.1:8000/storage'+path
     }
 
     onSubmit(event) {
@@ -71,6 +75,13 @@ class EvaluateAssignment extends Component {
             .then(() => {
                 this.props.history.push('/assignedTasks/' + this.state.task.task_id)
             })
+            .catch((e) => {
+                this.setState({
+                    statusErrors: e.response.data['status'] || [],
+                    evaluationErrors: e.response.data['evaluation'] || [],
+                    commentErrors: e.response.data['comment'] || [],
+                })
+            })
         } else {
             this.props
             .onSubmit({
@@ -81,6 +92,13 @@ class EvaluateAssignment extends Component {
             })
             .then(() => {
                 this.props.history.push('/assignedTasks/' + this.state.task.task_id)
+            })
+            .catch((e) => {
+                this.setState({
+                    statusErrors: e.response.data['status'] || [],
+                    evaluationErrors: e.response.data['evaluation'] || [],
+                    commentErrors: e.response.data['comment'] || [],
+                })
             })
         }
     }
@@ -111,7 +129,9 @@ class EvaluateAssignment extends Component {
                                 name="evaluation"
                                 value={this.state.evaluation}
                                 onChange={this.evaluationChanged}
+                                required
                             />
+                            {getAllErrors(this.state.evaluationErrors)} 
                             <p></p>
                             <label className="d-flex justify-content-start">Komentár:</label>
                             <textarea type="text" className="form-control"
@@ -119,8 +139,11 @@ class EvaluateAssignment extends Component {
                                 name="comment"
                                 value={this.state.comment}
                                 onChange={this.commentChanged}
+                                required
                             >
                             </textarea>
+                            {getAllErrors(this.state.commentErrors)} 
+                            {getAllErrors(this.state.statusErrors)} 
                             <p></p>
                             <button className="w-50 btn btn-lg btn-dark" type="submit">Ulož</button>
                             <p></p>

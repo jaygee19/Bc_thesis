@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\Validator;
 
 class StudentController extends Controller
 {
@@ -26,13 +26,24 @@ class StudentController extends Controller
             return response()->json(['status' => 'unauthorized'], 400);
         }
 
+        $validator = Validator::make($request->all(), [
+            'ip_address' => 'required',
+            'filename' => 'required',
+        ], [
+            'filename.required' => 'Neodovzdali ste zadanie',
+            'ip_address.required' => 'Zadajte vašu IP adresu',
+        ]);
 
+        if($validator->fails()){
+                return response()->json($validator->errors(), 400);
+        }
+        
         SubmittedAssignment::create([
             'task_id' => $request->get('task_id'),
             'student_id' => $user->user_id,
             'path_to_file' => $request->file('filename')->store('public/uploads'),
             'submit_date' => date(DATE_RSS),
-            'ip_adress' => $request->get('ip_adress'),
+            'ip_address' => $request->get('ip_address'),
         ]);
 
         $stored_by = User::with('schedules')->with('stud_tasks')->with('enrolled_student')->with('submitted_assignments.result')->where('user_id', $user->user_id)->first();
@@ -48,7 +59,16 @@ class StudentController extends Controller
             return response()->json(['status' => 'unauthorized'], 400);
         }
         
-        $user = JWTAuth::parseToken()->authenticate();
+        $validator = Validator::make($request->all(), [
+            'filename' => 'required|mimes:docx',
+        ], [
+            'filename.required' => 'Neodovzdali ste zadanie',
+            'filename.mimes' => 'Tento format nie je podporovany',
+        ]);
+
+        if($validator->fails()){
+                return response()->json($validator->errors(), 400);
+        }
 
         $sub_assignment = SubmittedAssignment::where('assignment_id', $request->get('assignment_id'))->first();
 

@@ -61,7 +61,7 @@ class Task extends Component {
                                 <h3 className="mb-0">
                                     <p className="text-dark" >{this.props.title}</p>
                                 </h3>
-                                <div className="mb-1 text-muted"><small><u> Vytvorené:</u> ( {this.props.userName} {this.props.userSurname} )</small></div>
+                                <div className="mb-1 text-muted"><small><u> Autor:</u> ( {this.props.userName} {this.props.userSurname} )</small></div>
                                 {!this.compareDates(this.props.deadline) && (
                                     <div className="mb-1 text-danger">
                                        DEADLINE : {this.toDate(this.props.deadline)}</div>
@@ -71,8 +71,8 @@ class Task extends Component {
                                          DEADLINE : {this.toDate(this.props.deadline)}</div>
                                 )}
                                 <br style={{ color: 'grey' }} />
-                                <p className="card-text mb-auto text-default">Popis zadania: {this.props.content}</p>
-                                <p className="card-text mb-auto text-muted"><small>Priložený súbor: {this.props.path} </small></p>
+                                {/* <p className="card-text mb-auto text-default">Popis zadania: {this.props.content}</p>
+                                <p className="card-text mb-auto text-muted"><small>Priložený súbor: {this.props.path} </small></p> */}
                                 {/* <a href="#">Continue reading</a> */}
                                 <p></p>
                                 <div>

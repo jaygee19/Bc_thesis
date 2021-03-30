@@ -11,7 +11,6 @@ class StudentTasks extends Component {
         let teacher = this.props.users.filter(u => u.user_id === this.props.group.teacher)
         let tasks = this.props.user.stud_tasks
         let sub = this.props.user.submitted_assignments
-
         this.state = {
             concreteTeacher: teacher[0],
             studentTasks: tasks,
@@ -68,7 +67,6 @@ class StudentTasks extends Component {
     isSubmittedBeforeDeadline(id) {
         let filteredAssignment = this.state.submittedAssignments.filter(item => item.task_id === id)
         let filteredTask = this.state.studentTasks.filter(item => item.task_id === id)
-        console.log("ASSIGNMENT", filteredAssignment[0])
         if (filteredAssignment[0] === undefined) {
             return true
         } else {
@@ -100,15 +98,15 @@ class StudentTasks extends Component {
         }
     }
 
-    countPoints(data) {
-        let counter = 0
-        for (let i = 0; i < data.length; i++) {
-            if (data[i].result !== null) {
-                counter = counter + data[i].result.evaluation
-            }
-        }
-        return counter
-    }
+    // countPoints(data) {
+    //     let counter = 0
+    //     for (let i = 0; i < data.length; i++) {
+    //         if (data[i].result !== null) {
+    //             counter = counter + data[i].result.evaluation
+    //         }
+    //     }
+    //     return counter
+    // }
 
     render() {
         return (
@@ -122,7 +120,7 @@ class StudentTasks extends Component {
                     <p className="blog-post-meta"> Cvičiaci: {this.state.concreteTeacher.name} {this.state.concreteTeacher.surname} </p>
                 </div>
                 <div className="container">
-                    <p style={{ color: 'white' }} className="d-flex justify-content-start"> Body za semester: {this.countPoints(this.state.submittedAssignments)} / 100 </p>
+                    <p style={{ color: 'white' }} className="d-flex justify-content-start"> Body za semester: {this.props.user.enrolled_student.points} / 100 </p>
                     <table className="table table-bordered table-sm">
                         <thead className="thead-dark">
                             <tr>

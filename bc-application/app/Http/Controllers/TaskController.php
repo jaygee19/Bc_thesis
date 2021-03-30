@@ -33,10 +33,21 @@ class TaskController extends Controller
             return response()->json(['status' => 'Neautorizovaný prístup'], 400);
         }
 
-        // $validator = $this->getValidator($request);
+        $validator = Validator::make($request->all(), [
+            'type' => 'required',
+            'title' => 'required',
+            'content' => 'required',
+            'deadline' => 'required',
+        ], [
+            'type.required' => 'Zadajte typ zadania',
+            'title.required' => 'Zadajte názov zadania',
+            'content.required' => 'Zadajte popis k zadaniu',
+            'deadline.required' => 'Zadajte posledný termín odovzdania',
+        ]);
 
-        // if ($validator->fails())
-        //     return response()->json($validator->errors(), 400);
+        if($validator->fails()){
+                return response()->json($validator->errors(), 400);
+        }
 
         if($request->file('filename') == null){
             $task = Task::create([
@@ -69,14 +80,25 @@ class TaskController extends Controller
     {
         $user = JWTAuth::parseToken()->authenticate();
 
-        // $validator = $this->getValidator($request);
-
-        // if ($validator->fails())
-        //     return response()->json($validator->errors(), 400);
-
         if ($user->role != 't')
         {
             return response()->json(['status' => 'unauthorized'], 400);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'type' => 'required',
+            'title' => 'required',
+            'content' => 'required',
+            'deadline' => 'required',
+        ], [
+            'type.required' => 'Zadajte typ zadania',
+            'title.required' => 'Zadajte názov zadania',
+            'content.required' => 'Zadajte popis k zadaniu',
+            'deadline.required' => 'Zadajte posledný termín odovzdania',
+        ]);
+
+        if($validator->fails()){
+                return response()->json($validator->errors(), 400);
         }
 
         $task->update($request->all());

@@ -34,11 +34,8 @@ class MyTasks extends Component {
                     <p></p>
                     <button onClick={this.onAddNew} type="submit" className="btn btn-light" > Nové zadanie + </button>
                     <p></p>
-                    <div className="d-flex justify-content-center" style={{ color: 'white' }}> 
-                    <h3> Moje zadania: </h3>
-                    </div>
-                    <div className="d-flex justify-content-center" style={{ color: 'white' }}>
-                    <p> ({this.getUserName(AuthHelper.getInstance().getUserID())}) </p>
+                    <div className="d-flex justify-content-start" style={{ color: 'white' }}>
+                    <p><h3> {this.getUserName(AuthHelper.getInstance().getUserID())} </h3></p>
                     </div>
                     <p></p>
                 </div>

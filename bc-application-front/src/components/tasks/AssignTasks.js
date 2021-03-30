@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Navigation from '../Navigation'
 import AuthHelper from '../../helpers/AuthHelper';
 import dateFormat from 'dateformat';
+import { getAllErrors } from '../../helpers/ErrorHelper'
 
 class AssignTasks extends Component {
     constructor(props) {
@@ -15,14 +16,12 @@ class AssignTasks extends Component {
         this.state = {
             concreteTask: task,
             assignedStudents: task.stud_tasks,
-            //allStudents: this.props.users,
             allGroups: this.props.groups,
             chosenStudents: [],
             chosenGroups: [],
-            //assignedStudents: 
+            statusErrors: [],
         }
 
-        // this.assignGroup = this.assignGroup.bind(this)
         this.assignStudent = this.assignStudent.bind(this)
         this.removeStudent = this.removeStudent.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
@@ -46,6 +45,11 @@ class AssignTasks extends Component {
             })
             .then(() => {
                 this.props.history.push('/myTasks')
+            })
+            .catch((e) => {
+                this.setState({
+                    statusErrors: e.response.data['status'] || [],
+                })
             })
     }
 
@@ -135,8 +139,6 @@ class AssignTasks extends Component {
                                         <span className="my_btn btn btn-sm btn-dark" onClick={() => this.assignStudent(group.schedule_id)}>  +  </span>
                                             </h4>
 
-
-
                                             <div className="">
                                                 <div>
                                                     {this.state.chosenStudents.filter((student) => student.pivot.schedule_id === group.schedule_id)
@@ -154,6 +156,7 @@ class AssignTasks extends Component {
                                         </div>
                                     )
                                 })}
+                                {getAllErrors(this.state.statusErrors)} 
                                 <p></p>
                                 <button className="w-50 btn btn-lg btn-dark" type="submit">Ulož</button>
                                 <p></p>

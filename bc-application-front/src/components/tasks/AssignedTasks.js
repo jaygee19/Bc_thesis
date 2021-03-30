@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Navigation from '../Navigation'
 import dateFormat from 'dateformat';
+import { getAllErrors } from '../../helpers/ErrorHelper'
 
 class AssignedTasks extends Component {
     constructor(props) {
@@ -73,6 +74,11 @@ class AssignedTasks extends Component {
             })
             .then(() => {
                 this.props.history.push('/myTasks')
+            })
+            .catch((e) => {
+                this.setState({
+                    statusErrors: e.response.data['status'] || [],
+                })
             })
     }
 
@@ -152,6 +158,7 @@ class AssignedTasks extends Component {
                                 })}
                         </tbody>
                     </table>
+                    {getAllErrors(this.state.statusErrors)} 
                 </div>
             </div>
         )

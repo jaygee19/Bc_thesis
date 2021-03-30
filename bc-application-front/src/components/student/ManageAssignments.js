@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Navigation from '../Navigation'
 import dateFormat from 'dateformat';
 import bsCustomFileInput from 'bs-custom-file-input';
+import { getAllErrors } from '../../helpers/ErrorHelper'
 
 class ManageAssignments extends Component {
     constructor(props) {
@@ -14,12 +15,15 @@ class ManageAssignments extends Component {
             path_to_file: '',
             concreteTask: task[0],
             concreteAssignments: sub,
-            ip_adress: '',
+            ip_address: '',
+            statusErrors: [],
+            ipErrors: [],
+            fileErrors: [],
         }
 
 
         this.fileChanged = this.fileChanged.bind(this)
-        this.ipAdressChanged = this.ipAdressChanged.bind(this)
+        this.ipAddressChanged = this.ipAddressChanged.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
         this.onUpdate = this.onUpdate.bind(this)
     }
@@ -38,10 +42,14 @@ class ManageAssignments extends Component {
         })
     }
 
-    ipAdressChanged(event) {
+    ipAddressChanged(event) {
         this.setState({
-            ip_adress: event.target.value,
+            ip_address: event.target.value,
         })
+    }
+
+    showAssignment(path) {
+        return 'http://127.0.0.1:8000/storage'+path
     }
 
     onUpdate() {
@@ -51,9 +59,16 @@ class ManageAssignments extends Component {
         dataTask.append('assignment_id', this.state.concreteAssignments[0].assignment_id);
 
         this.props.onUpdate(dataTask)
-        .then(() => {
-            this.props.history.push('/studentTasks')
-        })
+            .then(() => {
+                this.props.history.push('/studentTasks')
+            })
+            .catch((e) => {
+                this.setState({
+                    statusErrors: e.response.data['status'] || [],
+                    fileErrors: e.response.data['filename'] || [],
+                })
+            })
+
     }
 
     onSubmit(event) {
@@ -62,7 +77,7 @@ class ManageAssignments extends Component {
         const dataTask = new FormData();
         dataTask.append('filename', this.state.path_to_file);
         dataTask.append('task_id', this.state.concreteTask.task_id);
-        dataTask.append('ip_adress', this.state.ip_adress);
+        dataTask.append('ip_address', this.state.ip_address);
 
 
         for (var key of dataTask.entries()) {
@@ -73,6 +88,13 @@ class ManageAssignments extends Component {
         this.props.onSubmit(dataTask)
             .then(() => {
                 this.props.history.push('/studentTasks')
+            })
+            .catch((e) => {
+                this.setState({
+                    statusErrors: e.response.data['status'] || [],
+                    ipErrors: e.response.data['ip_address'] || [],
+                    fileErrors: e.response.data['filename'] || [],
+                })
             })
     }
 
@@ -87,7 +109,7 @@ class ManageAssignments extends Component {
                         <p className="lead">{this.state.concreteTask.content}</p>
                         <p className="lead">Deadline: {this.toDate(this.state.concreteTask.deadline)}</p>
                         {this.state.concreteTask.path_to_file !== null && (
-                            <a className="btn btn-lg btn-dark" href={this.state.concreteTask.path_to_file} role="button">Zobraz zadanie  &raquo;</a>
+                            <a className="btn btn-lg btn-dark" href={this.showAssignment(this.state.concreteTask.path_to_file.substr(6))} target="_blank" download>Zobraz zadanie  &raquo;</a>
                         )}
 
                         {(this.state.concreteAssignments.length === 0) && (
@@ -96,21 +118,26 @@ class ManageAssignments extends Component {
                                     <p></p>
                                     <label>IP adresa</label>
                                     <input type="text" className="form-control"
-                                        id="ip_adress"
-                                        name="ip_adress"
-                                        value={this.state.ip_adress}
-                                        onChange={this.ipAdressChanged}
+                                        id="ip_address"
+                                        name="ip_address"
+                                        value={this.state.ip_address}
+                                        onChange={this.ipAddressChanged}
+                                        required
                                     />
+                                    {getAllErrors(this.state.ipErrors)}
                                     <p></p>
                                     <label>Priložiť súbor</label>
                                     <div className="custom-file">
-                                            <input id="inputGroupFile01" type="file" className="custom-file-input" 
+                                        <input id="inputGroupFile01" type="file" className="custom-file-input"
                                             name="filename"
                                             id="filename"
                                             onChange={this.fileChanged}
-                                            />
-                                            <label className="custom-file-label">Choose file</label>
+                                            required
+                                        />
+                                        <label className="custom-file-label">Choose file</label>
                                     </div>
+                                    {getAllErrors(this.state.fileErrors)}
+                                    {getAllErrors(this.state.statusErrors)}
                                     <p></p>
                                     <button className="w-50 btn btn-lg btn-dark" type="submit">Ulož</button>
                                     <p></p>
@@ -126,13 +153,16 @@ class ManageAssignments extends Component {
                                 <label>Zmeniť súbor</label>
                                 <p>{this.state.concreteAssignments[0].path_to_file}</p>
                                 <div className="custom-file">
-                                            <input id="inputGroupFile01" type="file" className="custom-file-input" 
-                                            name="filename"
-                                            id="filename"
-                                            onChange={this.fileChanged}
-                                            />
-                                            <label className="custom-file-label">Choose file</label>
+                                    <input id="inputGroupFile01" type="file" className="custom-file-input"
+                                        name="filename"
+                                        id="filename"
+                                        onChange={this.fileChanged}
+                                        required
+                                    />
+                                    <label className="custom-file-label">Choose file</label>
                                 </div>
+                                {getAllErrors(this.state.fileErrors)}
+                                {getAllErrors(this.state.statusErrors)}
                                 <p></p>
                                 <button onClick={() => this.onUpdate()}
                                     className="w-50 btn btn-lg btn-dark" type="submit">Zmeň súbor

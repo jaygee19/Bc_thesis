@@ -17,6 +17,10 @@ class AddTask extends Component {
             path_to_file: '',
             path_to_file_updated: '',
             statusErrors: [],
+            typeErrors: [],
+            titleErrors: [],
+            contentErrors: [],
+            deadlineErrors: [],
         }
 
         this.onSubmit = this.onSubmit.bind(this)
@@ -124,17 +128,26 @@ class AddTask extends Component {
                 .catch((e) => {
                     this.setState({
                         statusErrors: e.response.data['status'] || [],
+                        typeErrors: e.response.data['type'] || [],
+                        titleErrors: e.response.data['title'] || [],
+                        contentErrors: e.response.data['content'] || [],
+                        deadlineErrors: e.response.data['deadline'] || [],
                     })
                 })
         } else {
             this.props
                 .onSubmit(dataTask)
+
                 .then(() => {
                     this.props.history.push('/myTasks')
                 })
                 .catch((e) => {
                     this.setState({
                         statusErrors: e.response.data['status'] || [],
+                        typeErrors: e.response.data['type'] || [],
+                        titleErrors: e.response.data['title'] || [],
+                        contentErrors: e.response.data['content'] || [],
+                        deadlineErrors: e.response.data['deadline'] || [],
                     })
                 })
         }
@@ -147,26 +160,33 @@ class AddTask extends Component {
                 <div className="container col-md-6">
                     <p></p>
                     <div className="card login-card">
+                        <p></p>
                         <h3>Uprav zadanie:</h3>
                         <p></p>
                         <div className="justify-content-center align-items-center">
                             <form onSubmit={this.onSubmit} encType="multipart/form-data">
-                                <label>Typ zadania</label>
-                                <select type="text" className="form-control" id="type" name="type" value={this.state.type} onChange={this.typeChanged} required>
+                            <p></p>
+                                <label className="d-flex justify-content-start"> Typ zadania: </label>
+                                <select type="text" className="form-control col-3" id="type" name="type" value={this.state.type} onChange={this.typeChanged} required>
                                     <option value=""></option>
                                     <option value="first_check">Prvý zápočet</option>
                                     <option value="second_check">Druhý zápočet</option>
                                     <option value="semester_work">Semestrálna práca</option>
                                     <option value="homework">Domáca úloha</option>
                                 </select>
-                                <label>Názov</label>
-                                <input type="text" className="form-control"
+                                {getAllErrors(this.state.typeErrors)} 
+                                <p></p>
+                                <label className="d-flex justify-content-start">Názov:</label>
+                                <input type="text" className="form-control col-6"
                                     id="title"
                                     name="title"
                                     value={this.state.title}
                                     onChange={this.titleChanged}
+                                    required
                                 />
-                                <label>Popis</label>
+                                {getAllErrors(this.state.titleErrors)} 
+                                <p></p>
+                                <label className="d-flex justify-content-start">Popis:</label>
                                 <textarea type="text" className="form-control"
                                     id="content"
                                     name="content"
@@ -174,16 +194,21 @@ class AddTask extends Component {
                                     onChange={this.contentChanged}
                                     required>
                                 </textarea>
-                                <label>Deadline</label>
-                                <input type="datetime-local" className="form-control" placeholder="Deadline"
+                                {getAllErrors(this.state.contentErrors)} 
+                                <p></p>
+                                <label className="d-flex justify-content-start">Deadline:</label>
+                                <input type="datetime-local" className="form-control col-6" placeholder="Deadline"
                                     id="deadline"
                                     name="deadline"
                                     value={this.state.deadline}
                                     onChange={this.deadlineChanged}
+                                    required
                                 />
+                                {getAllErrors(this.state.deadlineErrors)} 
                                 {(this.props.match.params.id == null) && (
                                     <div>
-                                        <label>Priložiť súbor</label>
+                                        <p></p>
+                                        <label className="d-flex justify-content-start">Priložiť súbor:</label>
                                         <div className="custom-file">
                                             <input id="inputGroupFile01" type="file" className="custom-file-input" 
                                             name="filename"
@@ -194,6 +219,7 @@ class AddTask extends Component {
                                         </div>
                                     </div>
                                 )}
+
                                 {getAllErrors(this.state.statusErrors)} 
                                 <p></p>
                                 <button className="w-50 btn btn-lg btn-dark" type="submit">Ulož</button>
@@ -213,7 +239,8 @@ class AddTask extends Component {
                                             />
                                             <label className="custom-file-label">Choose file</label>
                                         </div>
-
+                                        
+                                    {getAllErrors(this.state.statusErrors)} 
                                     <p></p>
                                     <button onClick={() => this.onUpdate()}
                                         className="w-50 btn btn-lg btn-dark" type="submit">Zmeň súbor

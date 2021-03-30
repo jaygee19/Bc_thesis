@@ -110,6 +110,8 @@ class App extends Component {
 
     const addedTask = await getApiResponse('tasks/store', 'post', task)
 
+    console.log("NEJAKY TEXTIK NECH VIEM KDE TO JE", addedTask)
+
     this.setState(state => {
       return {
         allTasks: [...state.allTasks, addedTask.data],
