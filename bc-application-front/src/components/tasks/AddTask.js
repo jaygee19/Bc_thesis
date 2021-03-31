@@ -16,11 +16,13 @@ class AddTask extends Component {
             deadline: '',
             path_to_file: '',
             path_to_file_updated: '',
+            canBeDeleted: false,
             statusErrors: [],
             typeErrors: [],
             titleErrors: [],
             contentErrors: [],
             deadlineErrors: [],
+            fileErrors: [],
         }
 
         this.onSubmit = this.onSubmit.bind(this)
@@ -36,18 +38,31 @@ class AddTask extends Component {
             let task = this.props.tasks.filter(
                 (item) => item.task_id === parseInt(this.props.match.params.id)
             )[0]
-            this.state = {
-                id: task.task_id,
-                type: task.type,
-                title: task.title,
-                content: task.content,
-                deadline: task.deadline,
-                path_to_file: task.path_to_file,
+            if (task.stud_tasks.length === 0) {
+                this.state = {
+                    id: task.task_id,
+                    type: task.type,
+                    title: task.title,
+                    content: task.content,
+                    deadline: task.deadline,
+                    path_to_file: task.path_to_file,
+                    canBeDeleted: true
+                }
+            } else {
+                this.state = {
+                    id: task.task_id,
+                    type: task.type,
+                    title: task.title,
+                    content: task.content,
+                    deadline: task.deadline,
+                    path_to_file: task.path_to_file,
+                    canBeDeleted: false
+                }
             }
         }
     }
 
-    
+
     componentDidMount() {
         bsCustomFileInput.init()
     }
@@ -88,14 +103,35 @@ class AddTask extends Component {
         })
     }
 
+    onDelete(id) {
+        this.props.onDelete(id)
+            .then(() => {
+                this.props.history.push('/myTasks')
+            })
+    }
+
     onUpdate() {
         const dataTask = new FormData();
-        dataTask.append('filename', this.state.path_to_file_updated);
+        if (this.state.path_to_file_updated === undefined) {
+            dataTask.append('filename', '');
+        } else {
+            dataTask.append('filename', this.state.path_to_file_updated);
+        }
         dataTask.append('id', this.props.match.params.id);
+
+        for (var key of dataTask.entries()) {
+            console.log(key[0] + ', ' + key[1]);
+        }
 
         this.props.onUpdate(dataTask)
             .then(() => {
                 this.props.history.push('/myTasks')
+            })
+            .catch((e) => {
+                this.setState({
+                    statusErrors: e.response.data['status'] || [],
+                    fileErrors: e.response.data['filename'] || [],
+                })
             })
     }
 
@@ -161,11 +197,30 @@ class AddTask extends Component {
                     <p></p>
                     <div className="card login-card">
                         <p></p>
-                        <h3>Uprav zadanie:</h3>
+                        {(this.props.match.params.id != null) && (
+                            <div className="d-flex justify-content-center ">
+                                <h3>Uprav zadanie:</h3>
+
+                            </div>
+                        )}
+                        {this.state.canBeDeleted && (
+                            <div className="d-flex justify-content-center ">
+                                <button onClick={() => this.onDelete(this.state.id)} type="submit" className="my_btn btn btn-dark" >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
+                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        )}
+                        {(this.props.match.params.id == null) && (
+                            <h3>Vytvor zadanie:</h3>
+                        )}
                         <p></p>
+
                         <div className="justify-content-center align-items-center">
                             <form onSubmit={this.onSubmit} encType="multipart/form-data">
-                            <p></p>
+                                <p></p>
                                 <label className="d-flex justify-content-start"> Typ zadania: </label>
                                 <select type="text" className="form-control col-3" id="type" name="type" value={this.state.type} onChange={this.typeChanged} required>
                                     <option value=""></option>
@@ -174,7 +229,7 @@ class AddTask extends Component {
                                     <option value="semester_work">Semestrálna práca</option>
                                     <option value="homework">Domáca úloha</option>
                                 </select>
-                                {getAllErrors(this.state.typeErrors)} 
+                                {getAllErrors(this.state.typeErrors)}
                                 <p></p>
                                 <label className="d-flex justify-content-start">Názov:</label>
                                 <input type="text" className="form-control col-6"
@@ -184,7 +239,7 @@ class AddTask extends Component {
                                     onChange={this.titleChanged}
                                     required
                                 />
-                                {getAllErrors(this.state.titleErrors)} 
+                                {getAllErrors(this.state.titleErrors)}
                                 <p></p>
                                 <label className="d-flex justify-content-start">Popis:</label>
                                 <textarea type="text" className="form-control"
@@ -194,7 +249,7 @@ class AddTask extends Component {
                                     onChange={this.contentChanged}
                                     required>
                                 </textarea>
-                                {getAllErrors(this.state.contentErrors)} 
+                                {getAllErrors(this.state.contentErrors)}
                                 <p></p>
                                 <label className="d-flex justify-content-start">Deadline:</label>
                                 <input type="datetime-local" className="form-control col-6" placeholder="Deadline"
@@ -204,23 +259,23 @@ class AddTask extends Component {
                                     onChange={this.deadlineChanged}
                                     required
                                 />
-                                {getAllErrors(this.state.deadlineErrors)} 
+                                {getAllErrors(this.state.deadlineErrors)}
                                 {(this.props.match.params.id == null) && (
                                     <div>
                                         <p></p>
                                         <label className="d-flex justify-content-start">Priložiť súbor:</label>
                                         <div className="custom-file">
-                                            <input id="inputGroupFile01" type="file" className="custom-file-input" 
-                                            name="filename"
-                                            id="filename"
-                                            onChange={this.fileChanged}
+                                            <input id="inputGroupFile01" type="file" className="custom-file-input"
+                                                name="filename"
+                                                id="filename"
+                                                onChange={this.fileChanged}
                                             />
                                             <label className="custom-file-label">Choose file</label>
                                         </div>
                                     </div>
                                 )}
 
-                                {getAllErrors(this.state.statusErrors)} 
+                                {getAllErrors(this.state.statusErrors)}
                                 <p></p>
                                 <button className="w-50 btn btn-lg btn-dark" type="submit">Ulož</button>
                                 <p></p>
@@ -228,19 +283,21 @@ class AddTask extends Component {
 
                             {(this.props.match.params.id != null) && (
                                 <div>
-                                    <label>Zmeniť súbor</label>
+                                    <label>Zmeniť súbor:</label>
                                     <p>{this.state.path_to_file}</p>
-                                    
+
                                     <div className="custom-file">
-                                            <input id="inputGroupFile01" type="file" className="custom-file-input" 
+                                        <input id="inputGroupFile01" type="file" className="custom-file-input"
                                             name="filename"
                                             id="filename"
                                             onChange={this.fileUpdated}
-                                            />
-                                            <label className="custom-file-label">Choose file</label>
-                                        </div>
-                                        
-                                    {getAllErrors(this.state.statusErrors)} 
+                                            required
+                                        />
+                                        <label className="custom-file-label">Choose file</label>
+                                    </div>
+
+                                    {getAllErrors(this.state.statusErrors)}
+                                    {getAllErrors(this.state.fileErrors)}
                                     <p></p>
                                     <button onClick={() => this.onUpdate()}
                                         className="w-50 btn btn-lg btn-dark" type="submit">Zmeň súbor

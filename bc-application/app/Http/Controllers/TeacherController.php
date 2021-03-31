@@ -41,9 +41,9 @@ class TeacherController extends Controller
 
     public function removeStudent(Task $task, User $user) {
 
-        $user = JWTAuth::parseToken()->authenticate();
+        $teacher = JWTAuth::parseToken()->authenticate();
 
-        if ($user->role != 't')
+        if ($teacher->role != 't')
         {
             return response()->json(['status' => 'unauthorized'], 400);
         }

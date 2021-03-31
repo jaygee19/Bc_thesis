@@ -60,10 +60,10 @@ class StudentController extends Controller
         }
         
         $validator = Validator::make($request->all(), [
-            'filename' => 'required|mimes:docx',
+            'filename' => 'required',
         ], [
             'filename.required' => 'Neodovzdali ste zadanie',
-            'filename.mimes' => 'Tento format nie je podporovany',
+            // 'filename.mimes' => 'Tento format nie je podporovany',
         ]);
 
         if($validator->fails()){

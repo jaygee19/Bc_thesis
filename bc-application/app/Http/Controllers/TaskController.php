@@ -136,6 +136,16 @@ class TaskController extends Controller
             return response()->json(['status' => 'unauthorized'], 400);
         }
 
+        $validator = Validator::make($request->all(), [
+            'filename' => 'required',
+        ], [
+            'filename.required' => 'Nepriložili ste žiaden súbor',
+        ]);
+
+        if($validator->fails()){
+                return response()->json($validator->errors(), 400);
+        }
+
         $task = Task::with('stud_tasks')->with('submitted_assignments')->where('task_id', $request->get('id'))->first();
 
         if ($task->path_to_file != null)
