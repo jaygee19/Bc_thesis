@@ -30,6 +30,7 @@ class AssignedTasks extends Component {
 
         this.onRemove = this.onRemove.bind(this)
         this.onDisplay = this.onDisplay.bind(this)
+        this.onVerify = this.onVerify.bind(this)
     }
 
     toDate(time) {
@@ -87,6 +88,13 @@ class AssignedTasks extends Component {
         this.props.history.push('/evaluate/' + this.props.match.params.id + '/assignment/' + chosen_assignment[0].assignment_id)
     }
 
+    onVerify(id) {
+        this.props.onVerify(id)
+        // .then(() => {
+        //     this.props.history.push('/myTasks')
+        // })
+    }
+
 
     render() {
         return (
@@ -99,6 +107,10 @@ class AssignedTasks extends Component {
                     <h2 className="blog-post-title">{this.state.concreteTask.title}</h2>
                     <p className="blog-post-meta"> Deadline: {this.toDate(this.state.concreteTask.deadline)}</p>
                     <p> {this.state.concreteTask.content} </p>
+                    {!this.state.concreteTask.verified && (
+                    <button onClick={() => this.onVerify(this.state.concreteTask.task_id)} className="btn btn-light">Kontrola zhody</button>
+                    )}
+                    <hr/>
                 </div>
                 <div className="container">
                     <p></p>
@@ -107,7 +119,7 @@ class AssignedTasks extends Component {
                             <tr>
                                 <th scope="col">Študent</th>
                                 <th scope="col">Skupina</th>
-                                <th scope="col">Stav</th>
+                                {/* <th scope="col">Stav</th> */}
                                 <th scope="col">Čas odovzdania</th>
                                 <th scope="col">Stav hodnotenia</th>
                                 <th scope="col">Odobrať</th>
@@ -120,12 +132,12 @@ class AssignedTasks extends Component {
                                         <tr key={chosen.user_id}>
                                             <td>{chosen.name} {chosen.surname}</td>
                                             <td>{chosen.group}</td>
-                                            { this.isSubmitted(chosen.submitted_assignments) && (
-                                                <td className="table-success">Odovzdané</td>
+                                            {/* { this.isSubmitted(chosen.submitted_assignments) && (
+                                                <td className="table-success"></td>
                                             )}
                                             { !this.isSubmitted(chosen.submitted_assignments) && (
-                                                <td className="table-danger">Neodovzdané</td>
-                                            )}
+                                                <td className="table-danger"></td>
+                                            )} */}
 
                                             {this.isSubmitted(chosen.submitted_assignments) && this.isSubmittedBeforeDeadline(chosen.submitted_assignments) && (
                                                 <td className="table-success"> { this.submitDate(chosen.submitted_assignments)} </td>
@@ -150,9 +162,12 @@ class AssignedTasks extends Component {
                                             {!this.isSubmitted(chosen.submitted_assignments) && (
                                                 <td> <i> Nehodnotené </i> </td>
                                             )}
-
+                                            {!this.isSubmitted(chosen.submitted_assignments) && (
                                             <td onClick={() => this.onRemove(chosen.user_id)}> <button className="btn-dark"> x </button> </td>
-
+                                            )}
+                                            {this.isSubmitted(chosen.submitted_assignments) && (
+                                            <td> - </td>
+                                            )}
                                         </tr>
                                     )
                                 })}

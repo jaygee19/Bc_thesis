@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\ComparedPairsImport;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Schedule;
@@ -10,6 +11,8 @@ use App\Models\EnrolledStudent;
 use App\Models\SubmittedAssignment;
 use App\Models\Task;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\UniquesImport;
 
 
 class TestController extends Controller
@@ -63,13 +66,9 @@ class TestController extends Controller
     //  }
 
     public function getAll() {
-        //dd(Schedule::with('course')->get()->toArray());
-        //dd(Task::with('user')->get()->toArray());
-        //dd(User::with('tasks')->get()->toArray());
-        //dd(Task::with('stud_tasks')->get()->toArray());
-        dd(User::with('submitted_assignments')->get()->toArray());
-        //dd(Schedule::where('course_id', '!=', null)->with('courses')->get()->toArray());
-        //return Schedule::where('course_id', '!=', null)->with('courses')->get();
+        //Excel::import(new ComparedPairsImport, "C:\Users\Janci\Desktop\Res\matches_max.csv");
+        //exec("java -jar C:\Users\Janci\Desktop\jplag-2.12.1-SNAPSHOT-jar-with-dependencies.jar -l c/c++ -r C:\Users\Janci\Desktop\Res\ -s C:\Users\Janci\Desktop\Test_folder\ ");
+        //dd($array);
     }
 
     // public function detach(Request $request) {

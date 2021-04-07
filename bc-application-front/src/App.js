@@ -50,6 +50,7 @@ class App extends Component {
     this.hideTask = this.hideTask.bind(this)
     this.uncoverTask = this.uncoverTask.bind(this)
     this.resetStatus = this.resetStatus.bind(this)
+    this.checkDuplicates = this.checkDuplicates.bind(this)
   }
 
   async componentDidMount() {
@@ -184,6 +185,16 @@ class App extends Component {
     })
   }
 
+  async checkDuplicates(id) {
+    const updatedTask = await getApiResponse('check/duplicates/' + id, 'put')
+    this.loadAllTasks()
+    // this.setState(state => {
+    //   return {
+    //     allTasks: state.allTasks.map(t => t.task_id === updatedTask.data.task_id ? updatedTask.data : t),
+    //   }
+    // })
+  }
+
   //******************************** TASK END*/
 
   //******************************** ASSIGN STUDENT START */
@@ -289,7 +300,7 @@ class App extends Component {
             <TeacherRoute path="/subjectTasks" exact component={SubjectTasks} users={this.state.allUsers} tasks={this.state.allTasks} />
             <TeacherRoute path="/hiddenTasks" exact component={HiddenTasks} users={this.state.allUsers} tasks={this.state.allTasks} uncoverTask={this.uncoverTask} />
             <TeacherRoute path="/assignTasks/:id" exact component={AssignTasks} groups={this.getOnlyGroups()} tasks={this.state.allTasks} onSubmit={this.saveAssignedStudents} />
-            <TeacherRoute path="/assignedTasks/:id" exact component={AssignedTasks} users={this.state.allUsers} tasks={this.state.allTasks} onDelete={this.removeStudent} />
+            <TeacherRoute path="/assignedTasks/:id" exact component={AssignedTasks} users={this.state.allUsers} tasks={this.state.allTasks} onDelete={this.removeStudent} onVerify={this.checkDuplicates}/>
             <TeacherRoute path="/myTasks/create" exact component={AddTask} onSubmit={this.addNewTask} />
             <TeacherRoute path="/myTasks/:id/edit" exact component={AddTask} tasks={this.state.allTasks} onSubmit={this.editTask} onUpdate={this.updateFile} onDelete={this.deleteTask}/>
             <TeacherRoute path="/evaluate/:task/assignment/:id" exact component={EvaluateAssignment} users={this.state.allUsers} tasks={this.state.allTasks} onSubmit={this.storeResult} onUpdate={this.updateResult}/>

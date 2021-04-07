@@ -44,7 +44,7 @@ class AssignTasks extends Component {
                 task_id: this.state.concreteTask.task_id,
             })
             .then(() => {
-                this.props.history.push('/myTasks')
+                this.props.history.push('/assignedTasks/' + this.props.match.params.id)
             })
             .catch((e) => {
                 this.setState({

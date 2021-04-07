@@ -45,12 +45,14 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('/tasks/loggedUsersTask', [TaskController::class, 'loggedUserTasks']);
     Route::post('/assign/students', [TeacherController::class, 'assignTask']);
     Route::delete('/remove/{task}/student/{user}', [TeacherController::class, 'removeStudent']);
+    Route::put('check/duplicates/{task}', [TeacherController::class, 'checkDuplicates']);
 
     Route::post('submit/assignment', [StudentController::class, 'storeAssignment']);
     Route::post('update/assignment', [StudentController::class, 'updateAssignment']);
     
     Route::post('store/result', [ResultController::class, 'store']);
     Route::put('update/result/{result}', [ResultController::class, 'update']);
+
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
