@@ -13,6 +13,7 @@ class ManageAssignments extends Component {
 
         this.state = {
             path_to_file: '',
+            file_name: '',
             concreteTask: task[0],
             concreteAssignments: sub,
             ip_address: '',
@@ -39,6 +40,7 @@ class ManageAssignments extends Component {
     fileChanged(event) {
         this.setState({
             path_to_file: event.target.files[0],
+            file_name: event.target.value,
         })
     }
 
@@ -49,7 +51,7 @@ class ManageAssignments extends Component {
     }
 
     showAssignment(path) {
-        return 'http://127.0.0.1:8000/storage'+path
+        return 'http://127.0.0.1:8000/storage' + path
     }
 
     onUpdate() {
@@ -57,6 +59,7 @@ class ManageAssignments extends Component {
         const dataTask = new FormData();
         dataTask.append('filename', this.state.path_to_file);
         dataTask.append('assignment_id', this.state.concreteAssignments[0].assignment_id);
+        dataTask.append('name', this.state.file_name);
 
         this.props.onUpdate(dataTask)
             .then(() => {
@@ -78,6 +81,7 @@ class ManageAssignments extends Component {
         dataTask.append('filename', this.state.path_to_file);
         dataTask.append('task_id', this.state.concreteTask.task_id);
         dataTask.append('ip_address', this.state.ip_address);
+        dataTask.append('name', this.state.file_name);
 
 
         for (var key of dataTask.entries()) {
@@ -151,7 +155,13 @@ class ManageAssignments extends Component {
                             <div>
                                 <p></p>
                                 <label>Zmeniť súbor</label>
-                                <p>{this.state.concreteAssignments[0].path_to_file}</p>
+                                {this.state.concreteAssignments[0].file_name !== null && (
+                                <p>Zadanie: <a href={this.showAssignment(this.state.concreteAssignments[0].path_to_file.substr(6))} download>
+                                    {this.state.concreteAssignments[0].file_name.substr(12)}
+                                </a></p>
+                                )}
+                                <p></p>
+
                                 <div className="custom-file">
                                     <input id="inputGroupFile01" type="file" className="custom-file-input"
                                         name="filename"

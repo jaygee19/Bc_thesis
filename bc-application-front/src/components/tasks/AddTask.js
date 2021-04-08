@@ -16,6 +16,7 @@ class AddTask extends Component {
             deadline: '',
             path_to_file: '',
             path_to_file_updated: '',
+            file_name: '',
             canBeDeleted: false,
             statusErrors: [],
             typeErrors: [],
@@ -46,6 +47,8 @@ class AddTask extends Component {
                     content: task.content,
                     deadline: task.deadline,
                     path_to_file: task.path_to_file,
+                    file_name: task.file_name,
+                    file_name_const: task.file_name,
                     canBeDeleted: true
                 }
             } else {
@@ -56,6 +59,8 @@ class AddTask extends Component {
                     content: task.content,
                     deadline: task.deadline,
                     path_to_file: task.path_to_file,
+                    file_name: task.file_name,
+                    file_name_const: task.file_name,
                     canBeDeleted: false
                 }
             }
@@ -94,13 +99,19 @@ class AddTask extends Component {
     fileChanged(event) {
         this.setState({
             path_to_file: event.target.files[0],
+            file_name: event.target.value,
         })
     }
 
     fileUpdated(event) {
         this.setState({
             path_to_file_updated: event.target.files[0],
+            file_name: event.target.value,
         })
+    }
+
+    showTask(path) {
+        return 'http://127.0.0.1:8000/storage'+path
     }
 
     onDelete(id) {
@@ -113,11 +124,12 @@ class AddTask extends Component {
     onUpdate() {
         const dataTask = new FormData();
         if (this.state.path_to_file_updated === undefined) {
-            dataTask.append('filename', '');
+            dataTask.append('filename', '')
         } else {
-            dataTask.append('filename', this.state.path_to_file_updated);
+            dataTask.append('filename', this.state.path_to_file_updated)
         }
-        dataTask.append('id', this.props.match.params.id);
+        dataTask.append('id', this.props.match.params.id)
+        dataTask.append('name', this.state.file_name)
 
         for (var key of dataTask.entries()) {
             console.log(key[0] + ', ' + key[1]);
@@ -138,12 +150,14 @@ class AddTask extends Component {
     onSubmit(event) {
         event.preventDefault()
 
-        const dataTask = new FormData();
-        dataTask.append('filename', this.state.path_to_file);
-        dataTask.append('type', this.state.type);
-        dataTask.append('title', this.state.title);
-        dataTask.append('content', this.state.content);
-        dataTask.append('deadline', this.state.deadline);
+        const dataTask = new FormData()
+        dataTask.append('filename', this.state.path_to_file)
+        dataTask.append('type', this.state.type)
+        dataTask.append('title', this.state.title)
+        dataTask.append('content', this.state.content)
+        dataTask.append('deadline', this.state.deadline)
+        dataTask.append('name', this.state.file_name)
+
 
         for (var key of dataTask.entries()) {
             console.log(key[0] + ', ' + key[1]);
@@ -284,7 +298,13 @@ class AddTask extends Component {
                             {(this.props.match.params.id != null) && (
                                 <div>
                                     <label>Zmeniť súbor:</label>
-                                    <p>{this.state.path_to_file}</p>
+                                    <br/>
+                                    {(this.state.path_to_file !== null) && (
+                                    <a href={this.showTask(this.state.path_to_file.substr(6))} download>
+                                        {this.state.file_name_const.substr(12)}
+                                    </a>
+                                    )}
+                                    <p></p>
 
                                     <div className="custom-file">
                                         <input id="inputGroupFile01" type="file" className="custom-file-input"

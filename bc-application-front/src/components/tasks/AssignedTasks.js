@@ -67,6 +67,10 @@ class AssignedTasks extends Component {
         }
     }
 
+    showTask(path) {
+        return 'http://127.0.0.1:8000/storage' + path
+    }
+
     onRemove(id) {
         this.props
             .onDelete({
@@ -106,11 +110,16 @@ class AssignedTasks extends Component {
                     <br />
                     <h2 className="blog-post-title">{this.state.concreteTask.title}</h2>
                     <p className="blog-post-meta"> Deadline: {this.toDate(this.state.concreteTask.deadline)}</p>
-                    <p> {this.state.concreteTask.content} </p>
+                    <p> Popis: {this.state.concreteTask.content} </p>
+                    {(this.state.concreteTask.path_to_file !== null) && (
+                        <p> Zadanie: <a href={this.showTask(this.state.concreteTask.path_to_file.substr(6))} download>
+                        {this.state.concreteTask.file_name.substr(12)}
+                        </a> </p>                        
+                    )}
                     {!this.state.concreteTask.verified && (
                     <button onClick={() => this.onVerify(this.state.concreteTask.task_id)} className="btn btn-light">Kontrola zhody</button>
-                    )}
-                    <hr/>
+                    )} 
+                    <hr />
                 </div>
                 <div className="container">
                     <p></p>
@@ -163,17 +172,17 @@ class AssignedTasks extends Component {
                                                 <td> <i> Nehodnotené </i> </td>
                                             )}
                                             {!this.isSubmitted(chosen.submitted_assignments) && (
-                                            <td onClick={() => this.onRemove(chosen.user_id)}> <button className="btn-dark"> x </button> </td>
+                                                <td onClick={() => this.onRemove(chosen.user_id)}> <button className="btn-dark"> x </button> </td>
                                             )}
                                             {this.isSubmitted(chosen.submitted_assignments) && (
-                                            <td> - </td>
+                                                <td> - </td>
                                             )}
                                         </tr>
                                     )
                                 })}
                         </tbody>
                     </table>
-                    {getAllErrors(this.state.statusErrors)} 
+                    {getAllErrors(this.state.statusErrors)}
                 </div>
             </div>
         )

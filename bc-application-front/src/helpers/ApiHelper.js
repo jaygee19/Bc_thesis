@@ -9,12 +9,10 @@ export async function getApiResponse(
   data = null,
   contentType = 'application/json'
 ) {
-   //if (AuthHelper.getInstance().getCurrentUser() !== undefined)
   return await axios.request({
     method: method,
     url: API_URL + '/' + endpoint,
     data: data,
-     //headers: null, 
     headers: AuthHelper.getInstance().getCurrentUser() != undefined ||  AuthHelper.getInstance().getCurrentUser() != null
     ? AuthHelper.getInstance().getAuthHeaders()
     : null,

@@ -43,9 +43,9 @@ class StudentController extends Controller
         $directory = 'public/uploads';
 
         if ($concrete_task->type == 'semester_work') {
-            $directory = 'public/semester_work';
+            $directory = 'public/semester_work/';
         } else if ($concrete_task->type == 'second_check') {
-            $directory = 'public/second_check';
+            $directory = 'public/second_check/'.$concrete_task->task_id;
         } 
 
         
@@ -53,6 +53,7 @@ class StudentController extends Controller
             'task_id' => $request->get('task_id'),
             'student_id' => $user->user_id,
             'path_to_file' => $request->file('filename')->store($directory),
+            'file_name' => $request->get('name'),
             'submit_date' => date(DATE_RSS),
             'ip_address' => $request->get('ip_address'),
         ]);
@@ -98,6 +99,7 @@ class StudentController extends Controller
 
         $sub_assignment->update(
             [ 'path_to_file' => $request->file('filename')->store($directory),
+              'file_name' => $request->get('name'),
               'submit_date' => date(DATE_RSS),
             ]
         );

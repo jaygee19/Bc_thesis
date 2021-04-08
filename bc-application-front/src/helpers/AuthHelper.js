@@ -58,7 +58,6 @@ class AuthHelper {
     } else {
         return false;
     }
-    //return this.currentUser != null
   }
 
   isUserStudent() {

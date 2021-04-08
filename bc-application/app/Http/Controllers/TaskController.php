@@ -66,7 +66,8 @@ class TaskController extends Controller
                 'valid_from' => date(DATE_RSS),
                 'deadline' => $request->get('deadline'),
                 'teacher_id' => $user->user_id,
-                'path_to_file' => $request->file('filename')->store('public/uploads'),
+                'path_to_file' => $request->file('filename')->store('public/tasks'),
+                'file_name' => $request->get('name'),
             ]);
         }
         
@@ -154,7 +155,9 @@ class TaskController extends Controller
         }
 
         $task->update(
-            ['path_to_file' => $request->file('filename')->store('public/uploads')]
+            ['path_to_file' => $request->file('filename')->store('public/uploads'),
+             'file_name' => $request->get('name'),
+            ]
         );
 
         return response()->json($task, 200);   

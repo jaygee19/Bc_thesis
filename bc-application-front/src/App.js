@@ -187,6 +187,7 @@ class App extends Component {
 
   async checkDuplicates(id) {
     const updatedTask = await getApiResponse('check/duplicates/' + id, 'put')
+    console.log("190", updatedTask)
     this.loadAllTasks()
     // this.setState(state => {
     //   return {
