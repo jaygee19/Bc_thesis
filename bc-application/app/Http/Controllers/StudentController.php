@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\EnrolledStudent;
 use App\Models\SubmittedAssignment;
 use App\Models\User;
+use App\Models\Task;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Storage;
@@ -37,11 +38,21 @@ class StudentController extends Controller
         if($validator->fails()){
                 return response()->json($validator->errors(), 400);
         }
+
+        $concrete_task = Task::where('task_id', $request->get('task_id'))->first();
+        $directory = 'public/uploads';
+
+        if ($concrete_task->type == 'semester_work') {
+            $directory = 'public/semester_work';
+        } else if ($concrete_task->type == 'second_check') {
+            $directory = 'public/second_check';
+        } 
+
         
         SubmittedAssignment::create([
             'task_id' => $request->get('task_id'),
             'student_id' => $user->user_id,
-            'path_to_file' => $request->file('filename')->store('public/uploads'),
+            'path_to_file' => $request->file('filename')->store($directory),
             'submit_date' => date(DATE_RSS),
             'ip_address' => $request->get('ip_address'),
         ]);
@@ -71,6 +82,14 @@ class StudentController extends Controller
         }
 
         $sub_assignment = SubmittedAssignment::where('assignment_id', $request->get('assignment_id'))->first();
+        $concrete_task = Task::where('task_id', $sub_assignment->task_id)->first();
+        $directory = 'public/uploads';
+
+        if ($concrete_task->type == 'semester_work') {
+            $directory = 'public/semester_work';
+        } else if ($concrete_task->type == 'second_check') {
+            $directory = 'public/second_check';
+        }
 
         if ($sub_assignment->path_to_file != null)
         {
@@ -78,7 +97,7 @@ class StudentController extends Controller
         }
 
         $sub_assignment->update(
-            [ 'path_to_file' => $request->file('filename')->store('public/uploads'),
+            [ 'path_to_file' => $request->file('filename')->store($directory),
               'submit_date' => date(DATE_RSS),
             ]
         );
