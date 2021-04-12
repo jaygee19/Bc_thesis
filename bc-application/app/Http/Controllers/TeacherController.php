@@ -59,9 +59,11 @@ class TeacherController extends Controller
     }
 
     public function checkDuplicates(Task $task) {
+
         $type = $task->type;
         $id = $task->task_id;
         $command = 'java -jar C:\Users\Janci\Desktop\jplag-2.12.1-SNAPSHOT-jar-with-dependencies.jar -l c/c++ -r C:\Users\Janci\Desktop\Res\ -s C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app\public/'.$type.'/'.$id;
+        
         exec($command);
         
         Excel::import(new ComparedPairsImport($type, $id), "C:\Users\Janci\Desktop\Res\matches_max.csv");

@@ -21,8 +21,10 @@ class ComparedPairsImport implements ToModel
     public function model(array $row)
     {
         $vysledok = str_getcsv($row[0], ';');
+        
         $first = SubmittedAssignment::where('path_to_file', "public/".$this->type.'/'.$this->id.'/'.$vysledok[0])->first();
         $second = SubmittedAssignment::where('path_to_file', "public/".$this->type.'/'.$this->id.'/'.$vysledok[2])->first();
+
         return new ComparedPair([
             'assignment_first_id' => $first->assignment_id,
             'assignment_second_id' => $second->assignment_id,
