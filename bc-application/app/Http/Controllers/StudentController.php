@@ -54,6 +54,8 @@ class StudentController extends Controller
             $directory = 'public/homework';
         } 
 
+        date_default_timezone_set("Europe/Bratislava");
+
         SubmittedAssignment::create([
             'task_id' => $request->get('task_id'),
             'student_id' => $user->user_id,
@@ -112,10 +114,12 @@ class StudentController extends Controller
             Storage::delete($sub_assignment->path_to_file);
         }
 
+        date_default_timezone_set("Europe/Bratislava");
+
         $sub_assignment->update(
             [ 'path_to_file' => $request->file('filename')->store($directory),
               'file_name' => $request->get('name'),
-              'submit_date' => date(DATE_RSS),
+              'submit_date' => date(DATE_RSS, time()),
             ]
         );
 

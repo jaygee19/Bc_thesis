@@ -50,6 +50,8 @@ class TaskController extends Controller
         if($validator->fails()){
                 return response()->json($validator->errors(), 400);
         }
+        
+        date_default_timezone_set("Europe/Bratislava");
 
         if($request->file('filename') == null){
             $task = Task::create([

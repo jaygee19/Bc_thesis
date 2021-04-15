@@ -20,14 +20,18 @@ class AssignedTasks extends Component {
                 if (student_task.task_id === task.task_id) {
                     const assignment = student.submitted_assignments.filter(a => a.task_id === task.task_id)[0]
                     students.push(student)
-                    assignments.push(assignment)
+                    if (assignment !== undefined) {
+                        assignments.push(assignment)
+                    }
                 }
             }
         }
 
-        similarities = assignments.filter((assignment) => assignment.compared_pair !== null)
+        if (assignments.length > 0) {
+            similarities = assignments.filter((assignment) => assignment.compared_pair !== null)
+        }
 
-        console.log(similarities)
+        console.log("TUU", similarities)
 
         this.state = {
             concreteTask: task,

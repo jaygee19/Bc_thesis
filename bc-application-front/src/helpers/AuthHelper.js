@@ -49,8 +49,6 @@ class AuthHelper {
   }
 
   logoutUser() {
-    // const res = await getApiResponse('logout', 'get', this.getUserToken())
-    // console.log(res)
     localStorage.removeItem('token')
     this.currentUser = null
   }

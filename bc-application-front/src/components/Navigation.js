@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import AuthHelper from '../helpers/AuthHelper'
 import { getApiResponse } from '../helpers/ApiHelper'
+import { withRouter } from 'react-router-dom'
+
 
 class Navigation extends Component {
 
@@ -13,6 +15,7 @@ class Navigation extends Component {
         }
 
         this.setNavCollapsed = this.setNavCollapsed.bind(this)
+        this.onLogout = this.onLogout.bind(this)
     }
 
     setNavCollapsed(e) {
@@ -21,17 +24,17 @@ class Navigation extends Component {
         })
     }
 
-    // onLogout(event) {
-    //     event.preventDefault()
+    onLogout() {
 
-    //     getApiResponse('logout', 'post', {
-    //         api_token: AuthHelper.getInstance().getUserToken(),
-    //     })
-    //         .then((res) => {
-    //             AuthHelper.getInstance().logoutUser()
-    //             this.props.history.push('/')
-    //         })
-    // }
+        getApiResponse('logout', 'post', {
+            api_token: AuthHelper.getInstance().getUserToken(),
+        })
+            .then((res) => {
+                console.log("32", res)
+                AuthHelper.getInstance().logoutUser()
+                this.props.history.push('/')
+            })
+    }
 
     render() {
         return (
@@ -72,15 +75,15 @@ class Navigation extends Component {
                                     <li className="nav-item active font-weight-bolder">
                                         <Link to="/login" className="nav-link" >Prihlásanie</Link>
                                     </li>
-                                    <li className="nav-item active font-weight-bolder">
+                                    {/* <li className="nav-item active font-weight-bolder">
                                         <Link to="/register" className="nav-link">Register</Link>
-                                    </li>
+                                    </li> */}
                                 </ul>
                             )}
                             {AuthHelper.getInstance().isUserLoggedIn() && (
                                 <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
                                     <li className="nav-item active font-weight-bolder">
-                                        <Link to="/logout" className="nav-link">Odhlásenie</Link>
+                                        <Link onClick={() => this.onLogout()}  className="nav-link">Odhlásenie</Link>
                                     </li>
                                 </ul>
                             )}
@@ -93,4 +96,4 @@ class Navigation extends Component {
 
 }
 
-export default Navigation
+export default withRouter(Navigation)

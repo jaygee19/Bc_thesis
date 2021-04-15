@@ -33,7 +33,7 @@ Route::get('/students', [StudentController::class, 'index']);
 Route::group(['middleware' => ['jwt.verify']], function () {
     
 
-    Route::get('/logout', [UserController::class, 'logout']);
+    Route::post('/logout', [UserController::class, 'logout']);
     Route::get('/user', [UserController::class, 'getAuthenticatedUser']);
     Route::post('/tasks/store', [TaskController::class, 'store']);
     Route::put('/tasks/{task}', [TaskController::class, 'update']);
