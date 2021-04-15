@@ -156,7 +156,7 @@ class ManageAssignments extends Component {
                                 <p></p>
                                 <label>Zmeniť súbor</label>
                                 {this.state.concreteAssignments[0].file_name !== null && (
-                                <p>Zadanie: <a href={this.showAssignment(this.state.concreteAssignments[0].path_to_file.substr(6))} download>
+                                <p>Zadanie: <a href={this.showAssignment(this.state.concreteAssignments[0].path_to_file.substr(6))} target="_blank" download>
                                     {this.state.concreteAssignments[0].file_name.substr(12)}
                                 </a></p>
                                 )}

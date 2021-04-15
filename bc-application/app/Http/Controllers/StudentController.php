@@ -15,7 +15,9 @@ class StudentController extends Controller
 {
     public function index()
     {
-        return EnrolledStudent::with('user')->with('course')->get();
+        return EnrolledStudent::with('user')
+        ->with('course')
+        ->get();
     }
 
     public function storeAssignment(Request $request)
@@ -46,9 +48,12 @@ class StudentController extends Controller
             $directory = 'public/semester_work/';
         } else if ($concrete_task->type == 'second_check') {
             $directory = 'public/second_check/'.$concrete_task->task_id;
+        } else if ($concrete_task->type == 'first_check') {
+            $directory = 'public/first_check';
+        } else if ($concrete_task->type == 'homework') {
+            $directory = 'public/homework';
         } 
 
-        
         SubmittedAssignment::create([
             'task_id' => $request->get('task_id'),
             'student_id' => $user->user_id,
@@ -58,7 +63,13 @@ class StudentController extends Controller
             'ip_address' => $request->get('ip_address'),
         ]);
 
-        $stored_by = User::with('schedules')->with('stud_tasks')->with('enrolled_student')->with('submitted_assignments.result')->where('user_id', $user->user_id)->first();
+        $stored_by = User::with('schedules')
+        ->with('stud_tasks')
+        ->with('enrolled_student')
+        ->with('submitted_assignments.result')
+        ->with('submitted_assignments.compared_pair')
+        ->where('user_id', $user->user_id)
+        ->first();
 
         return response()->json($stored_by, 201);
     }
@@ -90,6 +101,10 @@ class StudentController extends Controller
             $directory = 'public/semester_work';
         } else if ($concrete_task->type == 'second_check') {
             $directory = 'public/second_check';
+        } else if ($concrete_task->type == 'first_check') {
+            $directory = 'public/first_check';
+        } else if ($concrete_task->type == 'homework') {
+            $directory = 'public/homework';
         }
 
         if ($sub_assignment->path_to_file != null)
@@ -104,7 +119,13 @@ class StudentController extends Controller
             ]
         );
 
-        $updated_by = User::with('schedules')->with('stud_tasks')->with('enrolled_student')->with('submitted_assignments.result')->where('user_id', $user->user_id)->first();
+        $updated_by = User::with('schedules')
+        ->with('stud_tasks')
+        ->with('enrolled_student')
+        ->with('submitted_assignments.result')
+        ->with('submitted_assignments.compared_pair')
+        ->where('user_id', $user->user_id)
+        ->first();
 
         return response()->json($updated_by, 200);   
      }

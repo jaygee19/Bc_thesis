@@ -42,7 +42,14 @@ class ResultController extends Controller
 
         $enrolled = EnrolledStudent::where('user_id', $request->get('user_id'))->first();
         $enrolled->increment('points', $request->get('evaluation'));
-        $updated_student = User::with('schedules')->with('stud_tasks')->with('enrolled_student')->with('submitted_assignments.result')->where('user_id', $request->get('user_id'))->first();
+        
+        $updated_student = User::with('schedules')
+        ->with('stud_tasks')
+        ->with('enrolled_student')
+        ->with('submitted_assignments.result')
+        ->with('submitted_assignments.compared_pair')
+        ->where('user_id', $request->get('user_id'))
+        ->first();
 
         return response()->json($updated_student, 201);
     }
@@ -76,7 +83,13 @@ class ResultController extends Controller
             ]
         );
 
-        $updated_student = User::with('schedules')->with('stud_tasks')->with('enrolled_student')->with('submitted_assignments.result')->where('user_id', $request->get('user_id'))->first();
+        $updated_student = User::with('schedules')
+        ->with('stud_tasks')
+        ->with('enrolled_student')
+        ->with('submitted_assignments.result')
+        ->with('submitted_assignments.compared_pair')
+        ->where('user_id', $request->get('user_id'))
+        ->first();
 
         return response()->json($updated_student, 200);
     }

@@ -117,7 +117,7 @@ class EvaluateAssignment extends Component {
                         <p> Vypracované zadanie: </p>
                         {this.state.assignment.path_to_file !== null && (
                             <a className="btn btn-lg btn-dark" href={this.showAssignment(this.state.assignment.path_to_file.substr(6))} target="_blank" download>
-                                {/* {this.state.assignment.file_name.substr(12)} */}
+                                {this.state.assignment.file_name.substr(12)} 
                             </a>
                         )}
 

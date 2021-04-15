@@ -47,7 +47,7 @@ class MyTasks extends Component {
                     <button onClick={this.onAddNew} type="submit" className="btn btn-light" > Nové zadanie + </button>
                     <p></p>
                     <div className="d-flex justify-content-start" style={{ color: 'white' }}>
-                        <p><h3> {this.getUserName(AuthHelper.getInstance().getUserID())} </h3></p>
+                        <h3> {this.getUserName(AuthHelper.getInstance().getUserID())} :</h3>
                     </div>
                     <p></p>
                 </div>

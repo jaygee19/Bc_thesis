@@ -120,7 +120,9 @@ class AssignTasks extends Component {
                                 {this.state.assignedStudents
                                     .map((chosen) => {
                                         return (
+                                            <div key={chosen.user_id}>
                                             <h6> {chosen.name} {chosen.surname} </h6>
+                                            </div>
                                         )
                                     })}
                         </div>

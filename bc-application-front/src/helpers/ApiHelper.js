@@ -13,10 +13,9 @@ export async function getApiResponse(
     method: method,
     url: API_URL + '/' + endpoint,
     data: data,
-    headers: AuthHelper.getInstance().getCurrentUser() != undefined ||  AuthHelper.getInstance().getCurrentUser() != null
-    ? AuthHelper.getInstance().getAuthHeaders()
-    : null,
-    
+    headers: 
+    AuthHelper.getInstance().getCurrentUser() != undefined ||  AuthHelper.getInstance().getCurrentUser() != null
+    ? AuthHelper.getInstance().getAuthHeaders() : null,
     contentType: contentType,
   })
 }

@@ -72,6 +72,8 @@ class App extends Component {
       allScheduleGropus: allSubjectScheduleGroup.data,
       isLoading: false,
     })
+
+    console.log(this.state.allUsers)
   }
 
   getTasksForUser() {
@@ -293,7 +295,7 @@ class App extends Component {
         </div>
       )
     return (
-      <div className="App bg-dark" style = {{height:"100%", "min-height": "100vh"}}>
+      <div className="App bg-dark" style = {{height:"100%", "minHeight": "100vh"}}>
         <Router>
           <Switch>
             <LoggedInRoute path="/" exact component={Home} />

@@ -148,5 +148,7 @@
   border-color: grey !important;
 }
 
-
+.no-marg{
+  margin: 0 !important;
+}
 

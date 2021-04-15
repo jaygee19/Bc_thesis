@@ -34,9 +34,19 @@ class TeacherController extends Controller
             $user = User::where('user_id', Arr::get($temp, 'user_id'))->first();
             $user->stud_tasks()->attach($task);
 
-            $array[$i] = User::with('schedules')->with('stud_tasks')->with('enrolled_student')->with('submitted_assignments.result')->where('user_id', Arr::get($temp, 'user_id'))->first();
-        }    
-        $task = Task::with('stud_tasks')->with('submitted_assignments')->where('task_id', $request->get('task_id'))->first();
+            $array[$i] = User::with('schedules')
+            ->with('stud_tasks')
+            ->with('enrolled_student')
+            ->with('submitted_assignments.result')
+            ->with('submitted_assignments.compared_pair')
+            ->where('user_id', Arr::get($temp, 'user_id'))
+            ->first();
+        }   
+
+        $task = Task::with('stud_tasks')
+        ->with('submitted_assignments')
+        ->where('task_id', $request->get('task_id'))
+        ->first();
 
         return response()->json(['task' => $task, 'users' => $array], 201);
     }
@@ -52,8 +62,18 @@ class TeacherController extends Controller
 
        $user->stud_tasks()->detach($task);
 
-       $updated_task = Task::with('stud_tasks')->with('submitted_assignments')->where('task_id', $task->task_id)->first();
-       $removed_user = User::with('schedules')->with('stud_tasks')->with('enrolled_student')->with('submitted_assignments.result')->where('user_id', $user->user_id)->first();
+       $updated_task = Task::with('stud_tasks')
+       ->with('submitted_assignments')
+       ->where('task_id', $task->task_id)
+       ->first();
+
+       $removed_user = User::with('schedules')
+       ->with('stud_tasks')
+       ->with('enrolled_student')
+       ->with('submitted_assignments.result')
+       ->with('submitted_assignments.compared_pair')
+       ->where('user_id', $user->user_id)
+       ->first();
 
        return response()->json(['task' => $updated_task, 'user' => $removed_user], 200);
     }
@@ -62,7 +82,7 @@ class TeacherController extends Controller
 
         $type = $task->type;
         $id = $task->task_id;
-        $command = 'java -jar C:\Users\Janci\Desktop\jplag-2.12.1-SNAPSHOT-jar-with-dependencies.jar -l c/c++ -r C:\Users\Janci\Desktop\Res\ -s C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app\public/'.$type.'/'.$id;
+        $command = 'java -jar C:\Users\Janci\Desktop\jplag-2.12.1-SNAPSHOT-jar-with-dependencies.jar -l c/c++ -r C:\Users\Janci\Desktop\Res\ -m 30% -s C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app\public/'.$type.'/'.$id;
         
         exec($command);
         

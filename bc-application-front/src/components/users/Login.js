@@ -46,9 +46,8 @@ class Login extends Component {
             ldap_login: this.state.ldap_login,
             password: this.state.password,
         })
-            .then((res) => {
-                AuthHelper.getInstance()
-                    .loginUser(res.data.token)
+            .then((r) => {
+                AuthHelper.getInstance().loginUser(r.data.token)
                     .then(() => {
                         this.props.onLogin()
                         this.props.history.push('/')
@@ -77,9 +76,8 @@ class Login extends Component {
                                 <div className="card-body sign-card">
                                     <h3 className="login-card-description">Princípy operačných systémov</h3>
                                     <hr/>
-                                    <p></p>
                                     <form onSubmit={this.onSubmit}>
-                                        <h5 className="mb-3 fw-normal">Prihlásenie</h5>
+                                        <h5 className="mb-3 fw-normal">Prihlásenie:</h5>
                                         <input type="text" className="form-control" placeholder="Ldap_login"
                                             id="ldap_login"
                                             name="ldap_login"

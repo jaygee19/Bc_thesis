@@ -5,7 +5,8 @@ class Footer extends Component {
         return (
             <div style={{ padding: "40px" }}>
                 <div className="footer bg-white">
-                    <p className="foot-end font-italic text-muted">&copy; since 2021 <hr /></p>
+                    <p className="foot-end font-italic text-muted">&copy; since 2021 </p>
+                    <hr />
                 </div>
             </div>
         )

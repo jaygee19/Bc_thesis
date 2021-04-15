@@ -15,7 +15,9 @@ class TaskController extends Controller
 {
     public function index()
     {
-        return Task::with('stud_tasks')->with('submitted_assignments')->get();
+        return Task::with('stud_tasks')
+        ->with('submitted_assignments')
+        ->get();
     }
 
     public function loggedUserTasks() {
@@ -72,7 +74,11 @@ class TaskController extends Controller
         }
         
         $created_id = $task->task_id;
-        $created_task = Task::with('stud_tasks')->with('submitted_assignments')->where('task_id', $created_id)->first();
+
+        $created_task = Task::with('stud_tasks')
+        ->with('submitted_assignments')
+        ->where('task_id', $created_id)
+        ->first();
 
         return response()->json($created_task, 201);
     }
@@ -104,7 +110,11 @@ class TaskController extends Controller
 
         $task->update($request->all());
         $updated_id = $task->task_id;
-        $updated_task = Task::with('stud_tasks')->with('submitted_assignments')->where('task_id', $updated_id)->first();
+
+        $updated_task = Task::with('stud_tasks')
+        ->with('submitted_assignments')
+        ->where('task_id', $updated_id)
+        ->first();
 
         return response()->json($updated_task, 200);
     }
@@ -147,7 +157,10 @@ class TaskController extends Controller
                 return response()->json($validator->errors(), 400);
         }
 
-        $task = Task::with('stud_tasks')->with('submitted_assignments')->where('task_id', $request->get('id'))->first();
+        $task = Task::with('stud_tasks')
+        ->with('submitted_assignments')
+        ->where('task_id', $request->get('id'))
+        ->first();
 
         if ($task->path_to_file != null)
         {

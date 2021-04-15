@@ -207,7 +207,8 @@ class AddTask extends Component {
         return (
             <div>
                 <Navigation />
-                <div className="container col-md-6">
+                <div className="container ">
+                    <div className="col-md-12">
                     <p></p>
                     <div className="card login-card">
                         <p></p>
@@ -300,7 +301,7 @@ class AddTask extends Component {
                                     <label>Zmeniť súbor:</label>
                                     <br/>
                                     {(this.state.path_to_file !== null) && (
-                                    <a href={this.showTask(this.state.path_to_file.substr(6))} download>
+                                    <a href={this.showTask(this.state.path_to_file.substr(6))} target="_blank" download>
                                         {this.state.file_name_const.substr(12)}
                                     </a>
                                     )}
@@ -327,6 +328,7 @@ class AddTask extends Component {
                             )}
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
         )

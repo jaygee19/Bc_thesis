@@ -1,5 +1,7 @@
 import axios from 'axios'
 import { API_URL } from './ApiHelper'
+import { getApiResponse } from './ApiHelper'
+
 
 class AuthHelper {
   static getInstance() {
@@ -47,6 +49,8 @@ class AuthHelper {
   }
 
   logoutUser() {
+    // const res = await getApiResponse('logout', 'get', this.getUserToken())
+    // console.log(res)
     localStorage.removeItem('token')
     this.currentUser = null
   }
@@ -90,6 +94,14 @@ class AuthHelper {
         return null
     }
     return this.currentUser.name + " " + this.currentUser.surname
+  }
+
+  getUserToken() {
+    if (this.currentUser == null) 
+    {
+        return null
+    }
+    return this.currentUser.api_token
   }
 
   getAuthHeaders() {

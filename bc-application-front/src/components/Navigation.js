@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom';
-import AuthHelper from '../helpers/AuthHelper';
+import { Link } from 'react-router-dom'
+import AuthHelper from '../helpers/AuthHelper'
+import { getApiResponse } from '../helpers/ApiHelper'
 
 class Navigation extends Component {
 
@@ -19,6 +20,18 @@ class Navigation extends Component {
             navCollapsed: !this.state.navCollapsed,
         })
     }
+
+    // onLogout(event) {
+    //     event.preventDefault()
+
+    //     getApiResponse('logout', 'post', {
+    //         api_token: AuthHelper.getInstance().getUserToken(),
+    //     })
+    //         .then((res) => {
+    //             AuthHelper.getInstance().logoutUser()
+    //             this.props.history.push('/')
+    //         })
+    // }
 
     render() {
         return (
@@ -57,7 +70,7 @@ class Navigation extends Component {
                             {!AuthHelper.getInstance().isUserLoggedIn() && (
                                 <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
                                     <li className="nav-item active font-weight-bolder">
-                                        <Link to="/login" className="nav-link" >Login</Link>
+                                        <Link to="/login" className="nav-link" >Prihlásanie</Link>
                                     </li>
                                     <li className="nav-item active font-weight-bolder">
                                         <Link to="/register" className="nav-link">Register</Link>
@@ -67,7 +80,7 @@ class Navigation extends Component {
                             {AuthHelper.getInstance().isUserLoggedIn() && (
                                 <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
                                     <li className="nav-item active font-weight-bolder">
-                                        <Link to="/logout" className="nav-link">Logout</Link>
+                                        <Link to="/logout" className="nav-link">Odhlásenie</Link>
                                     </li>
                                 </ul>
                             )}
