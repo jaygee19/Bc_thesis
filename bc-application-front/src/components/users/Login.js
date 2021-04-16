@@ -19,6 +19,7 @@ class Login extends Component {
             passwordErrors: [],
             otherErrors: [],
             ldapErrors: [],
+            statusErrors: [],
         }
 
         this.onSubmit = this.onSubmit.bind(this)
@@ -54,10 +55,13 @@ class Login extends Component {
                     })
             })
             .catch((e) => {
+                console.log("HAII", e.response.data['status'])
+
                 this.setState({
                     otherErrors: e.response.data['errors'] || [],
                     passwordErrors: e.response.data['password'] || [],
                     ldapErrors: e.response.data['ldap_login'] || [],
+                    statusErrors: e.response.data['status'] || [],
                 })
             })
     }
@@ -95,6 +99,7 @@ class Login extends Component {
                                         />
                                         {getAllErrors(this.state.passwordErrors)}
                                         {getAllErrors(this.state.otherErrors)}
+                                        {getAllErrors(this.state.statusErrors)}
                                         <button className="w-100 btn btn-lg btn-dark" type="submit">Prihlásiť</button>
                                     </form>
                                 </div>

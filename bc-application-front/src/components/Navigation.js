@@ -27,7 +27,7 @@ class Navigation extends Component {
     onLogout() {
 
         getApiResponse('logout', 'post', {
-            api_token: AuthHelper.getInstance().getUserToken(),
+            id: AuthHelper.getInstance().getUserID(),
         })
             .then((res) => {
                 console.log("32", res)

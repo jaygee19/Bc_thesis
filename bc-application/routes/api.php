@@ -22,6 +22,7 @@ use App\Http\Controllers\ResultController;
 
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
+Route::post('/logout', [UserController::class, 'logout']);
 
 Route::get('/control', [TestController::class, 'getAll']);
 Route::get('/users', [UserController::class, 'index']);
@@ -30,10 +31,9 @@ Route::get('/schedules', [TeacherController::class, 'index']);
 Route::get('/students', [StudentController::class, 'index']);
 
 
+
 Route::group(['middleware' => ['jwt.verify']], function () {
     
-
-    Route::post('/logout', [UserController::class, 'logout']);
     Route::get('/user', [UserController::class, 'getAuthenticatedUser']);
     Route::post('/tasks/store', [TaskController::class, 'store']);
     Route::put('/tasks/{task}', [TaskController::class, 'update']);

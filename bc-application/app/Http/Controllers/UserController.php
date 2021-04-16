@@ -11,6 +11,7 @@ use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Http\Response;
+use Exception;
 
 
 class UserController extends Controller
@@ -110,7 +111,15 @@ class UserController extends Controller
         public function logout(Request $request)
         {
             try {
-                JWTAuth::invalidate($request->api_token);
+         
+                $user = User::where('user_id', $request->id)->first();
+
+                $user->update(
+                    [ 'api_token' => '',
+                    ]
+                );
+                
+                //JWTAuth::invalidate($request->api_token);
 
                 return response()->json([
                     'success' => true,

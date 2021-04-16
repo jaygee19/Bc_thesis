@@ -66,6 +66,9 @@ class ManageAssignments extends Component {
                 this.props.history.push('/studentTasks')
             })
             .catch((e) => {
+                console.log("RESPONSE e ", e)
+                console.log("RESPONSE e.response", e.response)
+                console.log("RESPONSE e.response.data", e.response.data)
                 this.setState({
                     statusErrors: e.response.data['status'] || [],
                     fileErrors: e.response.data['filename'] || [],
