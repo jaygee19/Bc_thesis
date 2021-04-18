@@ -75,11 +75,9 @@ class TaskController extends Controller
             ]);
         }
         
-        $created_id = $task->task_id;
-
         $created_task = Task::with('stud_tasks')
         ->with('submitted_assignments')
-        ->where('task_id', $created_id)
+        ->where('task_id', $task->task_id)
         ->first();
 
         return response()->json($created_task, 201);

@@ -138,6 +138,7 @@ class AssignedTasks extends Component {
                             <div>
                                 <p className="list-group-item list-group-item-warning no-marg">Zadanie prešlo kontrolou originality prác</p>
                             </div>
+                            {this.state.similarAssignments.length > 0 && (
                             <div className="card" style={{ color: 'black' }}>
                                 <p></p>
                                 <h5 className="justify-content-start">
@@ -156,6 +157,16 @@ class AssignedTasks extends Component {
                                     )
                                 })}
                             </div>
+                            )}
+                            {this.state.similarAssignments.length === 0 && (
+                                <div className="card" style={{ color: 'black' }}>
+                                <p></p>
+                                <h5 className="justify-content-start">
+                                    <u>Zoznam potenciálnych zhôd:</u>
+                                </h5>
+                                <p> Nebola nájdená žiadna zhoda. </p>
+                            </div>
+                            )}
                         </div>
                     )}
                     <hr />

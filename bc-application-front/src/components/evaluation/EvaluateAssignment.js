@@ -56,50 +56,63 @@ class EvaluateAssignment extends Component {
     }
 
     showAssignment(path) {
-        return 'http://127.0.0.1:8000/storage'+path
+        return 'http://127.0.0.1:8000/storage' + path
+    }
+
+    getMaxNumberOfPoints() {
+        switch (this.state.task.type) {
+            case 'first_check':
+                return '10';
+            case 'second_check':
+                return '30';
+            case 'semester_work':
+                return '50';
+            default:
+                return '10';
+        }
     }
 
     onSubmit(event) {
         event.preventDefault()
 
-        if(this.state.evaluatedBefore){
+        if (this.state.evaluatedBefore) {
             console.log("SOM DOBRE", this.state.resultID)
             this.props
-            .onUpdate({
-                evaluation: this.state.evaluation,
-                comment: this.state.comment,
-                id: this.state.assignment.assignment_id,
-                user_id: this.state.student.user_id,
-                result_id: this.state.resultID,
-            })
-            .then(() => {
-                this.props.history.push('/assignedTasks/' + this.state.task.task_id)
-            })
-            .catch((e) => {
-                this.setState({
-                    statusErrors: e.response.data['status'] || [],
-                    evaluationErrors: e.response.data['evaluation'] || [],
-                    commentErrors: e.response.data['comment'] || [],
+                .onUpdate({
+                    evaluation: this.state.evaluation,
+                    comment: this.state.comment,
+                    id: this.state.assignment.assignment_id,
+                    user_id: this.state.student.user_id,
+                    result_id: this.state.resultID,
                 })
-            })
+                .then(() => {
+                    this.props.history.push('/assignedTasks/' + this.state.task.task_id)
+                })
+                .catch((e) => {
+                    this.setState({
+                        statusErrors: e.response.data['status'] || [],
+                        evaluationErrors: e.response.data['evaluation'] || [],
+                        commentErrors: e.response.data['comment'] || [],
+                    })
+                })
         } else {
             this.props
-            .onSubmit({
-                evaluation: this.state.evaluation,
-                comment: this.state.comment,
-                id: this.state.assignment.assignment_id,
-                user_id: this.state.student.user_id,
-            })
-            .then(() => {
-                this.props.history.push('/assignedTasks/' + this.state.task.task_id)
-            })
-            .catch((e) => {
-                this.setState({
-                    statusErrors: e.response.data['status'] || [],
-                    evaluationErrors: e.response.data['evaluation'] || [],
-                    commentErrors: e.response.data['comment'] || [],
+                .onSubmit({
+                    evaluation: this.state.evaluation,
+                    comment: this.state.comment,
+                    id: this.state.assignment.assignment_id,
+                    user_id: this.state.student.user_id,
                 })
-            })
+                .then(() => {
+                    this.props.history.push('/assignedTasks/' + this.state.task.task_id)
+                })
+                .catch((e) => {
+                    this.setState({
+                        statusErrors: e.response.data['status'] || [],
+                        evaluationErrors: e.response.data['evaluation'] || [],
+                        commentErrors: e.response.data['comment'] || [],
+                    })
+                })
         }
     }
 
@@ -117,13 +130,14 @@ class EvaluateAssignment extends Component {
                         <p> Vypracované zadanie: </p>
                         {this.state.assignment.path_to_file !== null && (
                             <a className="btn btn-lg btn-dark" href={this.showAssignment(this.state.assignment.path_to_file.substr(6))} target="_blank" download>
-                                {this.state.assignment.file_name.substr(12)} 
+                                {this.state.assignment.file_name.substr(12)}
                             </a>
                         )}
 
                         <form onSubmit={this.onSubmit}>
                             <p></p>
-                            <label className="d-flex justify-content-start">Počet bodov:</label>
+                            <label className="d-flex justify-content-start">Počet bodov: / {this.getMaxNumberOfPoints()}
+                            </label>
                             <input type="text" className="col-1 form-control"
                                 id="evaluation"
                                 name="evaluation"
@@ -131,9 +145,9 @@ class EvaluateAssignment extends Component {
                                 onChange={this.evaluationChanged}
                                 required
                             />
-                            {getAllErrors(this.state.evaluationErrors)} 
+                            {getAllErrors(this.state.evaluationErrors)}
                             <p></p>
-                            <label className="d-flex justify-content-start">Komentár:</label>
+                            <label className="d-flex justify-content-start">Komentár: </label>
                             <textarea type="text" className="form-control"
                                 id="comment"
                                 name="comment"
@@ -142,8 +156,8 @@ class EvaluateAssignment extends Component {
                                 required
                             >
                             </textarea>
-                            {getAllErrors(this.state.commentErrors)} 
-                            {getAllErrors(this.state.statusErrors)} 
+                            {getAllErrors(this.state.commentErrors)}
+                            {getAllErrors(this.state.statusErrors)}
                             <p></p>
                             <button className="w-50 btn btn-lg btn-dark" type="submit">Ulož</button>
                             <p></p>

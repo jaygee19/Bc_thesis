@@ -159,9 +159,9 @@ class AddTask extends Component {
         dataTask.append('name', this.state.file_name)
 
 
-        for (var key of dataTask.entries()) {
-            console.log(key[0] + ', ' + key[1]);
-        }
+        // for (var key of dataTask.entries()) {
+        //     console.log(key[0] + ', ' + key[1]);
+        // }
 
         if (this.props.match.params.id != null) {
             this.props

@@ -72,8 +72,6 @@ class App extends Component {
       allScheduleGropus: allSubjectScheduleGroup.data,
       isLoading: false,
     })
-
-    console.log(this.state.allUsers)
   }
 
   getTasksForUser() {
@@ -96,8 +94,12 @@ class App extends Component {
     if (AuthHelper.getInstance().getCurrentUser() !== null) {
       let studentID = AuthHelper.getInstance().getUserID()
       let user = this.state.allUsers.filter(u => u.user_id === studentID)
-      let group = user[0].schedules.filter(s => s.course_id === user[0].enrolled_student.course_id)
-      return group[0]
+      if (user.length !== 0) {
+        let group = user[0].schedules.filter(s => s.course_id === user[0].enrolled_student.course_id)
+        return group[0]
+      } else {
+        return null
+      }
     }
   }
 
@@ -120,8 +122,6 @@ class App extends Component {
   async addNewTask(task) {
 
     const addedTask = await getApiResponse('tasks/store', 'post', task)
-
-    console.log("NEJAKY TEXTIK NECH VIEM KDE TO JE", addedTask)
 
     this.setState(state => {
       return {
@@ -189,7 +189,7 @@ class App extends Component {
 
   async checkDuplicates(id) {
     const updatedTask = await getApiResponse('check/duplicates/' + id, 'put')
-    console.log("190", updatedTask)
+    //console.log("190", updatedTask)
     this.loadAllTasks()
     // this.setState(state => {
     //   return {

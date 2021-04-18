@@ -96,6 +96,6 @@ class TeacherController extends Controller
             ['verified' => true]
         );
 
-        return response()->json($command, 200);
+        return response()->json("OK", 200);
     }
 }
