@@ -71,6 +71,9 @@ class StudentController extends Controller
             exec('cd C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app\public\semester_work & mkdir '.$assignment->assignment_id);
             exec($command);
         }
+        if ($concrete_task->type == 'second_check') {
+            $this->parseFile('C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app/'.$assignment->path_to_file);
+        }
 
         $stored_by = User::with('schedules')
         ->with('stud_tasks')
@@ -136,6 +139,9 @@ class StudentController extends Controller
             exec('cd C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app\public\semester_work & mkdir '.$sub_assignment->assignment_id);
             exec($command);
         }
+        if ($concrete_task->type == 'second_check') {
+            $this->parseFile('C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app/'.$sub_assignment->path_to_file);
+        }
 
         $updated_by = User::with('schedules')
         ->with('stud_tasks')
@@ -146,5 +152,22 @@ class StudentController extends Controller
         ->first();
 
         return response()->json($updated_by, 200);   
+     }
+
+     public function parseFile($file) {
+        $my_file = file_get_contents($file);
+        $table = array(
+            'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'Č'=>'C', 'Ď'=>'D',
+            'È'=>'E', 'É'=>'E', 'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ľ'=>'L', 'Ĺ'=>'L',
+            'Ň'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O','Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Š'=>'S', 'Ť'=>'T', 'Ù'=>'U', 
+            'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Ž'=>'Z', 'Þ'=>'B', 'ß'=>'Ss',
+
+            'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c', 'č'=>'c', 'ď'=>'d',
+            'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ľ'=>'l',
+            'ĺ'=>'l', 'ñ'=>'n', 'ň'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'š'=>'s',
+            'ť'=>'t', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y', 'ž'=>'z'
+        );
+        $result = strtr($my_file, $table);
+        file_put_contents($file, $result);
      }
 }

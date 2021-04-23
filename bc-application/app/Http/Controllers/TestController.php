@@ -18,12 +18,47 @@ use App\Imports\UniquesImport;
 class TestController extends Controller
 {
     public function getAll() {
-        // $a = '7NAsngtxwoK03yrv4dQ8WUiOHzxWys8aQayd0S7P.zip';
-        // $b = '33';
-        // exec('cd C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app\public\semester_work & tar -xf '.$a.' -C C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app\public\semester_work/'.$b);
+        //$assignment = SubmittedAssignment::where('assignment_id', 44)->first();
+        $this->parseFile('C:\Users\Janci\Desktop\Test_folder\funkcie.c');
 
-        //Excel::import(new ComparedPairsImport, "C:\Users\Janci\Desktop\Res\matches_max.csv");
-        //exec("java -jar C:\Users\Janci\Desktop\jplag-2.12.1-SNAPSHOT-jar-with-dependencies.jar -l c/c++ -r C:\Users\Janci\Desktop\Res\ -s C:\Users\Janci\Desktop\Test_folder\ ");
-        //dd($array);
+        // $my_file = file_get_contents('C:\Users\Janci\Desktop\Test_folder\ZIPKA\4\game_life\main.c');
+        // $table = array(
+        //     'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'Č'=>'C', 'Ď'=>'D',
+        //     'È'=>'E', 'É'=>'E', 'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ľ'=>'L', 'Ĺ'=>'L',
+        //     'Ň'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O','Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Š'=>'S', 'Ť'=>'T', 'Ù'=>'U', 
+        //     'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Ž'=>'Z', 'Þ'=>'B', 'ß'=>'Ss',
+
+        //     'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c', 'č'=>'c', 'ď'=>'d',
+        //     'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ľ'=>'l',
+        //     'ĺ'=>'l', 'ñ'=>'n', 'ň'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'š'=>'s',
+        //     'ť'=>'t', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y', 'ž'=>'z'
+        // );
+        // $result = strtr($my_file, $table);
+        // file_put_contents('C:\Users\Janci\Desktop\Test_folder\ZIPKA\4\game_life\main.c', $result);
+           // $allfiles = [];
+       // $allfiles = exec('cd C:\Users\Janci\Desktop\Test_folder\ZIPKA\1 | dir ');
+        //dd($allfiles);
     }
+
+    public function parseFile($file) {
+        $my_file = file_get_contents($file);
+        //dd($my_file);
+
+        $table = array(
+            'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'Č'=>'C', 'Ď'=>'D',
+            'È'=>'E', 'É'=>'E', 'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ľ'=>'L', 'Ĺ'=>'L',
+            'Ň'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O','Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Š'=>'S', 'Ť'=>'T', 'Ù'=>'U', 
+            'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Ž'=>'Z', 'Þ'=>'B', 'ß'=>'Ss', 'Ø'=>'t',
+
+            'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c', 'č'=>'c', 'ď'=>'d',
+            'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ľ'=>'l',
+            'ĺ'=>'l', 'ñ'=>'n', 'ň'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'š'=>'s',
+            'ť'=>'t', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y', 'ž'=>'z'
+        );
+        $result = strtr($my_file, $table);
+        
+        file_put_contents($file, $result);
+        $aftre_file = file_get_contents($file);
+        dd($aftre_file);
+     }
 }

@@ -13,6 +13,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Http\Response;
 use Exception;
 
+//inspirovane strankou https://blog.pusher.com/laravel-jwt/
 
 class UserController extends Controller
 {
@@ -26,8 +27,7 @@ class UserController extends Controller
         ->get();
     }
         
-    public function login(Request $request)
-        {
+    public function login(Request $request) {
             $validator = Validator::make($request->all(), [
                 'password' => 'required',
                 'ldap_login' => 'required',
@@ -60,8 +60,6 @@ class UserController extends Controller
         public function register(Request $request)
         {
                 $validator = Validator::make($request->all(), [
-                //'name' => 'required|string|max:255',
-                //'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:6',
             ]);
 
@@ -111,25 +109,12 @@ class UserController extends Controller
         public function logout(Request $request)
         {
             try {
-         
                 $user = User::where('user_id', $request->id)->first();
+                $user->update([ 'api_token' => '', ]);  
+                return response()->json(['result' => 'Užívateľ úspešne odhlásený'], 200);
 
-                $user->update(
-                    [ 'api_token' => '',
-                    ]
-                );
-                
-                //JWTAuth::invalidate($request->api_token);
-
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Užívateľ úspešne odhlásený'
-                ]);
             } catch (JWTException $exception) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Prepáčte, užívateľa sa nepodarilo odhlásiť'
-                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                return response()->json(['result' => 'Prepáčte, užívateľa sa nepodarilo odhlásiť'], 500);
             }
         }
 }
