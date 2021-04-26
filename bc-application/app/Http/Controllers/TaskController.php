@@ -17,6 +17,7 @@ class TaskController extends Controller
     {
         return Task::with('stud_tasks')
         ->with('submitted_assignments')
+        ->orderBy('task_id', 'desc')
         ->get();
     }
 

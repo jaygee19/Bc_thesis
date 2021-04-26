@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom'
 import AuthHelper from '../../helpers/AuthHelper'
 import Modal from 'react-bootstrap/Modal'
 import { CardColumns, CardDeck, CardGroup } from 'react-bootstrap';
-
+import PaginationList from 'react-pagination-list';
 
 class MyTasks extends Component {
     constructor(props) {
@@ -50,6 +50,28 @@ class MyTasks extends Component {
                         <h3> Zoznam mojich zadaní :</h3>
                     </div>
                     <p></p>
+
+                    {/* <PaginationList
+                        data={this.props.tasks.filter((task) => task.hidden !== true)}
+                        pageSize={2}
+                        renderItem={(item, key) => (
+                            <Task
+                                key={key}
+                                id={item.task_id}
+                                content={item.content}
+                                userName={this.getUserName(item.teacher_id)}
+                                title={item.title}
+                                date={item.valid_from}
+                                deadline={item.deadline}
+                                type={item.type}
+                                path={item.path_to_file}
+                                onHide={this.props.hideTask}
+                                private={true}
+                                hidden={item.hidden}
+                            />
+                        )}
+                    /> */}
+
                     <CardColumns>
                         {this.props.tasks.filter((task) => task.hidden !== true)
                             .map((task) => {

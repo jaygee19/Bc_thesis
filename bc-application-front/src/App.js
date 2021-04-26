@@ -301,8 +301,8 @@ class App extends Component {
             <LoggedInRoute path="/" exact component={Home}/>
             <TeacherRoute path="/myTasks" exact component={MyTasks} users={this.state.allUsers} tasks={this.getTasksForUser()} hideTask={this.hideTask} status={this.state.status} resetStatus={this.resetStatus} />
             <TeacherRoute path="/subjectTasks" exact component={SubjectTasks} users={this.state.allUsers} tasks={this.state.allTasks} />
-            <TeacherRoute path="/hiddenTasks" exact component={HiddenTasks} users={this.state.allUsers} tasks={this.state.allTasks} uncoverTask={this.uncoverTask} />
-            <TeacherRoute path="/assignTasks/:id" exact component={AssignTasks} groups={this.getOnlyGroups()} tasks={this.state.allTasks} onSubmit={this.saveAssignedStudents} />
+            <TeacherRoute path="/hiddenTasks" exact component={HiddenTasks} users={this.state.allUsers} tasks={this.getTasksForUser()} uncoverTask={this.uncoverTask} />
+            <TeacherRoute path="/assignTasks/:id" exact component={AssignTasks} groups={this.getOnlyGroups()} tasks={this.getTasksForUser()} onSubmit={this.saveAssignedStudents} />
             <TeacherRoute path="/assignedTasks/:id" exact component={AssignedTasks} users={this.state.allUsers} tasks={this.state.allTasks} onDelete={this.removeStudent} onVerify={this.checkDuplicates}/>
             <TeacherRoute path="/myTasks/create" exact component={AddTask} onSubmit={this.addNewTask} />
             <TeacherRoute path="/myTasks/:id/edit" exact component={AddTask} tasks={this.state.allTasks} onSubmit={this.editTask} onUpdate={this.updateFile} onDelete={this.deleteTask}/>

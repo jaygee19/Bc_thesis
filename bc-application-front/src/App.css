@@ -172,3 +172,41 @@
   margin: 20px;
   border-left: 3px solid white;
 }
+
+.styles_kPagination__1qVvD{
+  padding: 0 !important;
+}
+
+.styles_kPaginationPrev__3Rw4o.styles_kPrevDisabled__7uvNZ{
+  margin: 0 !important;
+}
+
+.styles_kPaginationActive__A_vb-{
+  color: #5bc0de !important;
+  border: #5bc0de !important;
+}
+
+.styles_kNextDisabled__1rUP6{
+  color: #5bc0de !important;
+  border: #5bc0de !important;
+}
+
+.styles_kPrevDisabled__7uvNZ{
+  color: #5bc0de !important;
+  border: #5bc0de !important;
+}
+
+.styles_kPaginationItem__3pBF9:hover{
+  color: #5bc0de !important;
+  border: #5bc0de !important;
+}
+
+.styles_kPaginationPrev__3Rw4o:hover{
+  color: #5bc0de !important;
+  border: #5bc0de !important;
+}
+
+.styles_kPaginationNext__eysRZ:hover{
+  color: #5bc0de !important;
+  border: #5bc0de !important;
+}

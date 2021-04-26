@@ -19,8 +19,9 @@ class TestController extends Controller
 {
     public function getAll() {
         //$assignment = SubmittedAssignment::where('assignment_id', 44)->first();
+        
         $this->parseFile('C:\Users\Janci\Desktop\Test_folder\funkcie.c');
-
+        
         // $my_file = file_get_contents('C:\Users\Janci\Desktop\Test_folder\ZIPKA\4\game_life\main.c');
         // $table = array(
         //     'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'Č'=>'C', 'Ď'=>'D',

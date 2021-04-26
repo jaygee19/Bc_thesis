@@ -17,7 +17,10 @@ class Test extends Component {
       file: "",
       activePage: 1,
     }
-
+    console.log("BEFORE", this.props.tasks)
+    const myData = [].concat(this.props.tasks)
+    .sort((a, b) => a.task_id < b.task_id ? 1 : -1)    
+    console.log("SORTED", myData)
     this.onSubmit = this.onSubmit.bind(this)
     this.fileChanged = this.fileChanged.bind(this)
   }
