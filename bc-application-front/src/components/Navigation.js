@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom'
 import AuthHelper from '../helpers/AuthHelper'
 import { getApiResponse } from '../helpers/ApiHelper'
 import { withRouter } from 'react-router-dom'
-
+import FRI_Logo from '../images/FRI_Logo2.png'
+import NavDropdown from 'react-bootstrap/NavDropdown';
 
 class Navigation extends Component {
 
@@ -44,10 +45,14 @@ class Navigation extends Component {
                 </button>
                 <div className={`${this.state.navCollapsed ? 'collapse' : ''} navbar-collapse`} id="navbarsExample09">
                     <div className="container">
+                        {this.state.navCollapsed && (
+                            <img className="front-image fri_logo" src={FRI_Logo} alt="FRI_Logo" />
+                        )}
                         <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-                            <li className="font-weight-bolder">
+                            <li className="nav-item active font-weight-bolder">
                                 <Link to="/" className="nav-link">O predmete</Link>
                             </li>
+
                             {AuthHelper.getInstance().isUserTeacher() && (
                                 <li className="nav-item active font-weight-bolder">
                                     <Link to="/myTasks" className="nav-link">Moje zadania</Link>
@@ -83,7 +88,9 @@ class Navigation extends Component {
                             {AuthHelper.getInstance().isUserLoggedIn() && (
                                 <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
                                     <li className="nav-item active font-weight-bolder">
-                                        <Link onClick={() => this.onLogout()}  className="nav-link">Odhlásenie</Link>
+                                        <NavDropdown title={AuthHelper.getInstance().getUserName()} id="basic-nav-dropdown">
+                                            <Link onClick={() => this.onLogout()} className="nav-link nav-dropdown">Odhlásiť</Link>
+                                        </NavDropdown>
                                     </li>
                                 </ul>
                             )}

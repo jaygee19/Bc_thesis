@@ -312,7 +312,7 @@ class App extends Component {
             <Route path="/login" exact render={() => <Login onLogin={this.loadAllTasks} />} />
             <Route path="/register" exact component={Register} />
             <Route path="/logout" exact component={Logout} />
-            <TeacherRoute path="/test" exact component={Test} />
+            <Route path="/test" exact component={Test} />
           </Switch>
         </Router>
         <div>

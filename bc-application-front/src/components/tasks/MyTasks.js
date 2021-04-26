@@ -4,6 +4,7 @@ import Task from './Task';
 import { withRouter } from 'react-router-dom'
 import AuthHelper from '../../helpers/AuthHelper'
 import Modal from 'react-bootstrap/Modal'
+import { CardColumns, CardDeck, CardGroup } from 'react-bootstrap';
 
 
 class MyTasks extends Component {
@@ -47,29 +48,31 @@ class MyTasks extends Component {
                     <button onClick={this.onAddNew} type="submit" className="btn btn-light" > Nové zadanie + </button>
                     <p></p>
                     <div className="d-flex justify-content-start" style={{ color: 'white' }}>
-                        <h3> {this.getUserName(AuthHelper.getInstance().getUserID())} :</h3>
+                        <h3> Zoznam mojich zadaní :</h3>
                     </div>
                     <p></p>
+                <CardColumns>
+                    {this.props.tasks.filter((task) => task.hidden !== true)
+                        .map((task) => {
+                            return (
+                                <Task
+                                    key={task.task_id}
+                                    id={task.task_id}
+                                    content={task.content}
+                                    userName={this.getUserName(task.teacher_id)}
+                                    title={task.title}
+                                    date={task.valid_from}
+                                    deadline={task.deadline}
+                                    type={task.type}
+                                    path={task.path_to_file}
+                                    onHide={this.props.hideTask}
+                                    private={true}
+                                    hidden={task.hidden}
+                                />
+                            )
+                        })}
+                </CardColumns>
                 </div>
-                {this.props.tasks.filter((task) => task.hidden !== true)
-                    .map((task) => {
-                        return (
-                            <Task
-                                key={task.task_id}
-                                id={task.task_id}
-                                content={task.content}
-                                userName={this.getUserName(task.teacher_id)}
-                                title={task.title}
-                                date={task.valid_from}
-                                deadline={task.deadline}
-                                type={task.type}
-                                path={task.path_to_file}
-                                onHide={this.props.hideTask}
-                                private={true}
-                                hidden={task.hidden}
-                            />
-                        )
-                    })}
 
                 <Modal
                     show={this.state.showModal}

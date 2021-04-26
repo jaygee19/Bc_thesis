@@ -10,13 +10,12 @@ class Home extends Component {
                 <Navigation />
                 <div className="container" style={{ color: 'white' }}>
                     <p></p>
-                    <h1> Princípy operačných systémov </h1>
+                    <h1 className="title-margin"> Princípy operačných systémov </h1>
                     <hr />
                     <div className="row">
                         <div className="col">
                             <h3> Hodnotenie predmetu: </h3>
                             <p>Z predmetu je možné získať <u>200 bodov</u>.</p>
-                            <hr />
                                 <p><b>Cvičenia</b></p>
                                 <p>
                                     V rámci cvičení môže študent získať <u>100 bodov</u> (minimálne <u><i>61 bodov</i></u>).
@@ -32,6 +31,7 @@ class Home extends Component {
                                 <p>
                                     Každé zadanie, ktoré študent odovzdá, sa testuje na jedinečnosť.
                                 </p>
+                                <hr />
                         </div>
 
                         <div className="col">

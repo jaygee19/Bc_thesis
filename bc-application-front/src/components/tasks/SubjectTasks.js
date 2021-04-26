@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import Navigation from '../Navigation';
 import Task from './Task';
 import { withRouter } from 'react-router-dom'
+import { CardColumns, CardGroup } from 'react-bootstrap';
+
 
 class SubjectTasks extends Component {
     constructor(props) {
@@ -70,7 +72,8 @@ class SubjectTasks extends Component {
                     </div>
                     <p></p>
                 </div>
-
+                <div className="container">
+                <CardColumns>
                 {this.props.tasks.filter((task) => 
                                         (task.type === this.state.valueType || this.state.valueType === '') 
                                         && (this.state.valueTeacher === '' || task.teacher_id == this.state.valueTeacher)
@@ -93,6 +96,8 @@ class SubjectTasks extends Component {
                         />
                     )
                 })}
+            </CardColumns>
+            </div>
             </div>
         )
     }

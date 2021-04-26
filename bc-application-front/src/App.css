@@ -100,6 +100,10 @@
   margin: 5px !important;
 }
 
+.foot-hr {
+  margin: 10px !important;
+}
+
 .footer {
   position: fixed;
   bottom: 0;
@@ -140,7 +144,7 @@
 }
 
 .my_btn {
-  margin: 0px 5px;
+  margin: 5px 5px;
 }
 
 .custom-file-label:focus {
@@ -152,3 +156,14 @@
   margin: 0 !important;
 }
 
+.fri_logo {
+  margin-right: 10px;
+}
+
+.title-margin {
+  margin-top: 50px !important;
+}
+
+.nav-dropdown{
+  padding-left: 47px !important;
+}
