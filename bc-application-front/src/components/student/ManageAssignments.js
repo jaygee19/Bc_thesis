@@ -116,7 +116,7 @@ class ManageAssignments extends Component {
                         <p className="lead">{this.state.concreteTask.content}</p>
                         <p className="lead">Deadline: {this.toDate(this.state.concreteTask.deadline)}</p>
                         {this.state.concreteTask.path_to_file !== null && (
-                            <a className="btn btn-lg btn-dark" href={this.showAssignment(this.state.concreteTask.path_to_file.substr(6))} target="_blank" download>Zobraz zadanie  &raquo;</a>
+                            <a className="btn btn-lg btn-info" href={this.showAssignment(this.state.concreteTask.path_to_file.substr(6))} target="_blank" download>Zobraz zadanie  &raquo;</a>
                         )}
 
                         {(this.state.concreteAssignments.length === 0) && (
@@ -146,7 +146,7 @@ class ManageAssignments extends Component {
                                     {getAllErrors(this.state.fileErrors)}
                                     {getAllErrors(this.state.statusErrors)}
                                     <p></p>
-                                    <button className="w-50 btn btn-lg btn-dark" type="submit">Ulož</button>
+                                    <button className="w-50 btn btn-lg btn-info" type="submit">Ulož</button>
                                     <p></p>
                                 </form>
                             </div>
@@ -178,7 +178,7 @@ class ManageAssignments extends Component {
                                 {getAllErrors(this.state.statusErrors)}
                                 <p></p>
                                 <button onClick={() => this.onUpdate()}
-                                    className="w-50 btn btn-lg btn-dark" type="submit">Zmeň súbor
+                                    className="w-50 btn btn-lg btn-info" type="submit">Zmeň súbor
                                 </button>
                                 <p></p>
                             </div>

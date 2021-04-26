@@ -20,10 +20,12 @@ class AssignTasks extends Component {
             chosenStudents: [],
             chosenGroups: [],
             statusErrors: [],
+            visiblePlus: true,
         }
 
         this.assignStudent = this.assignStudent.bind(this)
         this.removeStudent = this.removeStudent.bind(this)
+        this.removeStudents = this.removeStudents.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
     }
 
@@ -58,6 +60,33 @@ class AssignTasks extends Component {
             return {
                 chosenStudents: state.chosenStudents.filter(s => s.user_id !== value)
             }
+        })
+    }
+
+    removeStudents(value) {
+
+        let grup = this.props.groups.filter(
+            (item) => item.schedule_id === value)[0]
+        
+        let available = []
+        if (this.state.chosenStudents !== undefined) {
+            for (let i = 0; i < this.state.chosenStudents.length; i++) {
+                let temp = 0
+                const item1 = this.state.chosenStudents[i]
+                for (let j = 0; j < grup.users.length; j++) {
+                    const item2 = grup.users[j]
+                    if (item1.user_id === item2.user_id) {
+                        temp = 1
+                    } 
+                }
+                if (temp === 0) {
+                    available.push(item1)
+                }
+            }
+        }
+
+        this.setState({
+            chosenStudents: available
         })
     }
 
@@ -106,7 +135,6 @@ class AssignTasks extends Component {
                         <br />
                         <h2 className="blog-post-title">{this.state.concreteTask.title}</h2>
                         <p className="blog-post-meta"> Deadline: {this.toDate(this.state.concreteTask.deadline)}</p>
-                        <p> {this.state.concreteTask.content} </p>
                         <hr />
                     </div>
                     <div className="row">
@@ -138,7 +166,8 @@ class AssignTasks extends Component {
                                         <div key={group.schedule_id}>
                                             <h4 className="font-weight-bold" style={{ color: "black" }}>
                                                 {this.dayOfWeek(group.day)} - {group.time_begin} ( {AuthHelper.getInstance().getUserName()} )
-                                        <span className="my_btn btn btn-sm btn-dark" onClick={() => this.assignStudent(group.schedule_id)}>  +  </span>
+                                                <span className="my_btn btn btn-sm btn-info" onClick={() => this.assignStudent(group.schedule_id)}>  +  </span>
+                                                <span className="my_btn btn btn-sm btn-info" onClick={() => this.removeStudents(group.schedule_id)}>  -  </span>
                                             </h4>
 
                                             <div className="">
@@ -147,8 +176,8 @@ class AssignTasks extends Component {
                                                         .map((chosen) => {
                                                             return (
                                                                 <div key={chosen.user_id}>
-                                                                    <h6 style={{ color: "green" }}> {chosen.name} {chosen.surname}
-                                                                        <span className="my_btn btn btn-sm btn-dark" onClick={() => this.removeStudent(chosen.user_id)}> - </span>
+                                                                    <h6 style={{ color: "black" }}> {chosen.name} {chosen.surname}
+                                                                        <span className="my_btn btn btn-sm btn-info" onClick={() => this.removeStudent(chosen.user_id)}> - </span>
                                                                     </h6>
                                                                 </div>
                                                             )
@@ -160,7 +189,7 @@ class AssignTasks extends Component {
                                 })}
                                 {getAllErrors(this.state.statusErrors)} 
                                 <p></p>
-                                <button className="w-50 btn btn-lg btn-dark" type="submit">Ulož</button>
+                                <button className="w-50 btn btn-lg btn-info" type="submit">Ulož</button>
                                 <p></p>
                             </form>
                         </div>

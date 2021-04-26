@@ -167,3 +167,8 @@
 .nav-dropdown{
   padding-left: 47px !important;
 }
+
+.borders {
+  margin: 20px;
+  border-left: 3px solid white;
+}

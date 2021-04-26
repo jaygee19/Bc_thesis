@@ -148,7 +148,7 @@ class StudentTasks extends Component {
                                             )}
 
                                             {this.isEvaluated(chosen.task_id) && (
-                                                <td><button className="btn btn-sm btn-dark"
+                                                <td><button className="btn btn-sm btn-info"
                                                     onClick={() =>
                                                         this.setState({
                                                             showModal: true,
@@ -159,10 +159,10 @@ class StudentTasks extends Component {
                                             )}
 
                                             {!this.isEvaluated(chosen.task_id) && !this.isSubmitted(chosen.task_id) && (
-                                                <td><button onClick={() => this.onClick(chosen.task_id)} className="btn btn-sm btn-dark">Odovzdaj</button></td>
+                                                <td><button onClick={() => this.onClick(chosen.task_id)} className="btn btn-sm btn-info">Odovzdaj</button></td>
                                             )}
                                             {!this.isEvaluated(chosen.task_id) && this.isSubmitted(chosen.task_id) && (
-                                                <td><button onClick={() => this.onClick(chosen.task_id)} className="btn btn-sm btn-dark">Zmeň</button></td>
+                                                <td><button onClick={() => this.onClick(chosen.task_id)} className="btn btn-sm btn-info">Zmeň</button></td>
                                             )}
 
                                             {this.isEvaluated(chosen.task_id) && (

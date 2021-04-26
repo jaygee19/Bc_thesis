@@ -73,6 +73,9 @@ class Navigation extends Component {
                                     <Link to="/studentTasks" className="nav-link">Pridelené zadania</Link>
                                 </li>
                             )}
+                                {/* <li className="nav-item active font-weight-bolder">
+                                    <Link to="/test" className="nav-link">Test</Link>
+                                </li> */}
                         </ul>
                         <div>
                             {!AuthHelper.getInstance().isUserLoggedIn() && (

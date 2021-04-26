@@ -4,6 +4,10 @@ import bsCustomFileInput from 'bs-custom-file-input';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import Pagination from 'react-js-pagination';
+import { withRouter } from 'react-router-dom'
+import PaginationList from 'react-pagination-list';
+
 
 class Test extends Component {
   constructor(props) {
@@ -11,6 +15,7 @@ class Test extends Component {
 
     this.state = {
       file: "",
+      activePage: 1,
     }
 
     this.onSubmit = this.onSubmit.bind(this)
@@ -41,37 +46,52 @@ class Test extends Component {
     bsCustomFileInput.init()
   }
 
+  handlePageChange(pageNumber) {
+    console.log(`active page is ${pageNumber}`);
+    this.setState({ activePage: pageNumber });
+  }
+
   render() {
     return (
-      <div class="container">
-        <div class="custom-file">
-          <input id="inputGroupFile01" type="file" class="custom-file-input" />
-          <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-        </div>
-        <Navbar bg="light" expand="lg">
-          <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link href="#home">Home</Nav.Link>
-              <Nav.Link href="#link">Link</Nav.Link>
-              <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
-      </div>
+      <div>
+        <Navigation>
 
-      
+        </Navigation>
+        <div class="container">
+          <div>
+            <PaginationList 
+        data={this.props.tasks}
+        pageSize={2}
+        renderItem={(item, key) => (
+          <p key={key}>{item.task_id}</p>
+        )}
+        />
+            {/* <ul>
+              
+            {this.props.tasks.map((temp) => {
+              return (
+                <li>
+                  {temp.task_id}
+                </li>
+              )
+            })}
+
+            </ul>
+            <Pagination
+            
+              activePage={this.state.activePage}
+              itemsCountPerPage={2}
+              totalItemsCount={10}
+              pageRangeDisplayed={3}
+              onChange={this.handlePageChange.bind(this)}
+            /> */}
+          </div>
+        </div>
+      </div>
     );
   }
 
 }
 
 
-export default Test;
+export default withRouter(Test);

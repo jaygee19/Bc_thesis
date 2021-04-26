@@ -298,8 +298,8 @@ class App extends Component {
       <div className="App bg-dark" style = {{height:"100%", "minHeight": "100vh"}}>
         <Router>
           <Switch>
-            <LoggedInRoute path="/" exact component={Home} />
-            <TeacherRoute path="/myTasks" exact component={MyTasks} users={this.state.allUsers} tasks={this.getTasksForUser()} hideTask={this.hideTask} status={this.state.status} resetStatus={this.resetStatus}/>
+            <LoggedInRoute path="/" exact component={Home}/>
+            <TeacherRoute path="/myTasks" exact component={MyTasks} users={this.state.allUsers} tasks={this.getTasksForUser()} hideTask={this.hideTask} status={this.state.status} resetStatus={this.resetStatus} />
             <TeacherRoute path="/subjectTasks" exact component={SubjectTasks} users={this.state.allUsers} tasks={this.state.allTasks} />
             <TeacherRoute path="/hiddenTasks" exact component={HiddenTasks} users={this.state.allUsers} tasks={this.state.allTasks} uncoverTask={this.uncoverTask} />
             <TeacherRoute path="/assignTasks/:id" exact component={AssignTasks} groups={this.getOnlyGroups()} tasks={this.state.allTasks} onSubmit={this.saveAssignedStudents} />
@@ -312,7 +312,7 @@ class App extends Component {
             <Route path="/login" exact render={() => <Login onLogin={this.loadAllTasks} />} />
             <Route path="/register" exact component={Register} />
             <Route path="/logout" exact component={Logout} />
-            <Route path="/test" exact component={Test} />
+            <TeacherRoute path="/test" exact component={Test} tasks={this.state.allTasks}/>
           </Switch>
         </Router>
         <div>

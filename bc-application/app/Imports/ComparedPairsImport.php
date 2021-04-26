@@ -22,6 +22,11 @@ class ComparedPairsImport implements ToModel
     {
         $vysledok = str_getcsv($row[0], ';');
 
+        if ($vysledok[0] == null)
+        {
+            return;
+        }
+        
         if($this->type == 'second_check') {
         $first = SubmittedAssignment::where('path_to_file', "public/".$this->type.'/'.$this->id.'/'.$vysledok[0])->first();
         $second = SubmittedAssignment::where('path_to_file', "public/".$this->type.'/'.$this->id.'/'.$vysledok[2])->first();

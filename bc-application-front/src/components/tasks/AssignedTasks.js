@@ -31,14 +31,20 @@ class AssignedTasks extends Component {
             similarities = assignments.filter((assignment) => assignment.compared_pair !== null)
         }
 
-        console.log("TUU", similarities)
+        let visible = false
+        if (students.length / assignments.length === 1) {
+            visible = true
+        }
 
         this.state = {
             concreteTask: task,
             assignedStudents: students,
             similarAssignments: similarities,
             assignmentsForTask: assignments,
+            visibleCheck: visible,
         }
+
+
 
         this.onRemove = this.onRemove.bind(this)
         this.onDisplay = this.onDisplay.bind(this)
@@ -117,61 +123,65 @@ class AssignedTasks extends Component {
 
     render() {
         return (
-            <div>
+            <div >
                 <div style={{ color: 'white' }}>
                     <Navigation />
                     <p></p>
-                    <h3>Zoznam pridelených študentov:</h3>
-                    <br />
-                    <h2 className="blog-post-title">{this.state.concreteTask.title}</h2>
-                    <p className="blog-post-meta"> Deadline: {this.toDate(this.state.concreteTask.deadline)}</p>
-                    {(this.state.concreteTask.path_to_file !== null) && (
-                        <p> Zadanie: <a href={this.showTask(this.state.concreteTask.path_to_file.substr(6))} download>
-                            {this.state.concreteTask.file_name.substr(12)}
-                        </a> </p>
-                    )}
-                    {!this.state.concreteTask.verified && this.state.concreteTask.type !== 'homework' && this.state.concreteTask.type !== 'first_check' && (
-                        <button onClick={() => this.onVerify(this.state.concreteTask.task_id)} className="btn btn-light">Kontrola zhody</button>
-                    )}
+                    <div className="container borders">
+                        <h3>Zoznam pridelených študentov:</h3>
+                        <br />
+                        <h2 className="blog-post-title">{this.state.concreteTask.title}</h2>
+                        <p className="blog-post-meta"> Deadline: {this.toDate(this.state.concreteTask.deadline)}</p>
+                        <p className="blog-post-meta"> Počet odovzdaných prác: </p>
+                        <p className="blog-post-meta"> <b> {this.state.assignmentsForTask.length } / {this.state.assignedStudents.length } </b> </p>
+                        {(this.state.concreteTask.path_to_file !== null) && (
+                            <p> Zadanie: <a href={this.showTask(this.state.concreteTask.path_to_file.substr(6))} download>
+                                {this.state.concreteTask.file_name.substr(12)}
+                            </a> </p>
+                        )}
+                        {!this.state.concreteTask.verified && this.state.concreteTask.type !== 'homework' && this.state.concreteTask.type !== 'first_check' && this.state.visibleCheck && (
+                            <button onClick={() => this.onVerify(this.state.concreteTask.task_id)} className="btn btn-info">Kontrola zhody</button>
+                        )}
+                    </div>
                     {this.state.concreteTask.verified && (
-                        <div className="container">
+                        <div className="container ">
                             <div>
                                 <p className="list-group-item list-group-item-warning no-marg">Zadanie prešlo kontrolou originality prác</p>
                             </div>
                             {this.state.similarAssignments.length > 0 && (
-                            <div className="card" style={{ color: 'black' }}>
-                                <p></p>
-                                <h5 className="justify-content-start">
-                                    <u>Zoznam potenciálnych zhôd:</u>
-                                </h5>
-                                {this.state.similarAssignments.map((chosen) => {
-                                    return (
-                                        <p> {this.getStudents(chosen.compared_pair).map((temp) => {
-                                            return (
-                                                <span> {temp.name} {temp.surname} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-right" viewBox="0 0 16 16">
-                                                    <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
-                                                </svg> </span>
-                                            )
-                                        })}
-                                           <span className=" list-group-item-danger no-marg" > {' '} {chosen.compared_pair.percentage_match} {'%'} </span> </p>
-                                    )
-                                })}
-                            </div>
+                                <div className="card" style={{ color: 'black' }}>
+                                    <p></p>
+                                    <h5 className="justify-content-start">
+                                        <u>Zoznam potenciálnych zhôd:</u>
+                                    </h5>
+                                    {this.state.similarAssignments.map((chosen) => {
+                                        return (
+                                            <p> {this.getStudents(chosen.compared_pair).map((temp) => {
+                                                return (
+                                                    <span> {temp.name} {temp.surname} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-right" viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                                                    </svg> </span>
+                                                )
+                                            })}
+                                                <span className=" list-group-item-danger no-marg" > {' '} {chosen.compared_pair.percentage_match} {'%'} </span> </p>
+                                        )
+                                    })}
+                                </div>
                             )}
                             {this.state.similarAssignments.length === 0 && (
                                 <div className="card" style={{ color: 'black' }}>
-                                <p></p>
-                                <h5 className="justify-content-start">
-                                    <u>Zoznam potenciálnych zhôd:</u>
-                                </h5>
-                                <p> Nebola nájdená žiadna zhoda. </p>
-                            </div>
+                                    <p></p>
+                                    <h5 className="justify-content-start">
+                                        <u>Zoznam potenciálnych zhôd:</u>
+                                    </h5>
+                                    <p> Nebola nájdená žiadna zhoda. </p>
+                                </div>
                             )}
                         </div>
                     )}
                     <hr />
                 </div>
-                <div className="container">
+                <div className="container ">
                     <p></p>
                     <table className="table table-hover table-bordered table-sm">
                         <thead className="thead-dark">
@@ -211,18 +221,18 @@ class AssignedTasks extends Component {
                                             )}
 
                                             { this.isSubmitted(chosen.submitted_assignments) && this.isEvaluated(chosen.submitted_assignments) && (
-                                                <td className="table-success" onClick={() => this.onDisplay(chosen.submitted_assignments)}> <button className="btn-dark"> <i> Hodnotené </i> </button> </td>
+                                                <td onClick={() => this.onDisplay(chosen.submitted_assignments)}> <button className="btn-sm btn-info"> <i> Upraviť hodnotenie </i> </button> </td>
                                             )}
 
                                             { this.isSubmitted(chosen.submitted_assignments) && !this.isEvaluated(chosen.submitted_assignments) && (
-                                                <td onClick={() => this.onDisplay(chosen.submitted_assignments)}> <button className="btn-dark"> Ohodnoť </button> </td>
+                                                <td onClick={() => this.onDisplay(chosen.submitted_assignments)}> <button className="btn-sm btn-info"> Ohodnoť </button> </td>
                                             )}
 
                                             {!this.isSubmitted(chosen.submitted_assignments) && (
                                                 <td> <i> Nehodnotené </i> </td>
                                             )}
                                             {!this.isSubmitted(chosen.submitted_assignments) && (
-                                                <td onClick={() => this.onRemove(chosen.user_id)}> <button className="btn-dark"> x </button> </td>
+                                                <td onClick={() => this.onRemove(chosen.user_id)}> <button className="btn-sm btn-info"> x </button> </td>
                                             )}
                                             {this.isSubmitted(chosen.submitted_assignments) && (
                                                 <td> - </td>

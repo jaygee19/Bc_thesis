@@ -8,7 +8,7 @@ class Home extends Component {
         return (
             <div>
                 <Navigation />
-                <div className="container" style={{ color: 'white' }}>
+                <div className="container borders" style={{ color: 'white' }}>
                     <p></p>
                     <h1 className="title-margin"> Princípy operačných systémov </h1>
                     <hr />

@@ -57,7 +57,7 @@ class SubjectTasks extends Component {
                                     <option value="homework">Domáca úloha</option>
                         </select>
                         </div>
-                        <div className="col-3">
+                        <div className="col-4">
                         <label>Vyberte si vyučujúceho: </label>
                         <select type="text" className="form-control" value={this.state.valueTeacher} onChange={this.valueTeacherChanged}>
                                     <option value=""></option>

@@ -23,11 +23,11 @@ class JwtMiddleware extends BaseMiddleware
             $user = JWTAuth::parseToken()->authenticate();
         } catch (Exception $e) {
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
-                return response()->json(['status' => 'Token nie je naďalej platný'], 401);
+                return response()->json(['status' => 'Token nie je naďalej platný.'], 401);
             }else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException){
-                return response()->json(['status' => 'Platnosť tokenu vypršala. Pre nasledujúcu akciu sa prosím opätovne prihláste'], 401);
+                return response()->json(['status' => 'Platnosť tokenu vypršala. Pre nasledujúcu akciu sa prosím opätovne prihláste.'], 401);
             }else{
-                return response()->json(['status' => 'Token nebol nájdený'], 401);
+                return response()->json(['status' => 'Token nebol nájdený.'], 401);
             }
         }
         return $next($request);

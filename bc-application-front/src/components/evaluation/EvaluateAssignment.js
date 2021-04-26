@@ -129,7 +129,7 @@ class EvaluateAssignment extends Component {
                         <h5>{this.state.student.name} {this.state.student.surname}, {this.state.student.group}</h5>
                         <p> Vypracované zadanie: </p>
                         {this.state.assignment.path_to_file !== null && (
-                            <a className="btn btn-lg btn-dark" href={this.showAssignment(this.state.assignment.path_to_file.substr(6))} target="_blank" download>
+                            <a className="btn btn-lg btn-info" href={this.showAssignment(this.state.assignment.path_to_file.substr(6))} target="_blank" download>
                                 {this.state.assignment.file_name.substr(12)}
                             </a>
                         )}
@@ -159,7 +159,7 @@ class EvaluateAssignment extends Component {
                             {getAllErrors(this.state.commentErrors)}
                             {getAllErrors(this.state.statusErrors)}
                             <p></p>
-                            <button className="w-50 btn btn-lg btn-dark" type="submit">Ulož</button>
+                            <button className="w-50 btn btn-lg btn-info" type="submit">Ulož</button>
                             <p></p>
                         </form>
 

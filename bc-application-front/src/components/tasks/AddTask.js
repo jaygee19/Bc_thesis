@@ -207,10 +207,10 @@ class AddTask extends Component {
         return (
             <div>
                 <Navigation />
-                <div className="container ">
+                <div className="container borders" style={{ color: 'white' }}> 
                     <div className="col-md-12">
                     <p></p>
-                    <div className="card login-card">
+                    {/* <div className="card login-card"> */}
                         <p></p>
                         {(this.props.match.params.id != null) && (
                             <div className="d-flex justify-content-center ">
@@ -292,7 +292,7 @@ class AddTask extends Component {
 
                                 {getAllErrors(this.state.statusErrors)}
                                 <p></p>
-                                <button className="w-50 btn btn-lg btn-dark" type="submit">Ulož</button>
+                                <button className="w-50 btn btn-lg btn-info" type="submit">Ulož</button>
                                 <p></p>
                             </form>
 
@@ -321,7 +321,7 @@ class AddTask extends Component {
                                     {getAllErrors(this.state.fileErrors)}
                                     <p></p>
                                     <button onClick={() => this.onUpdate()}
-                                        className="w-50 btn btn-lg btn-dark" type="submit">Zmeň súbor
+                                        className="w-50 btn btn-lg btn-info" type="submit">Zmeň súbor
                                     </button>
                                     <p></p>
                                 </div>
@@ -329,7 +329,7 @@ class AddTask extends Component {
                         </div>
                     </div>
                 </div>
-                </div>
+                {/* </div> */}
             </div>
         )
     }

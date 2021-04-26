@@ -39,39 +39,38 @@ class MyTasks extends Component {
     }
 
     render() {
-        console.log("Aktualny status", this.props.status)
         return (
             <div>
                 <Navigation />
                 <div className="container">
                     <p></p>
-                    <button onClick={this.onAddNew} type="submit" className="btn btn-light" > Nové zadanie + </button>
+                    <button onClick={this.onAddNew} type="submit" className="btn btn-info" > Nové zadanie + </button>
                     <p></p>
                     <div className="d-flex justify-content-start" style={{ color: 'white' }}>
                         <h3> Zoznam mojich zadaní :</h3>
                     </div>
                     <p></p>
-                <CardColumns>
-                    {this.props.tasks.filter((task) => task.hidden !== true)
-                        .map((task) => {
-                            return (
-                                <Task
-                                    key={task.task_id}
-                                    id={task.task_id}
-                                    content={task.content}
-                                    userName={this.getUserName(task.teacher_id)}
-                                    title={task.title}
-                                    date={task.valid_from}
-                                    deadline={task.deadline}
-                                    type={task.type}
-                                    path={task.path_to_file}
-                                    onHide={this.props.hideTask}
-                                    private={true}
-                                    hidden={task.hidden}
-                                />
-                            )
-                        })}
-                </CardColumns>
+                    <CardColumns>
+                        {this.props.tasks.filter((task) => task.hidden !== true)
+                            .map((task) => {
+                                return (
+                                    <Task
+                                        key={task.task_id}
+                                        id={task.task_id}
+                                        content={task.content}
+                                        userName={this.getUserName(task.teacher_id)}
+                                        title={task.title}
+                                        date={task.valid_from}
+                                        deadline={task.deadline}
+                                        type={task.type}
+                                        path={task.path_to_file}
+                                        onHide={this.props.hideTask}
+                                        private={true}
+                                        hidden={task.hidden}
+                                    />
+                                )
+                            })}
+                    </CardColumns>
                 </div>
 
                 <Modal
@@ -100,7 +99,7 @@ class MyTasks extends Component {
 
                     <Modal.Footer>
                         <button
-                            className="btn btn-sm btn-dark"
+                            className="btn btn-sm btn-info"
                             onClick={() =>
                                 this.setState({
                                     showModal: false,
