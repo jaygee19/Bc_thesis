@@ -19,6 +19,7 @@ class StudentTasks extends Component {
             showModal: false,
             evaluation: '',
             comment: '',
+            taskResult: '',
         }
 
         this.onClick = this.onClick.bind(this)
@@ -98,6 +99,10 @@ class StudentTasks extends Component {
         }
     }
 
+    getTaskResult(id) {
+        return this.state.studentTasks.filter((task) => task.task_id === id)[0]
+    }
+
     countPoints(data) {
         let counter = 0
         for (let i = 0; i < data.length; i++) {
@@ -106,6 +111,32 @@ class StudentTasks extends Component {
             }
         }
         return counter
+    }
+
+    getTypeInSlovak(type) {
+        switch (type) {
+            case 'first_check':
+                return 'prvý zápočet';
+            case 'second_check':
+                return 'druhý zápočet';
+            case 'semester_work':
+                return 'semestrálna práca';
+            default:
+                return 'domáca úloha';
+        }
+    }
+
+    getMaxNumberOfPoints(type) {
+        switch (type) {
+            case 'first_check':
+                return '10';
+            case 'second_check':
+                return '30';
+            case 'semester_work':
+                return '50';
+            default:
+                return '10';
+        }
     }
 
     render() {
@@ -127,7 +158,7 @@ class StudentTasks extends Component {
                                 <th scope="col">Názov</th>
                                 <th scope="col">Typ</th>
                                 <th scope="col">Deadline (D:H:M:S)</th>
-                                <th scope="col-1">#</th>
+                                <th scope="col">#</th>
                                 <th scope="col">Stav</th>
                             </tr>
                         </thead>
@@ -137,7 +168,7 @@ class StudentTasks extends Component {
                                     return (
                                         <tr key={chosen.task_id}>
                                             <td>{chosen.title}</td>
-                                            <td>{chosen.type}</td>
+                                            <td>{this.getTypeInSlovak(chosen.type)}</td>
 
                                             {this.isSubmittedBeforeDeadline(chosen.task_id) && (
                                                 <td className="table-success"> <Countdown date={Date.now() + this.timeBeforeDeadline(chosen.task_id)} /> </td>
@@ -154,6 +185,7 @@ class StudentTasks extends Component {
                                                             showModal: true,
                                                             comment: this.getComment(chosen.task_id),
                                                             evaluation: this.getEvaluation(chosen.task_id),
+                                                            taskResult: this.getTaskResult(chosen.task_id),
                                                         })
                                                     }> Výsledok</button></td>
                                             )}
@@ -181,7 +213,6 @@ class StudentTasks extends Component {
                     </table>
                 </div>
 
-
                 <Modal
                     show={this.state.showModal}
                     onHide={() =>
@@ -191,17 +222,20 @@ class StudentTasks extends Component {
                     }
                 >
                     <Modal.Header>
-                        <Modal.Title>Hodnotenie</Modal.Title>
+                        <Modal.Title> {this.state.taskResult.title} -  
+                         ({this.getTypeInSlovak(this.state.taskResult.type)})</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
-                        <p> <u>Počet bodov:</u> {this.state.evaluation} </p>
-                        <p> <u>Komentár:</u> {this.state.comment} </p>
+                        <h5> Hodnotenie: </h5>
+                        <br></br>
+                        <p> <u>Počet bodov:</u> <b>{this.state.evaluation}</b> / {this.getMaxNumberOfPoints(this.state.taskResult.type)} </p>
+                        <p> <u>Komentár:</u> <b>{this.state.comment}</b> </p>
                     </Modal.Body>
 
                     <Modal.Footer>
                         <button
-                            className="btn btn-sm btn-dark"
+                            className="btn btn-sm btn-info"
                             onClick={() =>
                                 this.setState({
                                     showModal: false,

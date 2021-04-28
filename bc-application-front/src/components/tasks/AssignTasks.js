@@ -158,14 +158,14 @@ class AssignTasks extends Component {
                         <div className="card assign-card col-8">
                             <p></p>
                             <h3 className="d-flex justify-content-start">
-                                Priradiť:
+                                Prideliť:
                             </h3>
                             <form onSubmit={this.onSubmit}>
                                 {this.state.allGroups.map((group) => {
                                     return (
                                         <div key={group.schedule_id}>
                                             <h4 className="font-weight-bold" style={{ color: "black" }}>
-                                                {this.dayOfWeek(group.day)} - {group.time_begin} ( {AuthHelper.getInstance().getUserName()} )
+                                                {this.dayOfWeek(group.day)} - {group.time_begin}:00 ( {AuthHelper.getInstance().getUserName()} )
                                                 <span className="my_btn btn btn-sm btn-info" onClick={() => this.assignStudent(group.schedule_id)}>  +  </span>
                                                 <span className="my_btn btn btn-sm btn-info" onClick={() => this.removeStudents(group.schedule_id)}>  -  </span>
                                             </h4>

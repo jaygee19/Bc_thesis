@@ -13,7 +13,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Http\Response;
 use Exception;
 
-//inspirovane strankou https://blog.pusher.com/laravel-jwt/
+
 
 class UserController extends Controller
 {
@@ -26,7 +26,8 @@ class UserController extends Controller
         ->with('submitted_assignments.result')
         ->get();
     }
-        
+    
+    //inspirovane strankou https://blog.pusher.com/laravel-jwt/
     public function login(Request $request) {
             $validator = Validator::make($request->all(), [
                 'password' => 'required',
@@ -80,6 +81,7 @@ class UserController extends Controller
             return response()->json(compact('user','token'), 201);
         }
 
+        //inspirovane strankou https://blog.pusher.com/laravel-jwt/
         public function getAuthenticatedUser()
             {
                  try {

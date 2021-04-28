@@ -17,6 +17,7 @@ class JwtMiddleware extends BaseMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
+    //inspirovane strankou https://blog.pusher.com/laravel-jwt/
     public function handle($request, Closure $next)
     {
         try {

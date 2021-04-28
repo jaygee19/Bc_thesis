@@ -25,7 +25,7 @@ class AuthHelper {
         return null
     }
 
-    const res = await axios.get(API_URL + '/user', {
+    const res = await axios.get('http://localhost:8000/api/user', {
       headers: { Authorization: 'Bearer ' + token },
     })
 

@@ -100,7 +100,7 @@ class Login extends Component {
                                         {getAllErrors(this.state.passwordErrors)}
                                         {getAllErrors(this.state.otherErrors)}
                                         {getAllErrors(this.state.statusErrors)}
-                                        <button className="w-100 btn btn-lg btn-dark" type="submit">Prihlásiť</button>
+                                        <button className="w-100 btn btn-lg btn-info" type="submit">Prihlásiť</button>
                                     </form>
                                 </div>
                             </div>
