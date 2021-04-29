@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Navigation from '../Navigation'
 import dateFormat from 'dateformat';
 import { getAllErrors } from '../../helpers/ErrorHelper'
+import { getTypeInSlovak } from '../../helpers/StyleHelper';
 
 class AssignedTasks extends Component {
     constructor(props) {
@@ -131,6 +132,7 @@ class AssignedTasks extends Component {
                         <h3>Zoznam pridelených študentov:</h3>
                         <br />
                         <h2 className="blog-post-title">{this.state.concreteTask.title}</h2>
+                        <p className="blog-post-meta"> {getTypeInSlovak(this.state.concreteTask.type)}</p>
                         <p className="blog-post-meta"> Deadline: {this.toDate(this.state.concreteTask.deadline)}</p>
                         <p className="blog-post-meta"> Počet odovzdaných prác: </p>
                         <p className="blog-post-meta"> <b> {this.state.assignmentsForTask.length } / {this.state.assignedStudents.length } </b> </p>
@@ -221,7 +223,7 @@ class AssignedTasks extends Component {
                                             )}
 
                                             { this.isSubmitted(chosen.submitted_assignments) && this.isEvaluated(chosen.submitted_assignments) && (
-                                                <td onClick={() => this.onDisplay(chosen.submitted_assignments)}> <button className="btn-sm btn-info"> <i> Upraviť hodnotenie </i> </button> </td>
+                                                <td onClick={() => this.onDisplay(chosen.submitted_assignments)}> <button className="btn-sm btn-success"> <i> Hodnotené </i> </button> </td>
                                             )}
 
                                             { this.isSubmitted(chosen.submitted_assignments) && !this.isEvaluated(chosen.submitted_assignments) && (

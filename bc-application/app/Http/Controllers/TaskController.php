@@ -190,7 +190,12 @@ class TaskController extends Controller
             ['hidden' => true]
         );
 
-        return response()->json($task, 200);   
+        $updated_task = Task::with('stud_tasks')
+        ->with('submitted_assignments')
+        ->where('task_id', $task->task_id)
+        ->first();
+
+        return response()->json($updated_task, 200);   
     }
 
     public function uncover(Task $task)
@@ -206,6 +211,11 @@ class TaskController extends Controller
             ['hidden' => false]
         );
 
-        return response()->json($task, 200);   
+        $updated_task = Task::with('stud_tasks')
+        ->with('submitted_assignments')
+        ->where('task_id', $task->task_id)
+        ->first();
+
+        return response()->json($updated_task, 200);   
     }
 }

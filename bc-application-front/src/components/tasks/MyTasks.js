@@ -109,7 +109,7 @@ class MyTasks extends Component {
 
                     <Modal.Body>
                         {this.state.value === 1 && (
-                            <p className="table-success">Zadanie bolo úspešne pridané</p>
+                            <p className="table-success">Zadanie bolo úspešne vytvorené</p>
                         )}
                         {this.state.value === 2 && (
                             <p className="table-warning">Zadanie bolo úspešne modifikované</p>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Navigation from '../Navigation'
 import { getAllErrors } from '../../helpers/ErrorHelper'
+import { getTypeInSlovak } from '../../helpers/StyleHelper'
 
 class EvaluateAssignment extends Component {
     constructor(props) {
@@ -124,10 +125,10 @@ class EvaluateAssignment extends Component {
                 <div className="container">
                     <div className="jumbotron bg-white">
                         <h3>{this.state.task.title}</h3>
-                        <p>{this.state.task.type}</p>
+                        <p>{getTypeInSlovak(this.state.task.type)}</p>
+                        <h4>{this.state.student.name} {this.state.student.surname}, {this.state.student.group}</h4>
                         <hr />
-                        <h5>{this.state.student.name} {this.state.student.surname}, {this.state.student.group}</h5>
-                        <p> Vypracované zadanie: </p>
+                        <p> <b> Vypracované zadanie: </b> </p>
                         {this.state.assignment.path_to_file !== null && (
                             <a className="btn btn-lg btn-info" href={this.showAssignment(this.state.assignment.path_to_file.substr(6))} target="_blank" download>
                                 {this.state.assignment.file_name.substr(12)}
@@ -136,7 +137,7 @@ class EvaluateAssignment extends Component {
 
                         <form onSubmit={this.onSubmit}>
                             <p></p>
-                            <label className="d-flex justify-content-start">Počet bodov: / {this.getMaxNumberOfPoints()}
+                            <label className="d-flex justify-content-start"> <b> Počet bodov: / {this.getMaxNumberOfPoints()} </b>
                             </label>
                             <input type="text" className="col-1 form-control"
                                 id="evaluation"
@@ -147,7 +148,7 @@ class EvaluateAssignment extends Component {
                             />
                             {getAllErrors(this.state.evaluationErrors)}
                             <p></p>
-                            <label className="d-flex justify-content-start">Komentár: </label>
+                            <label className="d-flex justify-content-start"> <b> Komentár: </b> </label>
                             <textarea type="text" className="form-control"
                                 id="comment"
                                 name="comment"

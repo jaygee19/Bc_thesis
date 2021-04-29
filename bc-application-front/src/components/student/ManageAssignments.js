@@ -123,7 +123,7 @@ class ManageAssignments extends Component {
                             <div>
                                 <form onSubmit={this.onSubmit}>
                                     <p></p>
-                                    <label>IP adresa</label>
+                                    <label> <b> IP adresa: </b>  </label>
                                     <input type="text" className="form-control"
                                         id="ip_address"
                                         name="ip_address"
@@ -133,7 +133,7 @@ class ManageAssignments extends Component {
                                     />
                                     {getAllErrors(this.state.ipErrors)}
                                     <p></p>
-                                    <label>Priložiť súbor</label>
+                                    <label> <b> Priložiť súbor: </b>  </label>
                                     <div className="custom-file">
                                         <input id="inputGroupFile01" type="file" className="custom-file-input"
                                             name="filename"
@@ -157,9 +157,9 @@ class ManageAssignments extends Component {
                         {(this.state.concreteAssignments.length !== 0) && (
                             <div>
                                 <p></p>
-                                <label>Zmeniť súbor</label>
+                                <label> <b> Zmeniť súbor: </b></label>
                                 {this.state.concreteAssignments[0].file_name !== null && (
-                                <p>Zadanie: <a href={this.showAssignment(this.state.concreteAssignments[0].path_to_file.substr(6))} target="_blank" download>
+                                <p> Odovzdaný súbor: <a href={this.showAssignment(this.state.concreteAssignments[0].path_to_file.substr(6))} target="_blank" download>
                                     {this.state.concreteAssignments[0].file_name.substr(12)}
                                 </a></p>
                                 )}

@@ -130,7 +130,7 @@
 }
 
 .form-control:focus{
-  box-shadow: 0 0 0 3px #343a40 !important;
+  box-shadow: 0 0 0 3px #5bc0de !important;
   border-color: grey !important;
 }
 

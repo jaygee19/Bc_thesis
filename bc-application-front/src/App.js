@@ -169,7 +169,7 @@ class App extends Component {
 
   async hideTask(id) {
     const hiddenTask = await getApiResponse('tasks/hide/' + id, 'put')
-
+  
     this.setState(state => {
       return {
         allTasks: state.allTasks.map(t => t.task_id === hiddenTask.data.task_id ? hiddenTask.data : t),

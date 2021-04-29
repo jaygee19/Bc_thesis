@@ -7,7 +7,6 @@ import PaginationList from 'react-pagination-list';
 class HiddenTasks extends Component {
     constructor(props) {
         super(props)
-        
         this.state = {
         }
 

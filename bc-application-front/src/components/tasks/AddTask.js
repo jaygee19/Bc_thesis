@@ -111,7 +111,7 @@ class AddTask extends Component {
     }
 
     showTask(path) {
-        return 'http://127.0.0.1:8000/storage'+path
+        return 'http://127.0.0.1:8000/storage' + path
     }
 
     onDelete(id) {
@@ -202,15 +202,14 @@ class AddTask extends Component {
         return (
             <div>
                 <Navigation />
-                <div className="container borders" style={{ color: 'white' }}> 
+                <div className="container borders" style={{ color: 'white' }}>
                     <div className="col-md-12">
-                    <p></p>
-                    {/* <div className="card login-card"> */}
+                        <p></p>
+                        {/* <div className="card login-card"> */}
                         <p></p>
                         {(this.props.match.params.id != null) && (
                             <div className="d-flex justify-content-center ">
                                 <h3>Uprav zadanie:</h3>
-
                             </div>
                         )}
                         {this.state.canBeDeleted && (
@@ -229,9 +228,10 @@ class AddTask extends Component {
                         <p></p>
 
                         <div className="justify-content-center align-items-center">
+                            <p className="d-flex justify-content-start"><small>* tieto údaje sú povinné </small></p>
+                            <br />
                             <form onSubmit={this.onSubmit} encType="multipart/form-data">
-                                <p></p>
-                                <label className="d-flex justify-content-start"> Typ zadania: </label>
+                                <label className="d-flex justify-content-start"> <b> Typ zadania: </b> * </label>
                                 <select type="text" className="form-control col-3" id="type" name="type" value={this.state.type} onChange={this.typeChanged} required>
                                     <option value=""></option>
                                     <option value="first_check">Prvý zápočet</option>
@@ -241,7 +241,7 @@ class AddTask extends Component {
                                 </select>
                                 {getAllErrors(this.state.typeErrors)}
                                 <p></p>
-                                <label className="d-flex justify-content-start">Názov:</label>
+                                <label className="d-flex justify-content-start"> <b> Názov: </b> * </label>
                                 <input type="text" className="form-control col-6"
                                     id="title"
                                     name="title"
@@ -251,7 +251,7 @@ class AddTask extends Component {
                                 />
                                 {getAllErrors(this.state.titleErrors)}
                                 <p></p>
-                                <label className="d-flex justify-content-start">Popis:</label>
+                                <label className="d-flex justify-content-start"> <b> Popis: </b> *</label>
                                 <textarea type="text" className="form-control"
                                     id="content"
                                     name="content"
@@ -261,7 +261,7 @@ class AddTask extends Component {
                                 </textarea>
                                 {getAllErrors(this.state.contentErrors)}
                                 <p></p>
-                                <label className="d-flex justify-content-start">Deadline:</label>
+                                <label className="d-flex justify-content-start"> <b> Deadline: </b> *</label>
                                 <input type="datetime-local" className="form-control col-6" placeholder="Deadline"
                                     id="deadline"
                                     name="deadline"
@@ -273,7 +273,7 @@ class AddTask extends Component {
                                 {(this.props.match.params.id == null) && (
                                     <div>
                                         <p></p>
-                                        <label className="d-flex justify-content-start">Priložiť súbor:</label>
+                                        <label className="d-flex justify-content-start"> <b> Priložiť súbor: </b></label>
                                         <div className="custom-file">
                                             <input id="inputGroupFile01" type="file" className="custom-file-input"
                                                 name="filename"
@@ -293,12 +293,12 @@ class AddTask extends Component {
 
                             {(this.props.match.params.id != null) && (
                                 <div>
-                                    <label>Zmeniť súbor:</label>
-                                    <br/>
+                                    <label> <b> Zmeniť súbor: </b> </label>
+                                    <br />
                                     {(this.state.path_to_file !== null) && (
-                                    <a href={this.showTask(this.state.path_to_file.substr(6))} target="_blank" download>
-                                        {this.state.file_name_const.substr(12)}
-                                    </a>
+                                        <a href={this.showTask(this.state.path_to_file.substr(6))} target="_blank" download>
+                                            {this.state.file_name_const.substr(12)}
+                                        </a>
                                     )}
                                     <p></p>
 

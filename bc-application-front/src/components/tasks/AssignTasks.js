@@ -149,7 +149,7 @@ class AssignTasks extends Component {
                                     .map((chosen) => {
                                         return (
                                             <div key={chosen.user_id}>
-                                            <h6> {chosen.name} {chosen.surname} </h6>
+                                            <h6> {chosen.name} {chosen.surname} ({chosen.group}) </h6>
                                             </div>
                                         )
                                     })}
@@ -167,7 +167,7 @@ class AssignTasks extends Component {
                                             <h4 className="font-weight-bold" style={{ color: "black" }}>
                                                 {this.dayOfWeek(group.day)} - {group.time_begin}:00 ( {AuthHelper.getInstance().getUserName()} )
                                                 <span className="my_btn btn btn-sm btn-info" onClick={() => this.assignStudent(group.schedule_id)}>  +  </span>
-                                                <span className="my_btn btn btn-sm btn-info" onClick={() => this.removeStudents(group.schedule_id)}>  -  </span>
+                                                <span className="my_btn btn btn-sm btn-info" onClick={() => this.removeStudents(group.schedule_id)}>  –  </span>
                                             </h4>
 
                                             <div className="">
@@ -177,7 +177,7 @@ class AssignTasks extends Component {
                                                             return (
                                                                 <div key={chosen.user_id}>
                                                                     <h6 style={{ color: "black" }}> {chosen.name} {chosen.surname}
-                                                                        <span className="my_btn btn btn-sm btn-info" onClick={() => this.removeStudent(chosen.user_id)}> - </span>
+                                                                        <span className="my_btn btn btn-sm btn-info" onClick={() => this.removeStudent(chosen.user_id)}> – </span>
                                                                     </h6>
                                                                 </div>
                                                             )
