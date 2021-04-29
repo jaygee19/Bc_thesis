@@ -46,33 +46,38 @@ class StudentController extends Controller
 
         date_default_timezone_set("Europe/Bratislava");
 
+        $assignment = SubmittedAssignment::create([
+            'task_id' => $request->get('task_id'),
+            'student_id' => $user->user_id,
+            'ip_address' => $request->get('ip_address'),
+        ]);
+
         if ($concrete_task->type == 'semester_work') {
-            $directory = 'public/semester_work';
+            $directory = 'public/semester_work'.'/'.$assignment->assignment_id;
+            exec('mkdir C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app/'.$directory);
         } else if ($concrete_task->type == 'second_check') {
-            $directory = 'public/second_check/'.$concrete_task->task_id;
+            $directory = 'public/second_check/'.$concrete_task->task_id.'/'.$assignment->assignment_id;
+            exec('mkdir C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app/'.$directory);
         } else if ($concrete_task->type == 'first_check') {
             $directory = 'public/first_check';
         } else if ($concrete_task->type == 'homework') {
             $directory = 'public/homework';
         }
 
-        $assignment = SubmittedAssignment::create([
-            'task_id' => $request->get('task_id'),
-            'student_id' => $user->user_id,
-            'path_to_file' => $request->file('filename')->store($directory),
-            'file_name' => $request->get('name'),
-            'submit_date' => date(DATE_RSS),
-            'ip_address' => $request->get('ip_address'),
-        ]);
+        $assignment->update(
+            [ 'path_to_file' => $request->file('filename')->store($directory),
+              'file_name' => $request->get('name'),
+              'submit_date' => date(DATE_RSS, time()),
+            ]
+        );
 
-        if ($concrete_task->type == 'semester_work') {
-            $command = 'cd C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app\public\semester_work & tar -xf '.substr($assignment->path_to_file,21).
-            ' -C C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app\public\semester_work/'.$assignment->assignment_id;
-            exec('cd C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app\public\semester_work & mkdir '.$assignment->assignment_id);
-            exec($command);
+        if ($concrete_task->type == 'semester_work') {  
+            exec('cd C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app/'.$directory.' & tar -xf '.substr($assignment->path_to_file,22+strlen((string)$assignment->assignment_id)));
         }
         if ($concrete_task->type == 'second_check') {
-            $this->parseFile('C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app/'.$assignment->path_to_file);
+            exec('cd C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app/'.$directory.' & tar -xf '.substr($assignment->path_to_file,25+strlen((string)$assignment->assignment_id)));
+            //' -C C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app/'.$directory.'/'.$assignment->assignment_id);
+            //$this->parseFile('C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app/'.$directory.'/'.$assignment->assignment_id.'/'.substr($assignment->path_to_file,24));
         }
 
         $stored_by = User::with('schedules')

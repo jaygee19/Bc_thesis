@@ -26,14 +26,9 @@ class ComparedPairsImport implements ToModel
         {
             return;
         }
-        
-        if($this->type == 'second_check') {
-        $first = SubmittedAssignment::where('path_to_file', "public/".$this->type.'/'.$this->id.'/'.$vysledok[0])->first();
-        $second = SubmittedAssignment::where('path_to_file', "public/".$this->type.'/'.$this->id.'/'.$vysledok[2])->first();
-        } else {
+
         $first = SubmittedAssignment::where('assignment_id', $vysledok[0])->first();
         $second = SubmittedAssignment::where('assignment_id', $vysledok[2])->first();
-        }
 
         return new ComparedPair([
             'assignment_first_id' => $first->assignment_id,
