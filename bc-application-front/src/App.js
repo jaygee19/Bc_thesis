@@ -290,8 +290,8 @@ class App extends Component {
   render() {
     if (this.state.isLoading)
       return (
-        <div className="d-flex justify-content-center">
-          <ReactLoading type="bubbles" color=" #191919" height={300} width={300} />
+        <div className="bg-dark d-flex justify-content-center" style = {{height:"100%", "minHeight": "100vh"}}>
+          <ReactLoading type="bubbles" color="#ffffff" height={400} width={400} />
         </div>
       )
     return (

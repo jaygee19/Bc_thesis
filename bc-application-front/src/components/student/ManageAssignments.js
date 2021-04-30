@@ -3,6 +3,7 @@ import Navigation from '../Navigation'
 import dateFormat from 'dateformat';
 import bsCustomFileInput from 'bs-custom-file-input';
 import { getAllErrors } from '../../helpers/ErrorHelper'
+import { getTypeInSlovak } from '../../helpers/StyleHelper';
 
 class ManageAssignments extends Component {
     constructor(props) {
@@ -113,18 +114,22 @@ class ManageAssignments extends Component {
                 <div className="container">
                     <div className="jumbotron bg-white">
                         <h1>{this.state.concreteTask.title}</h1>
-                        <p className="lead">{this.state.concreteTask.content}</p>
+                        <h5>{getTypeInSlovak(this.state.concreteTask.type)}</h5>
                         <p className="lead">Deadline: {this.toDate(this.state.concreteTask.deadline)}</p>
+                        <hr/>
+                        <p className="lead">Popis zadania:</p>
+                        <p className="d-flex justify-content-start lead">{this.state.concreteTask.content}</p>
                         {this.state.concreteTask.path_to_file !== null && (
                             <a className="btn btn-lg btn-info" href={this.showAssignment(this.state.concreteTask.path_to_file.substr(6))} target="_blank" download>Zobraz zadanie  &raquo;</a>
                         )}
+                        <hr/>
 
                         {(this.state.concreteAssignments.length === 0) && (
-                            <div>
+                            <div >
                                 <form onSubmit={this.onSubmit}>
                                     <p></p>
-                                    <label> <b> IP adresa: </b>  </label>
-                                    <input type="text" className="form-control"
+                                    <label className="d-flex justify-content-start"> <b> IP adresa: </b>  </label>
+                                    <input type="text" className="form-control col-3"
                                         id="ip_address"
                                         name="ip_address"
                                         value={this.state.ip_address}
@@ -133,7 +138,7 @@ class ManageAssignments extends Component {
                                     />
                                     {getAllErrors(this.state.ipErrors)}
                                     <p></p>
-                                    <label> <b> Priložiť súbor: </b>  </label>
+                                    <label className="d-flex justify-content-start"> <b> Priložiť súbor: </b>  </label>
                                     <div className="custom-file">
                                         <input id="inputGroupFile01" type="file" className="custom-file-input"
                                             name="filename"

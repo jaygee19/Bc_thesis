@@ -151,7 +151,8 @@ class StudentTasks extends Component {
                     <p className="blog-post-meta"> Cvičiaci: {this.state.concreteTeacher.name} {this.state.concreteTeacher.surname} </p>
                 </div>
                 <div className="container">
-                    <p style={{ color: 'white' }} className="d-flex justify-content-start"> Body za semester: {this.countPoints(this.state.submittedAssignments)} / 100 </p>
+                    <p style={{ color: 'white' }} className="d-flex justify-content-start"> <b> Body za semester: </b> </p>
+                    <p style={{ color: 'white' }} className="d-flex justify-content-start"> <b> {this.countPoints(this.state.submittedAssignments)} / 100 </b> </p>
                     <table className="table table-bordered table-sm">
                         <thead className="thead-dark">
                             <tr>
@@ -191,10 +192,10 @@ class StudentTasks extends Component {
                                             )}
 
                                             {!this.isEvaluated(chosen.task_id) && !this.isSubmitted(chosen.task_id) && (
-                                                <td><button onClick={() => this.onClick(chosen.task_id)} className="btn btn-sm btn-info">Odovzdaj</button></td>
+                                                <td><button onClick={() => this.onClick(chosen.task_id)} className="btn btn-sm btn-info">Zobraziť</button></td>
                                             )}
                                             {!this.isEvaluated(chosen.task_id) && this.isSubmitted(chosen.task_id) && (
-                                                <td><button onClick={() => this.onClick(chosen.task_id)} className="btn btn-sm btn-info">Zmeň</button></td>
+                                                <td><button onClick={() => this.onClick(chosen.task_id)} className="btn btn-sm btn-info">Upraviť</button></td>
                                             )}
 
                                             {this.isEvaluated(chosen.task_id) && (
