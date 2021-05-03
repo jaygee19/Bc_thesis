@@ -23,6 +23,7 @@ class UserController extends Controller
         ->with('stud_tasks')
         ->with('enrolled_student')
         ->with('submitted_assignments.compared_pair')
+        ->with('submitted_assignments.compared_pair_second')
         ->with('submitted_assignments.result')
         ->get();
     }

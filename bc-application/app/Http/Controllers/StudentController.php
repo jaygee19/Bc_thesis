@@ -31,10 +31,11 @@ class StudentController extends Controller
 
         $validator = Validator::make($request->all(), [
             'ip_address' => 'required',
-            'filename' => 'required',
+            'filename' => 'required|mimes:zip,c',
         ], [
-            'filename.required' => 'Neodovzdali ste zadanie',
+            'filename.required' => 'Nepriložili ste žiaden súbor',
             'ip_address.required' => 'Zadajte vašu IP adresu',
+            'filename.mimes' => 'Tento formát nie je podporovaný, podporované sú (.zip / .c)',
         ]);
 
         if($validator->fails()){
@@ -54,10 +55,8 @@ class StudentController extends Controller
 
         if ($concrete_task->type == 'semester_work') {
             $directory = 'public/semester_work'.'/'.$assignment->assignment_id;
-            exec('mkdir C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app/'.$directory);
         } else if ($concrete_task->type == 'second_check') {
             $directory = 'public/second_check/'.$concrete_task->task_id.'/'.$assignment->assignment_id;
-            exec('mkdir C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app/'.$directory);
         } else if ($concrete_task->type == 'first_check') {
             $directory = 'public/first_check';
         } else if ($concrete_task->type == 'homework') {
@@ -76,7 +75,6 @@ class StudentController extends Controller
         }
         if ($concrete_task->type == 'second_check') {
             exec('cd C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app/'.$directory.' & tar -xf '.substr($assignment->path_to_file,25+strlen((string)$assignment->assignment_id)));
-            //' -C C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app/'.$directory.'/'.$assignment->assignment_id);
             //$this->parseFile('C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app/'.$directory.'/'.$assignment->assignment_id.'/'.substr($assignment->path_to_file,24));
         }
 
@@ -100,10 +98,10 @@ class StudentController extends Controller
         }
         
         $validator = Validator::make($request->all(), [
-            'filename' => 'required',
+            'filename' => 'required|mimes:zip,c',
         ], [
-            'filename.required' => 'Neodovzdali ste zadanie',
-            // 'filename.mimes' => 'Tento format nie je podporovany',
+            'filename.required' => 'Nepriložili ste žiaden súbor',
+            'filename.mimes' => 'Tento formát nie je podporovaný, podporované sú (.zip / .c)',
         ]);
 
         if($validator->fails()){
@@ -115,9 +113,11 @@ class StudentController extends Controller
         $directory = 'public/uploads';
 
         if ($concrete_task->type == 'semester_work') {
-            $directory = 'public/semester_work';
+            $directory = 'public/semester_work'.'/'.$sub_assignment->assignment_id;
+            exec('cd C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app\public\semester_work & rmdir /Q/S '.$sub_assignment->assignment_id);
         } else if ($concrete_task->type == 'second_check') {
-            $directory = 'public/second_check/'.$concrete_task->task_id;
+            $directory = 'public/second_check/'.$concrete_task->task_id.'/'.$sub_assignment->assignment_id;
+            exec('cd C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app\public\second_check/'.$concrete_task->task_id.' & rmdir /Q/S '.$sub_assignment->assignment_id);
         } else if ($concrete_task->type == 'first_check') {
             $directory = 'public/first_check';
         } else if ($concrete_task->type == 'homework') {
@@ -139,13 +139,11 @@ class StudentController extends Controller
         );
 
         if ($concrete_task->type == 'semester_work') {
-            $command = 'cd C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app\public\semester_work & tar -xf '.substr($sub_assignment->path_to_file,21).
-            ' -C C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app\public\semester_work/'.$sub_assignment->assignment_id;
-            exec('cd C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app\public\semester_work & mkdir '.$sub_assignment->assignment_id);
-            exec($command);
+            exec('cd C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app/'.$directory.' & tar -xf '.substr($sub_assignment->path_to_file,22+strlen((string)$sub_assignment->assignment_id)));
         }
         if ($concrete_task->type == 'second_check') {
-            $this->parseFile('C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app/'.$sub_assignment->path_to_file);
+            exec('cd C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app/'.$directory.' & tar -xf '.substr($sub_assignment->path_to_file,25+strlen((string)$sub_assignment->assignment_id)));
+            //$this->parseFile('C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app/'.$sub_assignment->path_to_file);
         }
 
         $updated_by = User::with('schedules')

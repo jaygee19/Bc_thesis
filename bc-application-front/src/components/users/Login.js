@@ -16,10 +16,10 @@ class Login extends Component {
             ldap_login: '',
             password: '',
             redirect: false,
-            passwordErrors: [],
-            otherErrors: [],
-            ldapErrors: [],
-            statusErrors: [],
+            password_errors: [],
+            other_errors: [],
+            ldap_errors: [],
+            status_errors: [],
         }
 
         this.onSubmit = this.onSubmit.bind(this)
@@ -55,13 +55,11 @@ class Login extends Component {
                     })
             })
             .catch((e) => {
-                console.log("HAII", e.response.data['status'])
-
                 this.setState({
-                    otherErrors: e.response.data['errors'] || [],
-                    passwordErrors: e.response.data['password'] || [],
-                    ldapErrors: e.response.data['ldap_login'] || [],
-                    statusErrors: e.response.data['status'] || [],
+                    other_errors: e.response.data['errors'] || [],
+                    password_errors: e.response.data['password'] || [],
+                    ldap_errors: e.response.data['ldap_login'] || [],
+                    status_errors: e.response.data['status'] || [],
                 })
             })
     }
@@ -89,7 +87,7 @@ class Login extends Component {
                                             onChange={this.ldapFilled}
                                             required
                                         />
-                                        {getAllErrors(this.state.ldapErrors)}
+                                        {getAllErrors(this.state.ldap_errors)}
                                         <input type="password" className="form-control" placeholder="Heslo"
                                             id="password"
                                             name="password"
@@ -97,9 +95,9 @@ class Login extends Component {
                                             onChange={this.passwordFilled}
                                             required
                                         />
-                                        {getAllErrors(this.state.passwordErrors)}
-                                        {getAllErrors(this.state.otherErrors)}
-                                        {getAllErrors(this.state.statusErrors)}
+                                        {getAllErrors(this.state.password_errors)}
+                                        {getAllErrors(this.state.other_errors)}
+                                        {getAllErrors(this.state.status_errors)}
                                         <button className="w-100 btn btn-lg btn-info" type="submit">Prihlásiť</button>
                                     </form>
                                 </div>

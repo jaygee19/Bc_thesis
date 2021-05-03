@@ -10,19 +10,18 @@ class ManageAssignments extends Component {
         super(props)
 
         let task = this.props.user.stud_tasks.filter(t => t.task_id == this.props.match.params.id)
-        let sub = this.props.user.submitted_assignments.filter(s => s.task_id == this.props.match.params.id)
+        let filtered_assignment = this.props.user.submitted_assignments.filter(s => s.task_id == this.props.match.params.id)
 
         this.state = {
             path_to_file: '',
             file_name: '',
             concreteTask: task[0],
-            concreteAssignments: sub,
+            concreteAssignments: filtered_assignment,
             ip_address: '',
-            statusErrors: [],
-            ipErrors: [],
-            fileErrors: [],
+            status_errors: [],
+            ip_errors: [],
+            file_errors: [],
         }
-
 
         this.fileChanged = this.fileChanged.bind(this)
         this.ipAddressChanged = this.ipAddressChanged.bind(this)
@@ -67,15 +66,11 @@ class ManageAssignments extends Component {
                 this.props.history.push('/studentTasks')
             })
             .catch((e) => {
-                console.log("RESPONSE e ", e)
-                console.log("RESPONSE e.response", e.response)
-                console.log("RESPONSE e.response.data", e.response.data)
                 this.setState({
-                    statusErrors: e.response.data['status'] || [],
-                    fileErrors: e.response.data['filename'] || [],
+                    status_errors: e.response.data['status'] || [],
+                    file_errors: e.response.data['filename'] || [],
                 })
             })
-
     }
 
     onSubmit(event) {
@@ -87,21 +82,15 @@ class ManageAssignments extends Component {
         dataTask.append('ip_address', this.state.ip_address);
         dataTask.append('name', this.state.file_name);
 
-
-        for (var key of dataTask.entries()) {
-            console.log(key[0] + ', ' + key[1]);
-        }
-
-
         this.props.onSubmit(dataTask)
             .then(() => {
                 this.props.history.push('/studentTasks')
             })
             .catch((e) => {
                 this.setState({
-                    statusErrors: e.response.data['status'] || [],
-                    ipErrors: e.response.data['ip_address'] || [],
-                    fileErrors: e.response.data['filename'] || [],
+                    status_errors: e.response.data['status'] || [],
+                    ip_errors: e.response.data['ip_address'] || [],
+                    file_errors: e.response.data['filename'] || [],
                 })
             })
     }
@@ -136,7 +125,7 @@ class ManageAssignments extends Component {
                                         onChange={this.ipAddressChanged}
                                         required
                                     />
-                                    {getAllErrors(this.state.ipErrors)}
+                                    {getAllErrors(this.state.ip_errors)}
                                     <p></p>
                                     <label className="d-flex justify-content-start"> <b> Priložiť súbor: </b>  </label>
                                     <div className="custom-file">
@@ -148,16 +137,14 @@ class ManageAssignments extends Component {
                                         />
                                         <label className="custom-file-label">Choose file</label>
                                     </div>
-                                    {getAllErrors(this.state.fileErrors)}
-                                    {getAllErrors(this.state.statusErrors)}
+                                    {getAllErrors(this.state.file_errors)}
+                                    {getAllErrors(this.state.status_errors)}
                                     <p></p>
                                     <button className="w-50 btn btn-lg btn-info" type="submit">Ulož</button>
                                     <p></p>
                                 </form>
                             </div>
                         )}
-
-
 
                         {(this.state.concreteAssignments.length !== 0) && (
                             <div>
@@ -179,8 +166,8 @@ class ManageAssignments extends Component {
                                     />
                                     <label className="custom-file-label">Choose file</label>
                                 </div>
-                                {getAllErrors(this.state.fileErrors)}
-                                {getAllErrors(this.state.statusErrors)}
+                                {getAllErrors(this.state.file_errors)}
+                                {getAllErrors(this.state.status_errors)}
                                 <p></p>
                                 <button onClick={() => this.onUpdate()}
                                     className="w-50 btn btn-lg btn-info" type="submit">Zmeň súbor
@@ -188,7 +175,6 @@ class ManageAssignments extends Component {
                                 <p></p>
                             </div>
                         )}
-
                     </div>
                 </div>
             </div>

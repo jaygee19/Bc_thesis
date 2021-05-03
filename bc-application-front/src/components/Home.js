@@ -16,26 +16,26 @@ class Home extends Component {
                         <div className="col">
                             <h3> Hodnotenie predmetu: </h3>
                             <p>Z predmetu je možné získať <u>200 bodov</u>.</p>
-                                <p><b>Cvičenia</b></p>
-                                <p>
-                                    V rámci cvičení môže študent získať <u>100 bodov</u> (minimálne <u><i>61 bodov</i></u>).
+                            <p><b>Cvičenia</b></p>
+                            <p>
+                                V rámci cvičení môže študent získať <u>100 bodov</u> (minimálne <u><i>61 bodov</i></u>).
                                 </p>
-                                <p>
-                                    V prípade mimoriadnej aktivity môže cvičiaci udeliť študentovi aj bonusové body.
+                            <p>
+                                V prípade mimoriadnej aktivity môže cvičiaci udeliť študentovi aj bonusové body.
                                 </p>
-                                
-                                <p><b>Skúška</b></p>
-                                <p>
-                                    Na skúške môže študent získať ďalších <u>100 bodov</u> (minimálne <u><i>61 bodov</i></u>).
+
+                            <p><b>Skúška</b></p>
+                            <p>
+                                Na skúške môže študent získať ďalších <u>100 bodov</u> (minimálne <u><i>61 bodov</i></u>).
                                 </p>
-                                <p>
-                                    Každé zadanie, ktoré študent odovzdá, sa testuje na jedinečnosť.
+                            <p>
+                                Každé zadanie, ktoré študent odovzdá, sa testuje na jedinečnosť.
                                 </p>
-                                <hr />
+                            <hr />
                         </div>
 
                         <div className="col">
-                        <h3> Hodnotenie cvičení: </h3>
+                            <h3> Hodnotenie cvičení: </h3>
                             <table className="table_points table table-sm">
                                 <thead style={{ background: 'white' }}>
                                     <tr>

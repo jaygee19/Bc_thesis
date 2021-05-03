@@ -18,12 +18,12 @@ class AddTask extends Component {
             path_to_file_updated: '',
             file_name: '',
             canBeDeleted: false,
-            statusErrors: [],
-            typeErrors: [],
-            titleErrors: [],
-            contentErrors: [],
-            deadlineErrors: [],
-            fileErrors: [],
+            status_errors: [],
+            type_errors: [],
+            title_errors: [],
+            content_errors: [],
+            deadline_errors: [],
+            file_errors: [],
         }
 
         this.onSubmit = this.onSubmit.bind(this)
@@ -35,10 +35,8 @@ class AddTask extends Component {
         this.onUpdate = this.onUpdate.bind(this)
         this.fileUpdated = this.fileUpdated.bind(this)
 
-        if (this.props.match.params.id != null) {
-            let task = this.props.tasks.filter(
-                (item) => item.task_id === parseInt(this.props.match.params.id)
-            )[0]
+        if ((this.props.match.params.id) != null) {
+            let task = this.props.tasks.filter((item) => item.task_id === parseInt(this.props.match.params.id))[0]
             if (task.stud_tasks.length === 0) {
                 this.state = {
                     id: task.task_id,
@@ -66,7 +64,6 @@ class AddTask extends Component {
             }
         }
     }
-
 
     componentDidMount() {
         bsCustomFileInput.init()
@@ -131,18 +128,14 @@ class AddTask extends Component {
         dataTask.append('id', this.props.match.params.id)
         dataTask.append('name', this.state.file_name)
 
-        for (var key of dataTask.entries()) {
-            console.log(key[0] + ', ' + key[1]);
-        }
-
         this.props.onUpdate(dataTask)
             .then(() => {
                 this.props.history.push('/myTasks')
             })
             .catch((e) => {
                 this.setState({
-                    statusErrors: e.response.data['status'] || [],
-                    fileErrors: e.response.data['filename'] || [],
+                    status_errors: e.response.data['status'] || [],
+                    file_errors: e.response.data['filename'] || [],
                 })
             })
     }
@@ -172,11 +165,11 @@ class AddTask extends Component {
                 })
                 .catch((e) => {
                     this.setState({
-                        statusErrors: e.response.data['status'] || [],
-                        typeErrors: e.response.data['type'] || [],
-                        titleErrors: e.response.data['title'] || [],
-                        contentErrors: e.response.data['content'] || [],
-                        deadlineErrors: e.response.data['deadline'] || [],
+                        status_errors: e.response.data['status'] || [],
+                        type_errors: e.response.data['type'] || [],
+                        title_errors: e.response.data['title'] || [],
+                        content_errors: e.response.data['content'] || [],
+                        deadline_errors: e.response.data['deadline'] || [],
                     })
                 })
         } else {
@@ -188,11 +181,11 @@ class AddTask extends Component {
                 })
                 .catch((e) => {
                     this.setState({
-                        statusErrors: e.response.data['status'] || [],
-                        typeErrors: e.response.data['type'] || [],
-                        titleErrors: e.response.data['title'] || [],
-                        contentErrors: e.response.data['content'] || [],
-                        deadlineErrors: e.response.data['deadline'] || [],
+                        status_errors: e.response.data['status'] || [],
+                        type_errors: e.response.data['type'] || [],
+                        title_errors: e.response.data['title'] || [],
+                        content_errors: e.response.data['content'] || [],
+                        deadline_errors: e.response.data['deadline'] || [],
                     })
                 })
         }
@@ -204,9 +197,7 @@ class AddTask extends Component {
                 <Navigation />
                 <div className="container borders" style={{ color: 'white' }}>
                     <div className="col-md-12">
-                        <p></p>
-                        {/* <div className="card login-card"> */}
-                        <p></p>
+                        <br/>
                         {(this.props.match.params.id != null) && (
                             <div className="d-flex justify-content-center ">
                                 <h3>Uprav zadanie:</h3>
@@ -214,7 +205,7 @@ class AddTask extends Component {
                         )}
                         {this.state.canBeDeleted && (
                             <div className="d-flex justify-content-center ">
-                                <button onClick={() => this.onDelete(this.state.id)} type="submit" className="my_btn btn btn-info" >
+                                <button onClick={() => this.onDelete(this.state.id)} type="submit" className="my_btn btn btn-info btn-bg" >
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
                                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
                                         <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
@@ -239,7 +230,7 @@ class AddTask extends Component {
                                     <option value="semester_work">Semestrálna práca</option>
                                     <option value="homework">Domáca úloha</option>
                                 </select>
-                                {getAllErrors(this.state.typeErrors)}
+                                {getAllErrors(this.state.type_errors)}
                                 <p></p>
                                 <label className="d-flex justify-content-start"> <b> Názov: </b> * </label>
                                 <input type="text" className="form-control col-6"
@@ -249,7 +240,7 @@ class AddTask extends Component {
                                     onChange={this.titleChanged}
                                     required
                                 />
-                                {getAllErrors(this.state.titleErrors)}
+                                {getAllErrors(this.state.title_errors)}
                                 <p></p>
                                 <label className="d-flex justify-content-start"> <b> Popis: </b> *</label>
                                 <textarea type="text" className="form-control"
@@ -259,7 +250,7 @@ class AddTask extends Component {
                                     onChange={this.contentChanged}
                                     required>
                                 </textarea>
-                                {getAllErrors(this.state.contentErrors)}
+                                {getAllErrors(this.state.content_errors)}
                                 <p></p>
                                 <label className="d-flex justify-content-start"> <b> Deadline: </b> *</label>
                                 <input type="datetime-local" className="form-control col-6" placeholder="Deadline"
@@ -269,7 +260,7 @@ class AddTask extends Component {
                                     onChange={this.deadlineChanged}
                                     required
                                 />
-                                {getAllErrors(this.state.deadlineErrors)}
+                                {getAllErrors(this.state.deadline_errors)}
                                 {(this.props.match.params.id == null) && (
                                     <div>
                                         <p></p>
@@ -285,9 +276,9 @@ class AddTask extends Component {
                                     </div>
                                 )}
 
-                                {getAllErrors(this.state.statusErrors)}
+                                {getAllErrors(this.state.status_errors)}
                                 <p></p>
-                                <button className="w-50 btn btn-lg btn-info" type="submit">Ulož</button>
+                                <button className="w-50 btn btn-lg btn-info btn-bg" type="submit">Ulož</button>
                                 <p></p>
                             </form>
 
@@ -312,11 +303,11 @@ class AddTask extends Component {
                                         <label className="custom-file-label">Choose file</label>
                                     </div>
 
-                                    {getAllErrors(this.state.statusErrors)}
-                                    {getAllErrors(this.state.fileErrors)}
+                                    {getAllErrors(this.state.status_errors)}
+                                    {getAllErrors(this.state.file_errors)}
                                     <p></p>
                                     <button onClick={() => this.onUpdate()}
-                                        className="w-50 btn btn-lg btn-info" type="submit">Zmeň súbor
+                                        className="w-50 btn btn-lg btn-info btn-bg" type="submit">Zmeň súbor
                                     </button>
                                     <p></p>
                                 </div>
@@ -324,7 +315,6 @@ class AddTask extends Component {
                         </div>
                     </div>
                 </div>
-                {/* </div> */}
             </div>
         )
     }

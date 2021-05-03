@@ -3,18 +3,18 @@ import Navigation from '../Navigation'
 import dateFormat from 'dateformat'
 import Countdown from 'react-countdown'
 import Modal from 'react-bootstrap/Modal'
+import { getMaxNumberOfPoints, getTypeInSlovak } from '../../helpers/StyleHelper'
 
 class StudentTasks extends Component {
     constructor(props) {
         super(props)
 
-        let teacher = this.props.users.filter(u => u.user_id === this.props.group.teacher)
-        let tasks = this.props.user.stud_tasks
-        let sub = this.props.user.submitted_assignments
+        let teacher = this.props.users.filter(u => u.user_id === this.props.group.teacher)[0]
+
         this.state = {
-            concreteTeacher: teacher[0],
-            studentTasks: tasks,
-            submittedAssignments: sub,
+            concreteTeacher: teacher,
+            studentTasks: this.props.user.stud_tasks,
+            submittedAssignments: this.props.user.submitted_assignments,
             count: 0,
             showModal: false,
             evaluation: '',
@@ -43,37 +43,37 @@ class StudentTasks extends Component {
     }
 
     isEvaluated(id) {
-        let filtered = this.state.submittedAssignments.filter(item => item.task_id === id)
-        if (filtered.length !== 0) {
-            return filtered[0].result !== null
+        let filtered_assignment = this.state.submittedAssignments.filter(item => item.task_id === id)
+        if (filtered_assignment.length !== 0) {
+            return filtered_assignment[0].result !== null
         } else {
             return false
         }
     }
 
     timeBeforeDeadline(id) {
-        let filtered = this.state.studentTasks.filter(item => item.task_id === id)
-        let dateDeadline = new Date(filtered[0].deadline)
+        let filtered_task = this.state.studentTasks.filter(item => item.task_id === id)
+        let date_deadline = new Date(filtered_task[0].deadline)
         let today = new Date(Date())
 
-        const result = Math.abs(dateDeadline - today)
+        let difference = Math.abs(date_deadline - today)
 
-        if (dateDeadline > today) {
-            return Math.round(result)
+        if (date_deadline > today) {
+            return Math.round(difference)
         } else {
             return Math.round(0)
         }
     }
 
     isSubmittedBeforeDeadline(id) {
-        let filteredAssignment = this.state.submittedAssignments.filter(item => item.task_id === id)
-        let filteredTask = this.state.studentTasks.filter(item => item.task_id === id)
-        if (filteredAssignment[0] === undefined) {
+        let filtered_assignment = this.state.submittedAssignments.filter(item => item.task_id === id)
+        let filtered_task = this.state.studentTasks.filter(item => item.task_id === id)
+        if (filtered_assignment[0] === undefined) {
             return true
         } else {
-            let dateDeadline = new Date(filteredTask[0].deadline)
-            let dateSubmitted = new Date(filteredAssignment[0].submit_date)
-            if (dateSubmitted === null || dateSubmitted > dateDeadline) {
+            let date_deadline = new Date(filtered_task[0].deadline)
+            let date_submitted = new Date(filtered_assignment[0].submit_date)
+            if (date_submitted === null || date_submitted > date_deadline) {
                 return false
             } else {
                 return true
@@ -82,18 +82,18 @@ class StudentTasks extends Component {
     }
 
     getEvaluation(id) {
-        let filtered = this.state.submittedAssignments.filter(item => item.task_id === id)
-        if (filtered.length !== 0) {
-            return filtered[0].result.evaluation
+        let filtered_assignment = this.state.submittedAssignments.filter(item => item.task_id === id)
+        if (filtered_assignment.length !== 0) {
+            return filtered_assignment[0].result.evaluation
         } else {
             return ''
         }
     }
 
     getComment(id) {
-        let filtered = this.state.submittedAssignments.filter(item => item.task_id === id)
-        if (filtered.length !== 0) {
-            return filtered[0].result.comment
+        let filtered_assignment = this.state.submittedAssignments.filter(item => item.task_id === id)
+        if (filtered_assignment.length !== 0) {
+            return filtered_assignment[0].result.comment
         } else {
             return ''
         }
@@ -111,32 +111,6 @@ class StudentTasks extends Component {
             }
         }
         return counter
-    }
-
-    getTypeInSlovak(type) {
-        switch (type) {
-            case 'first_check':
-                return 'prvý zápočet';
-            case 'second_check':
-                return 'druhý zápočet';
-            case 'semester_work':
-                return 'semestrálna práca';
-            default:
-                return 'domáca úloha';
-        }
-    }
-
-    getMaxNumberOfPoints(type) {
-        switch (type) {
-            case 'first_check':
-                return '10';
-            case 'second_check':
-                return '30';
-            case 'semester_work':
-                return '50';
-            default:
-                return '10';
-        }
     }
 
     render() {
@@ -169,10 +143,10 @@ class StudentTasks extends Component {
                                     return (
                                         <tr key={chosen.task_id}>
                                             <td>{chosen.title}</td>
-                                            <td>{this.getTypeInSlovak(chosen.type)}</td>
+                                            <td>{getTypeInSlovak(chosen.type)}</td>
 
                                             {this.isSubmittedBeforeDeadline(chosen.task_id) && (
-                                                <td className="table-success"> <Countdown date={Date.now() + this.timeBeforeDeadline(chosen.task_id)} /> </td>
+                                                <td className="table-warning"> <Countdown date={Date.now() + this.timeBeforeDeadline(chosen.task_id)} /> </td>
                                             )}
 
                                             {!this.isSubmittedBeforeDeadline(chosen.task_id) && (
@@ -199,10 +173,10 @@ class StudentTasks extends Component {
                                             )}
 
                                             {this.isEvaluated(chosen.task_id) && (
-                                                <td className="table-success">Hodnotené</td>
+                                                <td className="table-warning">Hodnotené</td>
                                             )}
                                             {this.isSubmitted(chosen.task_id) && !this.isEvaluated(chosen.task_id) && (
-                                                <td className="table-warning">Odovzdané</td>
+                                                <td className="table-success">Odovzdané</td>
                                             )}
                                             {!this.isSubmitted(chosen.task_id) && !this.isEvaluated(chosen.task_id) && (
                                                 <td className="table-danger">Neodovzdané</td>
@@ -224,13 +198,13 @@ class StudentTasks extends Component {
                 >
                     <Modal.Header>
                         <Modal.Title> {this.state.taskResult.title} -  
-                         ({this.getTypeInSlovak(this.state.taskResult.type)})</Modal.Title>
+                         ({getTypeInSlovak(this.state.taskResult.type)})</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
                         <h5> Hodnotenie: </h5>
                         <br></br>
-                        <p> <u>Počet bodov:</u> <b>{this.state.evaluation}</b> / {this.getMaxNumberOfPoints(this.state.taskResult.type)} </p>
+                        <p> <u>Počet bodov:</u> <b>{this.state.evaluation}</b> / {getMaxNumberOfPoints(this.state.taskResult.type)} </p>
                         <p> <u>Komentár:</u> <b>{this.state.comment}</b> </p>
                     </Modal.Body>
 

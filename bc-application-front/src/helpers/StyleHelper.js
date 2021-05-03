@@ -10,3 +10,16 @@ export function getTypeInSlovak(type) {
             return 'domáca úloha';
     }
 }
+
+export function getMaxNumberOfPoints(type) {
+    switch (type) {
+        case 'first_check':
+            return '10';
+        case 'second_check':
+            return '30';
+        case 'semester_work':
+            return '50';
+        default:
+            return '10';
+    }
+}

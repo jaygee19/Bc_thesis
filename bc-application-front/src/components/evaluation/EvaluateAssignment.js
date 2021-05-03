@@ -1,38 +1,38 @@
 import React, { Component } from 'react'
 import Navigation from '../Navigation'
 import { getAllErrors } from '../../helpers/ErrorHelper'
-import { getTypeInSlovak } from '../../helpers/StyleHelper'
+import { getMaxNumberOfPoints, getTypeInSlovak } from '../../helpers/StyleHelper'
 
 class EvaluateAssignment extends Component {
     constructor(props) {
         super(props)
 
-        let filteredTask = this.props.tasks.filter(task => task.task_id == this.props.match.params.task)
-        let filteredAssignment = filteredTask[0].submitted_assignments.filter(assignment => assignment.assignment_id == this.props.match.params.id)
-        let filteredStudent = this.props.users.filter(user => user.user_id === filteredAssignment[0].student_id)
-        let assignmentResult = filteredStudent[0].submitted_assignments.filter(assignment => assignment.assignment_id == filteredAssignment[0].assignment_id)
+        let filtered_task = this.props.tasks.filter(task => task.task_id == this.props.match.params.task)
+        let filtered_assignment = filtered_task[0].submitted_assignments.filter(assignment => assignment.assignment_id == this.props.match.params.id)
+        let filtered_student = this.props.users.filter(user => user.user_id === filtered_assignment[0].student_id)
+        let assignment_result = filtered_student[0].submitted_assignments.filter(assignment => assignment.assignment_id == filtered_assignment[0].assignment_id)
 
         this.state = {
-            statusErrors: [],
-            evaluationErrors: [],
-            commentErrors: [],
+            status_errors: [],
+            evaluation_errors: [],
+            comment_errors: [],
         }
 
-        if (assignmentResult[0].result !== null) {
+        if (assignment_result[0].result !== null) {
             this.state = {
-                assignment: filteredAssignment[0],
-                student: filteredStudent[0],
-                task: filteredTask[0],
-                evaluation: assignmentResult[0].result.evaluation,
-                comment: assignmentResult[0].result.comment,
+                assignment: filtered_assignment[0],
+                student: filtered_student[0],
+                task: filtered_task[0],
+                evaluation: assignment_result[0].result.evaluation,
+                comment: assignment_result[0].result.comment,
                 evaluatedBefore: true,
-                resultID: assignmentResult[0].result.result_id,
+                resultID: assignment_result[0].result.result_id,
             }
         } else {
             this.state = {
-                assignment: filteredAssignment[0],
-                student: filteredStudent[0],
-                task: filteredTask[0],
+                assignment: filtered_assignment[0],
+                student: filtered_student[0],
+                task: filtered_task[0],
                 evaluation: '',
                 comment: '',
                 evaluatedBefore: false,
@@ -60,24 +60,10 @@ class EvaluateAssignment extends Component {
         return 'http://127.0.0.1:8000/storage' + path
     }
 
-    getMaxNumberOfPoints() {
-        switch (this.state.task.type) {
-            case 'first_check':
-                return '10';
-            case 'second_check':
-                return '30';
-            case 'semester_work':
-                return '50';
-            default:
-                return '10';
-        }
-    }
-
     onSubmit(event) {
         event.preventDefault()
 
         if (this.state.evaluatedBefore) {
-            console.log("SOM DOBRE", this.state.resultID)
             this.props
                 .onUpdate({
                     evaluation: this.state.evaluation,
@@ -91,9 +77,9 @@ class EvaluateAssignment extends Component {
                 })
                 .catch((e) => {
                     this.setState({
-                        statusErrors: e.response.data['status'] || [],
-                        evaluationErrors: e.response.data['evaluation'] || [],
-                        commentErrors: e.response.data['comment'] || [],
+                        status_errors: e.response.data['status'] || [],
+                        evaluation_errors: e.response.data['evaluation'] || [],
+                        comment_errors: e.response.data['comment'] || [],
                     })
                 })
         } else {
@@ -109,9 +95,9 @@ class EvaluateAssignment extends Component {
                 })
                 .catch((e) => {
                     this.setState({
-                        statusErrors: e.response.data['status'] || [],
-                        evaluationErrors: e.response.data['evaluation'] || [],
-                        commentErrors: e.response.data['comment'] || [],
+                        status_errors: e.response.data['status'] || [],
+                        evaluation_errors: e.response.data['evaluation'] || [],
+                        comment_errors: e.response.data['comment'] || [],
                     })
                 })
         }
@@ -127,7 +113,7 @@ class EvaluateAssignment extends Component {
                         <h3>{this.state.task.title}</h3>
                         <p>{getTypeInSlovak(this.state.task.type)}</p>
                         <h4>{this.state.student.name} {this.state.student.surname}, {this.state.student.group}</h4>
-                        <hr />
+                        <hr/>
                         <p> <b> Vypracované zadanie: </b> </p>
                         {this.state.assignment.path_to_file !== null && (
                             <a className="btn btn-lg btn-info" href={this.showAssignment(this.state.assignment.path_to_file.substr(6))} target="_blank" download>
@@ -137,7 +123,7 @@ class EvaluateAssignment extends Component {
 
                         <form onSubmit={this.onSubmit}>
                             <p></p>
-                            <label className="d-flex justify-content-start"> <b> Počet bodov: / {this.getMaxNumberOfPoints()} </b>
+                            <label className="d-flex justify-content-start"> <b> Počet bodov: / {getMaxNumberOfPoints(this.state.task.type)} </b>
                             </label>
                             <input type="text" className="col-1 form-control"
                                 id="evaluation"
@@ -146,7 +132,7 @@ class EvaluateAssignment extends Component {
                                 onChange={this.evaluationChanged}
                                 required
                             />
-                            {getAllErrors(this.state.evaluationErrors)}
+                            {getAllErrors(this.state.evaluation_errors)}
                             <p></p>
                             <label className="d-flex justify-content-start"> <b> Komentár: </b> </label>
                             <textarea type="text" className="form-control"
@@ -157,13 +143,12 @@ class EvaluateAssignment extends Component {
                                 required
                             >
                             </textarea>
-                            {getAllErrors(this.state.commentErrors)}
-                            {getAllErrors(this.state.statusErrors)}
+                            {getAllErrors(this.state.comment_errors)}
+                            {getAllErrors(this.state.status_errors)}
                             <p></p>
                             <button className="w-50 btn btn-lg btn-info" type="submit">Ulož</button>
                             <p></p>
                         </form>
-
                     </div>
                 </div>
             </div>

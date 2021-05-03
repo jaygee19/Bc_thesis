@@ -19,9 +19,14 @@ class TestController extends Controller
 {
     public function getAll() {
         //$assignment = SubmittedAssignment::where('assignment_id', 44)->first();
+        //exec('mkdir C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app\public\semester_work\1440');
+       $cislo = 2000;
+        $directory = 'public/semester_work';
+            exec('cd C:\Users\Janci\Desktop\BC\Bc_thesis\bc-application\storage\app/'.$directory.' & rmdir '.$cislo);
+       // exec('rmdir /Q/S C:\Users\Janci\Desktop\sub');
         
-        $this->parseFile('C:\Users\Janci\Desktop\Test_folder\funkcie.c');
-        
+        //$this->parseFile('C:\Users\Janci\Desktop\Test_folder\funkcie.c');
+
         // $my_file = file_get_contents('C:\Users\Janci\Desktop\Test_folder\ZIPKA\4\game_life\main.c');
         // $table = array(
         //     'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'Č'=>'C', 'Ď'=>'D',

@@ -12,7 +12,7 @@ class Task extends Component {
 
         this.state = {
             date: new Date(Date()),
-            statusErrors: [],
+            status_errors: [],
         }
 
         this.onEdit = this.onEdit.bind(this)
@@ -29,9 +29,9 @@ class Task extends Component {
     }
 
     compareDates(data) {
-        let dateDeadline = new Date(data)
+        let date_deadline = new Date(data)
         let today = new Date(Date())
-        return today < dateDeadline
+        return today < date_deadline
     }
 
     onAssign() {
@@ -50,7 +50,7 @@ class Task extends Component {
         this.props.onHide(id)
             .catch((e) => {
                 this.setState({
-                    statusErrors: e.response.data['status'] || [],
+                    status_errors: e.response.data['status'] || [],
                 })
             })
     }
@@ -59,7 +59,7 @@ class Task extends Component {
         this.props.onUncover(id)
             .catch((e) => {
                 this.setState({
-                    statusErrors: e.response.data['status'] || [],
+                    status_errors: e.response.data['status'] || [],
                 })
             })
     }
@@ -119,13 +119,9 @@ class Task extends Component {
                                     </svg>
                                 </button>
                             )}
-
-                            {/* { this.props.path !== null && (
-                                    <img src={'http://127.0.0.1:8000/storage/'+this.props.path.substr(6)}/>
-                                    )} */}
                         </div>
                     </Card.Body>
-                    {getAllErrors(this.state.statusErrors)}
+                    {getAllErrors(this.state.status_errors)}
                 </Card>
             </div>
         )

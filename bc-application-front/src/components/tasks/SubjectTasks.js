@@ -19,8 +19,8 @@ class SubjectTasks extends Component {
     }
 
     getUserName(id) {
-        let concreteUser = this.props.users.filter(item => item.user_id === id)
-        let fullName = concreteUser[0].name + " " + concreteUser[0].surname
+        let concrete_user = this.props.users.filter(item => item.user_id === id)
+        let fullName = concrete_user[0].name + " " + concrete_user[0].surname
         return fullName
     }
 

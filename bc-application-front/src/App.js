@@ -65,11 +65,13 @@ class App extends Component {
     let allSubjectTasks = await getApiResponse('tasks', 'get')
     let allSubjectUsers = await getApiResponse('users', 'get')
     let allSubjectScheduleGroup = await getApiResponse('schedules', 'get')
+    let allSubjectSubmittedAssignments = await getApiResponse('submitted_assignments', 'get')
 
     this.setState({
       allTasks: allSubjectTasks.data,
       allUsers: allSubjectUsers.data,
       allScheduleGropus: allSubjectScheduleGroup.data,
+      allSubmittedAssignments: allSubjectSubmittedAssignments.data,
       isLoading: false,
     })
   }
@@ -189,13 +191,7 @@ class App extends Component {
 
   async checkDuplicates(id) {
     const updatedTask = await getApiResponse('check/duplicates/' + id, 'put')
-    //console.log("190", updatedTask)
     this.loadAllTasks()
-    // this.setState(state => {
-    //   return {
-    //     allTasks: state.allTasks.map(t => t.task_id === updatedTask.data.task_id ? updatedTask.data : t),
-    //   }
-    // })
   }
 
   //******************************** TASK END*/
@@ -267,7 +263,7 @@ class App extends Component {
 
   async storeResult(data) {
     const user = await getApiResponse('store/result', 'post', data)
-    console.log("RESULT SUER", user)
+
     this.setState(state => {
       return {
         allUsers: state.allUsers.map(u => u.user_id === user.data.user_id ? user.data : u),
@@ -277,7 +273,7 @@ class App extends Component {
 
   async updateResult(data) {
     const user = await getApiResponse('update/result/' + data.result_id, 'put', data)
-    console.log("RESULT SUER po Update", user)
+
     this.setState(state => {
       return {
         allUsers: state.allUsers.map(u => u.user_id === user.data.user_id ? user.data : u),
@@ -303,7 +299,7 @@ class App extends Component {
             <TeacherRoute path="/subjectTasks" exact component={SubjectTasks} users={this.state.allUsers} tasks={this.state.allTasks} />
             <TeacherRoute path="/hiddenTasks" exact component={HiddenTasks} users={this.state.allUsers} tasks={this.getTasksForUser()} uncoverTask={this.uncoverTask} />
             <TeacherRoute path="/assignTasks/:id" exact component={AssignTasks} groups={this.getOnlyGroups()} tasks={this.getTasksForUser()} onSubmit={this.saveAssignedStudents} />
-            <TeacherRoute path="/assignedTasks/:id" exact component={AssignedTasks} users={this.state.allUsers} tasks={this.state.allTasks} onDelete={this.removeStudent} onVerify={this.checkDuplicates}/>
+            <TeacherRoute path="/assignedTasks/:id" exact component={AssignedTasks} users={this.state.allUsers} tasks={this.state.allTasks} allAssignments={this.state.allSubmittedAssignments} onDelete={this.removeStudent} onVerify={this.checkDuplicates}/>
             <TeacherRoute path="/myTasks/create" exact component={AddTask} onSubmit={this.addNewTask} />
             <TeacherRoute path="/myTasks/:id/edit" exact component={AddTask} tasks={this.state.allTasks} onSubmit={this.editTask} onUpdate={this.updateFile} onDelete={this.deleteTask}/>
             <TeacherRoute path="/evaluate/:task/assignment/:id" exact component={EvaluateAssignment} users={this.state.allUsers} tasks={this.state.allTasks} onSubmit={this.storeResult} onUpdate={this.updateResult}/>
@@ -312,7 +308,7 @@ class App extends Component {
             <Route path="/login" exact render={() => <Login onLogin={this.loadAllTasks} />} />
             <Route path="/register" exact component={Register} />
             <Route path="/logout" exact component={Logout} />
-            <TeacherRoute path="/test" exact component={Test} tasks={this.state.allTasks}/>
+            {/* <TeacherRoute path="/test" exact component={Test} tasks={this.state.allTasks}/> */}
           </Switch>
         </Router>
         <div>

@@ -33,8 +33,8 @@ class MyTasks extends Component {
     }
 
     getUserName(id) {
-        let concreteUser = this.props.users.filter(item => item.user_id === id)
-        let fullName = concreteUser[0].name + " " + concreteUser[0].surname
+        let concrete_user = this.props.users.filter(item => item.user_id === id)
+        let fullName = concrete_user[0].name + " " + concrete_user[0].surname
         return fullName
     }
 
@@ -44,7 +44,8 @@ class MyTasks extends Component {
                 <Navigation />
                 <div className="container">
                     <p></p>
-                    <button onClick={this.onAddNew} type="submit" className="btn btn-info" > Nové zadanie + </button>
+                    <br/>
+                    <button onClick={this.onAddNew} type="submit" className="btn btn-info btn-bg" > Nové zadanie + </button>
                     <p></p>
                     <div className="d-flex justify-content-start" style={{ color: 'white' }}>
                         <h3> Zoznam mojich zadaní :</h3>

@@ -9,12 +9,18 @@ use App\Models\User;
 use App\Models\Task;
 use Illuminate\Support\Arr;
 use App\Imports\ComparedPairsImport;
+use App\Models\ComparedPair;
+use App\Models\SubmittedAssignment;
 use Maatwebsite\Excel\Facades\Excel;
 
 class TeacherController extends Controller
 {
     public function index() {
         return Schedule::with('users')->get();
+    }
+
+    public function getSubmittedAssignments() {
+        return SubmittedAssignment::all();
     }
 
     public function assignTask(Request $request) {

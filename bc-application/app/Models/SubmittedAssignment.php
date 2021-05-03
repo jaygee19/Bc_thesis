@@ -21,4 +21,8 @@ class SubmittedAssignment extends Model
     public function compared_pair() {
         return $this->hasOne(ComparedPair::class, 'assignment_first_id', 'assignment_id');
     }
+
+    public function compared_pair_second() {
+        return $this->hasOne(ComparedPair::class, 'assignment_second_id', 'assignment_id');
+    }
 }

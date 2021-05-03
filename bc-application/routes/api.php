@@ -29,6 +29,7 @@ Route::get('/users', [UserController::class, 'index']);
 Route::get('/tasks', [TaskController::class, 'index']);
 Route::get('/schedules', [TeacherController::class, 'index']);
 Route::get('/students', [StudentController::class, 'index']);
+Route::get('/submitted_assignments', [TeacherController::class, 'getSubmittedAssignments']);
 
 Route::group(['middleware' => ['jwt.verify']], function () {
     

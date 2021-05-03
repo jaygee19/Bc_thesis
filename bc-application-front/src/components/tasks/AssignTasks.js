@@ -8,10 +8,7 @@ class AssignTasks extends Component {
     constructor(props) {
         super(props)
 
-        let task = this.props.tasks.filter(
-            (item) => item.task_id === parseInt(this.props.match.params.id)
-        )[0]
-
+        let task = this.props.tasks.filter((item) => item.task_id === parseInt(this.props.match.params.id))[0]
 
         this.state = {
             concreteTask: task,
@@ -19,7 +16,7 @@ class AssignTasks extends Component {
             allGroups: this.props.groups,
             chosenStudents: [],
             chosenGroups: [],
-            statusErrors: [],
+            status_errors: [],
             visiblePlus: true,
         }
 
@@ -50,7 +47,7 @@ class AssignTasks extends Component {
             })
             .catch((e) => {
                 this.setState({
-                    statusErrors: e.response.data['status'] || [],
+                    status_errors: e.response.data['status'] || [],
                 })
             })
     }
@@ -65,22 +62,22 @@ class AssignTasks extends Component {
 
     removeStudents(value) {
 
-        let grup = this.props.groups.filter(
+        let group = this.props.groups.filter(
             (item) => item.schedule_id === value)[0]
         
         let available = []
         if (this.state.chosenStudents !== undefined) {
             for (let i = 0; i < this.state.chosenStudents.length; i++) {
-                let temp = 0
-                const item1 = this.state.chosenStudents[i]
-                for (let j = 0; j < grup.users.length; j++) {
-                    const item2 = grup.users[j]
-                    if (item1.user_id === item2.user_id) {
-                        temp = 1
+                let flag = 0
+                const student = this.state.chosenStudents[i]
+                for (let j = 0; j < group.users.length; j++) {
+                    const group_student = group.users[j]
+                    if (student.user_id === group_student.user_id) {
+                        flag = 1
                     } 
                 }
-                if (temp === 0) {
-                    available.push(item1)
+                if (flag === 0) {
+                    available.push(student)
                 }
             }
         }
@@ -92,34 +89,33 @@ class AssignTasks extends Component {
 
     assignStudent(value) {
 
-        let grup = this.props.groups.filter(
+        let group = this.props.groups.filter(
             (item) => item.schedule_id === value)[0]
 
-        let together = grup.users.concat(this.state.chosenStudents)
+        let together = group.users.concat(this.state.chosenStudents)
 
         let result = [...new Set(together)]
 
         let available = []
+
         if (this.state.assignedStudents !== undefined) {
             for (let i = 0; i < result.length; i++) {
-                let temp = 0
-                const item1 = result[i]
+                let flag = 0
+                const result_student = result[i]
                 for (let j = 0; j < this.state.assignedStudents.length; j++) {
-                    const item2 = this.state.assignedStudents[j]
-                    if (item1.user_id === item2.user_id) {
-                        temp = 1
+                    const assigned_student = this.state.assignedStudents[j]
+                    if (result_student.user_id === assigned_student.user_id) {
+                        flag = 1
                     }
                 }
-                if (temp === 0) {
-                    available.push(item1)
+                if (flag === 0) {
+                    available.push(result_student)
                 }
             }
         }
 
-        this.setState(state => {
-            return {
-                chosenStudents: available
-            }
+        this.setState({
+            chosenStudents: available
         })
 
     }
@@ -141,7 +137,7 @@ class AssignTasks extends Component {
                         <div className=" card assign-card col ">
                         <p></p>
                             <h3 className="d-flex justify-content-start">
-                                Už pridelený:
+                                Už pridelení:
                             </h3>
                             <hr/>
                             <p></p>
@@ -187,7 +183,7 @@ class AssignTasks extends Component {
                                         </div>
                                     )
                                 })}
-                                {getAllErrors(this.state.statusErrors)} 
+                                {getAllErrors(this.state.status_errors)} 
                                 <p></p>
                                 <button className="w-50 btn btn-lg btn-info" type="submit">Ulož</button>
                                 <p></p>
