@@ -101,12 +101,12 @@ class ManageAssignments extends Component {
                 <Navigation />
                 <p></p>
                 <div className="container">
-                    <div className="jumbotron bg-white">
+                    <div className="jumbotron col-md-12 bg-white">
                         <h1>{this.state.concreteTask.title}</h1>
                         <h5>{getTypeInSlovak(this.state.concreteTask.type)}</h5>
                         <p className="lead">Deadline: {this.toDate(this.state.concreteTask.deadline)}</p>
                         <hr/>
-                        <p className="lead">Popis zadania:</p>
+                        <p className="lead"> <b> Popis zadania: </b> </p>
                         <p className="d-flex justify-content-start lead">{this.state.concreteTask.content}</p>
                         {this.state.concreteTask.path_to_file !== null && (
                             <a className="btn btn-lg btn-info" href={this.showAssignment(this.state.concreteTask.path_to_file.substr(6))} target="_blank" download>Zobraz zadanie  &raquo;</a>

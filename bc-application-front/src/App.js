@@ -2,7 +2,7 @@ import './App.css';
 import Login from "./components/users/Login";
 import Home from './components/Home';
 import Test from './components/Test';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import { React, Component } from 'react';
 import { getApiResponse } from './helpers/ApiHelper';
 import AuthHelper from './helpers/AuthHelper';
@@ -189,7 +189,7 @@ class App extends Component {
   }
 
   async checkDuplicates(id) {
-    const updatedTask = await getApiResponse('check/duplicates/' + id, 'put')
+    await getApiResponse('check/duplicates/' + id, 'put')
     this.loadAllTasks()
   }
 

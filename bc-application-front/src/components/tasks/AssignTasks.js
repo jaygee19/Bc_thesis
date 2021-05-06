@@ -134,7 +134,7 @@ class AssignTasks extends Component {
                         <hr />
                     </div>
                     <div className="row">
-                        <div className=" card assign-card col ">
+                        <div className=" card assign-card col">
                         <p></p>
                             <h3 className="d-flex justify-content-start">
                                 Už pridelení:
@@ -151,7 +151,7 @@ class AssignTasks extends Component {
                                     })}
                         </div>
 
-                        <div className="card assign-card col-8">
+                        <div className="card assign-card col-md-8">
                             <p></p>
                             <h3 className="d-flex justify-content-start">
                                 Prideliť:

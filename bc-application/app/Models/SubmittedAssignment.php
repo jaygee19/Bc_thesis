@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class SubmittedAssignment extends Model
 {
     use HasFactory;
-
     public $timestamps = false;
     protected $primaryKey = 'assignment_id';
 

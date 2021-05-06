@@ -51,7 +51,7 @@ class StudentTasks extends Component {
         }
     }
 
-    timeBeforeDeadline(id) {
+    getTimeBeforeDeadline(id) {
         let filtered_task = this.state.studentTasks.filter(item => item.task_id === id)
         let date_deadline = new Date(filtered_task[0].deadline)
         let today = new Date(Date())
@@ -131,7 +131,7 @@ class StudentTasks extends Component {
                         <thead className="thead-dark">
                             <tr>
                                 <th scope="col">Názov</th>
-                                <th scope="col">Typ</th>
+                                {/* <th scope="col">Typ</th> */}
                                 <th scope="col">Deadline (D:H:M:S)</th>
                                 <th scope="col">#</th>
                                 <th scope="col">Stav</th>
@@ -142,15 +142,15 @@ class StudentTasks extends Component {
                                 .map((chosen) => {
                                     return (
                                         <tr key={chosen.task_id}>
-                                            <td>{chosen.title}</td>
-                                            <td>{getTypeInSlovak(chosen.type)}</td>
+                                            <td>{chosen.title} ({getTypeInSlovak(chosen.type)})</td>
+                                            {/* <td></td> */}
 
                                             {this.isSubmittedBeforeDeadline(chosen.task_id) && (
-                                                <td className="table-warning"> <Countdown date={Date.now() + this.timeBeforeDeadline(chosen.task_id)} /> </td>
+                                                <td className="table-warning"> <Countdown date={Date.now() + this.getTimeBeforeDeadline(chosen.task_id)} /> </td>
                                             )}
 
                                             {!this.isSubmittedBeforeDeadline(chosen.task_id) && (
-                                                <td className="table-danger"> <Countdown date={Date.now() + this.timeBeforeDeadline(chosen.task_id)} /> (po termíne) </td>
+                                                <td className="table-danger"> <Countdown date={Date.now() + this.getTimeBeforeDeadline(chosen.task_id)} /> (po termíne) </td>
                                             )}
 
                                             {this.isEvaluated(chosen.task_id) && (

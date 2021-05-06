@@ -71,7 +71,7 @@ class AssignedTasks extends Component {
         }
     }
 
-    submitDate(array) {
+    getSubmitDate(array) {
         let assignment = array.filter(item => item.task_id == this.props.match.params.id)
         return this.toDate(assignment[0].submit_date)
     }
@@ -167,7 +167,7 @@ class AssignedTasks extends Component {
                                 <p className="list-group-item list-group-item-warning no-marg">Zadanie prešlo kontrolou originality prác</p>
                             </div>
                             {this.state.similarAssignments.length > 0 && (
-                                <div className="card" style={{ color: 'black' }}>
+                                <div className="card col" style={{ color: 'black' }}>
                                     <p></p>
                                     <h5 className="justify-content-start">
                                         <u>Zoznam potenciálnych zhôd:</u>
@@ -205,7 +205,7 @@ class AssignedTasks extends Component {
                                 </div>
                             )}
                             {this.state.similarAssignments.length === 0 && (
-                                <div className="card" style={{ color: 'black' }}>
+                                <div className="card col" style={{ color: 'black' }}>
                                     <p></p>
                                     <h5 className="justify-content-start">
                                         <u>Zoznam potenciálnych zhôd:</u>
@@ -238,11 +238,11 @@ class AssignedTasks extends Component {
                                             <td>{chosen.group}</td>
 
                                             {this.isSubmitted(chosen.submitted_assignments) && this.isSubmittedBeforeDeadline(chosen.submitted_assignments) && (
-                                                <td className="table-success"> { this.submitDate(chosen.submitted_assignments)} </td>
+                                                <td className="table-success"> { this.getSubmitDate(chosen.submitted_assignments)} </td>
                                             )}
 
                                             {this.isSubmitted(chosen.submitted_assignments) && !this.isSubmittedBeforeDeadline(chosen.submitted_assignments) && (
-                                                <td className="table-danger"> { this.submitDate(chosen.submitted_assignments)} </td>
+                                                <td className="table-danger"> { this.getSubmitDate(chosen.submitted_assignments)} </td>
                                             )}
 
                                             {!this.isSubmitted(chosen.submitted_assignments) && (
