@@ -1,7 +1,6 @@
 import './App.css';
 import Login from "./components/users/Login";
 import Home from './components/Home';
-import Register from './components/users/Register';
 import Test from './components/Test';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { React, Component } from 'react';
@@ -306,7 +305,6 @@ class App extends Component {
             <StudentRoute path="/studentTasks" exact component={StudentTasks} users={this.state.allUsers} user={this.getMyself()} group={this.getStudentGroup()} />
             <StudentRoute path="/manageAssignment/:id" exact component={ManageAssignments} user={this.getMyself()} onSubmit={this.submitAssignment} onUpdate={this.updateAssignment} />
             <Route path="/login" exact render={() => <Login onLogin={this.loadAllTasks} />} />
-            <Route path="/register" exact component={Register} />
             <Route path="/logout" exact component={Logout} />
             {/* <TeacherRoute path="/test" exact component={Test} tasks={this.state.allTasks}/> */}
           </Switch>

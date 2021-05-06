@@ -31,7 +31,6 @@ class Navigation extends Component {
             id: AuthHelper.getInstance().getUserID(),
         })
             .then((res) => {
-                console.log("32", res)
                 AuthHelper.getInstance().logoutUser()
                 this.props.history.push('/')
             })
@@ -83,9 +82,6 @@ class Navigation extends Component {
                                     <li className="nav-item active font-weight-bolder">
                                         <Link to="/login" className="nav-link" >Prihlásanie</Link>
                                     </li>
-                                    {/* <li className="nav-item active font-weight-bolder">
-                                        <Link to="/register" className="nav-link">Register</Link>
-                                    </li> */}
                                 </ul>
                             )}
                             {AuthHelper.getInstance().isUserLoggedIn() && (

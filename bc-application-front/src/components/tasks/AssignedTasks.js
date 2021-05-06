@@ -158,7 +158,7 @@ class AssignedTasks extends Component {
                             </a> </p>
                         )}
                         {!this.state.concreteTask.verified && this.state.concreteTask.type !== 'homework' && this.state.concreteTask.type !== 'first_check' && this.state.visibleCheck && (
-                            <button onClick={() => this.onVerify(this.state.concreteTask.task_id)} className="btn btn-info btn-bg">Kontrola zhody</button>
+                            <button onClick={() => this.onVerify(this.state.concreteTask.task_id)} className="btn btn-info btn-bg">Kontrola originality</button>
                         )}
                     </div>
                     {this.state.concreteTask.verified && (

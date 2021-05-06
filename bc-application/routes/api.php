@@ -20,11 +20,10 @@ use App\Http\Controllers\ResultController;
 |
 */
 
-Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout']);
 
-Route::get('/control', [TestController::class, 'getAll']);
+// Route::get('/control', [TestController::class, 'getAll']);
 Route::get('/users', [UserController::class, 'index']);
 Route::get('/tasks', [TaskController::class, 'index']);
 Route::get('/schedules', [TeacherController::class, 'index']);

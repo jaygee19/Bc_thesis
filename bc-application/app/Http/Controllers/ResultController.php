@@ -39,9 +39,6 @@ class ResultController extends Controller
                 'assignment_id' => $request->get('id'),
                 'teacher_id' => $user->user_id,
         ]);
-
-        // $enrolled = EnrolledStudent::where('user_id', $request->get('user_id'))->first();
-        // $enrolled->increment('points', $request->get('evaluation'));
         
         $updated_student = User::with('schedules')
         ->with('stud_tasks')

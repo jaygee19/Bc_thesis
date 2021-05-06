@@ -13,8 +13,6 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Http\Response;
 use Exception;
 
-
-
 class UserController extends Controller
 {
 
@@ -58,29 +56,6 @@ class UserController extends Controller
 
             return response()->json(['token' => $token], 200);
     }
-
-        public function register(Request $request)
-        {
-                $validator = Validator::make($request->all(), [
-                'password' => 'required|string|min:6',
-            ]);
-
-            if($validator->fails()){
-                    return response()->json($validator->errors()->toJson(), 400);
-            }
-
-            $user = User::create([
-                'name' => $request->get('name'),
-                'surname' => $request->get('surname'),
-                'ldap_login' => $request->get('ldap_login'),
-                'password' => Hash::make($request->get('password')),
-                'role' => "s",
-            ]);
-
-            $token = JWTAuth::fromUser($user);
-
-            return response()->json(compact('user','token'), 201);
-        }
 
         //inspirovane strankou https://blog.pusher.com/laravel-jwt/
         public function getAuthenticatedUser()
